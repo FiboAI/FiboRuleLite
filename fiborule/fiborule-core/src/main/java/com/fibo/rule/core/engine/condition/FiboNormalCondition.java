@@ -11,10 +11,7 @@ import cn.hutool.core.util.ObjectUtil;
 public class FiboNormalCondition extends FiboCondition {
 
     @Override
-    public void runner(Integer contextIndex) throws Exception {
-        getFiboRunnable().runner(contextIndex);
-        if(ObjectUtil.isNotNull(this.getNextRunnable())) {
-            this.getNextRunnable().runner(contextIndex);
-        }
+    public void runnerBranch(Integer contextIndex) {
+
     }
 }

@@ -7,6 +7,7 @@ import com.fibo.rule.core.engine.element.FiboEngineNode;
 import com.fibo.rule.core.engine.element.FiboRunnable;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,23 +19,24 @@ import java.util.Map;
 @Data
 public class FiboSwitchCondition extends FiboCondition {
 
-    private Map<String, FiboRunnable> fiboRunnableMap;
+    private Map<String, FiboRunnable> fiboRunnableMap = new HashMap<>();
 
     @Override
-    public void runner(Integer contextIndex) throws Exception {
-        this.getSwitchNode().runner(contextIndex);
+    public void runnerBranch(Integer contextIndex) {
         FiboContext context = Contextmanager.getContext(contextIndex);
         String result = context.getSwitchResult(this.getSwitchNode().getNodeCode());
-        FiboRunnable fiboRunnable = fiboRunnableMap.get(result);
-        // TODO: 2022/11/21 空判断
-        fiboRunnable.runner(contextIndex);
-        if(ObjectUtil.isNotNull(this.getNextRunnable())) {
-            this.getNextRunnable().runner(contextIndex);
+        FiboRunnable switchBranch = fiboRunnableMap.get(result);
+        if(ObjectUtil.isNotNull(switchBranch)) {
+            switchBranch.runner(contextIndex);
         }
     }
 
     public FiboEngineNode getSwitchNode() {
         return (FiboEngineNode) this.getFiboRunnable();
+    }
+
+    public void addSwitchFiboRunnalbe(String caseValue, FiboRunnable fiboRunnable) {
+        fiboRunnableMap.put(caseValue, fiboRunnable);
     }
 
 }

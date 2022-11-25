@@ -17,10 +17,10 @@ public class FiboEngine implements FiboRunnable {
     private FiboRunnable fiboRunnable;
 
     @Override
-    public void runner(Integer contextIndex) throws Exception {
+    public void runner(Integer contextIndex) {
         if(ObjectUtil.isNull(fiboRunnable)) {
             // TODO: 2022/11/18 抛出异常
-            return;
+            throw new RuntimeException();
         }
         fiboRunnable.runner(contextIndex);
     }

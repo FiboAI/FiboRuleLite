@@ -5,6 +5,6 @@ package com.fibo.rule.core.engine.element;
  */
 public interface FiboRunnable {
 
-    void runner(Integer contextIndex) throws Exception;
+    void runner(Integer contextIndex);
 
 }

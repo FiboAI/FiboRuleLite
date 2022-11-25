@@ -19,10 +19,10 @@ public class FiboEngineNode implements FiboRunnable {
     private FiboNode fiboNode;
 
     @Override
-    public void runner(Integer contextIndex) throws Exception {
+    public void runner(Integer contextIndex) {
         if(ObjectUtil.isNull(fiboNode)) {
-            // TODO: 2022/11/18 抛出异常
-            return;
+            // TODO: 2022/11/23 异常处理
+            throw new RuntimeException();
         }
         try {
             fiboNode.setContextIndex(contextIndex);

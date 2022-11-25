@@ -20,8 +20,7 @@ public class FiboIfCondition extends FiboCondition {
     private FiboRunnable falseBranch;
 
     @Override
-    public void runner(Integer contextIndex) throws Exception {
-        this.getIfNode().runner(contextIndex);
+    public void runnerBranch(Integer contextIndex) {
         FiboContext context = Contextmanager.getContext(contextIndex);
         boolean result = context.getIfResult(this.getIfNode().getNodeCode());
         if(result) {
@@ -32,9 +31,6 @@ public class FiboIfCondition extends FiboCondition {
             if(ObjectUtil.isNotNull(trueBranch)) {
                 falseBranch.runner(contextIndex);
             }
-        }
-        if(ObjectUtil.isNotNull(this.getNextRunnable())) {
-            this.getNextRunnable().runner(contextIndex);
         }
     }
 

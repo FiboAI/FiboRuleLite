@@ -2,6 +2,7 @@ package com.fibo.rule.core.engine.condition;
 
 import com.fibo.rule.core.engine.element.FiboRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,12 +13,15 @@ import java.util.List;
  */
 public class FiboAllCondition extends FiboCondition {
 
-    private List<FiboRunnable> runnableList;
-
-    private boolean isAny = false;
+    private List<FiboRunnable> runnableList = new ArrayList<>();
 
     @Override
-    public void runner(Integer contextIndex) throws Exception {
+    public void runnerBranch(Integer contextIndex) {
 
     }
+
+    public void addRunnable(FiboRunnable fiboRunnable) {
+        runnableList.add(fiboRunnable);
+    }
+
 }

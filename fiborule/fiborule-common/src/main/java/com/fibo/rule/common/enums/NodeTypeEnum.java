@@ -17,16 +17,14 @@ public enum NodeTypeEnum {
     START(1),
     /**结束节点*/
     END(2),
-    /**线条*/
-    LINE(3),
     /**普通节点*/
-    NORMAL(4),
+    NORMAL(3),
     /**IF节点*/
-    IF(5),
+    IF(4),
     /**SWITCH节点*/
-    SWITCH(6),
+    SWITCH(5),
     /**ALL节点*/
-    ALL(7);
+    ALL(6);
 
     private static final Map<Integer, NodeTypeEnum> MAP = new HashMap<>(NodeTypeEnum.values().length);
 
