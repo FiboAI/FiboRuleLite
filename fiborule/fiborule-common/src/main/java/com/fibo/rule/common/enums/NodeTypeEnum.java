@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *<p></p>
+ *<p>节点类型枚举类</p>
  *
  *@author JPX
  *@since 2022/11/18 14:21
@@ -23,8 +23,10 @@ public enum NodeTypeEnum {
     IF(4),
     /**SWITCH节点*/
     SWITCH(5),
-    /**ALL节点*/
-    ALL(6);
+    /**并行节点*/
+    ALL(6),
+    /**聚合节点*/
+    POLY(7);
 
     private static final Map<Integer, NodeTypeEnum> MAP = new HashMap<>(NodeTypeEnum.values().length);
 

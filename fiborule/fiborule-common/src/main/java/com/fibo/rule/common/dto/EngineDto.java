@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * <p>引擎传输对象</p>
+ * <p>引擎配置传输对象</p>
  *
  * @author JPX
  * @since 2022-11-18 14:14
@@ -15,6 +15,6 @@ public class EngineDto {
 
     private Long id;
     private String engineName;
-    private List<NodeDto> nodeList;
+    private List<EngineNodeDto> nodeList;
 
 }

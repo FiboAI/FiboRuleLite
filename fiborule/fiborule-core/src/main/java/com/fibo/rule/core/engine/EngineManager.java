@@ -23,7 +23,6 @@ public class EngineManager {
         return engineMap.get(engineId);
     }
 
-    //这个方法主要用于第二阶段的替换chain
     public static void addEngine(FiboEngine engine) {
         engineMap.put(engine.getEngineId(), engine);
     }

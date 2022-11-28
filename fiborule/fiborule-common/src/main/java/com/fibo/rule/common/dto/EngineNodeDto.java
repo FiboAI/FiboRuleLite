@@ -9,7 +9,7 @@ import lombok.Data;
  * @since 2022-11-18 14:14
  */
 @Data
-public class NodeDto {
+public class EngineNodeDto {
 
     private Long id;
     private String nodeName;
