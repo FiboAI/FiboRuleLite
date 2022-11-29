@@ -1,8 +1,13 @@
 package com.fibo.rule.core.context;
 
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.log.Log;
+import com.fibo.rule.core.property.FiboRuleConfig;
+import com.fibo.rule.core.property.FiboRuleConfigGetter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,6 +23,7 @@ import java.util.stream.IntStream;
  *@author JPX
  *@since 2022/11/18 13:23
  */
+@Slf4j
 public class Contextmanager {
 
 	public static AtomicInteger OCCUPY_COUNT = new AtomicInteger(0);
@@ -38,11 +44,8 @@ public class Contextmanager {
 	//而由FlowExecutor中的init去调用，是会被执行多次的。保证了每个单元测试都能初始化一遍
 	public static void init() {
 		if (MapUtil.isEmpty(FIBOCONTEXTS)){
-			// TODO: 2022/11/18 从配置中获取contxt池最大值
-//			LiteflowConfig liteflowConfig = LiteflowConfigGetter.get();
-//			currentIndexMaxValue = liteflowConfig.getSlotSize();
-			currentIndexMaxValue = 10;
-
+			FiboRuleConfig fiboRuleConfig = FiboRuleConfigGetter.get();
+			currentIndexMaxValue = fiboRuleConfig.getContextSize();
 			FIBOCONTEXTS = new ConcurrentHashMap<>();
 			QUEUE = IntStream.range(0, currentIndexMaxValue).boxed().collect(Collectors.toCollection(ConcurrentLinkedQueue::new));
 		}
@@ -109,17 +112,17 @@ public class Contextmanager {
 		return context.getContextBeanList();
 	}
 
-	public static void releaseContext(int slotIndex){
-//		LiteflowConfig liteflowConfig = LiteflowConfigGetter.get();
-		if(ObjectUtil.isNotNull(FIBOCONTEXTS.get(slotIndex))){
-//			if (BooleanUtil.isTrue(liteflowConfig.getPrintExecutionLog())){
-//				LOG.info("[{}]:slot[{}] released",SLOTS.get(slotIndex).getRequestId(),slotIndex);
-//			}
-			FIBOCONTEXTS.remove(slotIndex);
-			QUEUE.add(slotIndex);
+	public static void releaseContext(int contextIndex){
+		FiboRuleConfig config = FiboRuleConfigGetter.get();
+		if(ObjectUtil.isNotNull(FIBOCONTEXTS.get(contextIndex))){
+			if (BooleanUtil.isTrue(config.getPrintExecuteLog())){
+				log.info("[{}]:context[{}]释放",FIBOCONTEXTS.get(contextIndex).getRequestId(),contextIndex);
+			}
+			FIBOCONTEXTS.remove(contextIndex);
+			QUEUE.add(contextIndex);
 			OCCUPY_COUNT.decrementAndGet();
 		}else{
-//			LOG.warn("slot[{}] already has been released",slotIndex);
+			log.warn("context[{}]已经被释放",contextIndex);
 		}
 	}
 }

@@ -22,7 +22,6 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FiboruleTest.class)
 @EnableAutoConfiguration
-//@ComponentScan({"com.yomahub.liteflow.test.builder.cmp1"})
 public class FiboruleTest {
 
     @Resource

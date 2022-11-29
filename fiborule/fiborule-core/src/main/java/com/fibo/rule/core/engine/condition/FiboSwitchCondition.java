@@ -16,7 +16,6 @@ import java.util.Map;
  * @author JPX
  * @since 2022-11-18 11:00
  */
-@Data
 public class FiboSwitchCondition extends FiboCondition {
 
     private Map<String, FiboRunnable> fiboRunnableMap = new HashMap<>();
@@ -31,7 +30,7 @@ public class FiboSwitchCondition extends FiboCondition {
         }
     }
 
-    public FiboEngineNode getSwitchNode() {
+    private FiboEngineNode getSwitchNode() {
         return (FiboEngineNode) this.getFiboRunnable();
     }
 

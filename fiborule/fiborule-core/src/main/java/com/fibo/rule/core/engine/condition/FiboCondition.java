@@ -1,8 +1,6 @@
 package com.fibo.rule.core.engine.condition;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.fibo.rule.core.context.Contextmanager;
-import com.fibo.rule.core.context.FiboContext;
 import com.fibo.rule.core.engine.element.FiboRunnable;
 import lombok.Data;
 
@@ -15,14 +13,15 @@ import lombok.Data;
 @Data
 public abstract class FiboCondition implements FiboRunnable {
 
+    /**当前节点*/
     private FiboRunnable fiboRunnable;
-
+    /**后续节点*/
     private FiboRunnable nextRunnable;
 
     @Override
     public void runner(Integer contextIndex) {
         //当前节点执行
-        fiboRunnable.runner(contextIndex);
+        runnerNow(contextIndex);
         //分支节点执行
         this.runnerBranch(contextIndex);
         //后续节点执行
@@ -30,6 +29,12 @@ public abstract class FiboCondition implements FiboRunnable {
     }
 
     public abstract void runnerBranch(Integer contextIndex);
+
+    private void runnerNow(Integer contextIndex) {
+        if(ObjectUtil.isNotNull(this.getFiboRunnable())) {
+            this.getFiboRunnable().runner(contextIndex);
+        }
+    }
 
     private void runnerNext(Integer contextIndex) {
         if(ObjectUtil.isNotNull(this.getNextRunnable())) {

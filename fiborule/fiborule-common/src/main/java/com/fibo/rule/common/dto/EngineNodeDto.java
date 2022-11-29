@@ -13,6 +13,7 @@ public class EngineNodeDto {
 
     private Long id;
     private String nodeName;
+    private String beanName;
     private String nodeCode;
     private Long engineId;
     private Integer nodeType;

@@ -1,18 +1,23 @@
 package com.fibo.rule.springboot.config;
 
+import com.fibo.rule.core.property.FiboRuleConfig;
 import com.fibo.rule.core.runner.FiboApplication;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan("com.fibo.rule.springboot")
+@AutoConfigureAfter({FiboRulePropertyAutoConfiguration.class})
+@ConditionalOnBean(FiboRuleConfig.class)
 public class FiboRuleMainAutoConfiguration {
 
     @Bean
-    public FiboApplication flowExecutor() {
-        FiboApplication flowExecutor = new FiboApplication();
-        return flowExecutor;
+    public FiboApplication fiboApplication(FiboRuleConfig fiboRuleConfig) {
+        FiboApplication fiboApplication = new FiboApplication();
+        fiboApplication.setFiboRuleConfig(fiboRuleConfig);
+        return fiboApplication;
     }
 
 }

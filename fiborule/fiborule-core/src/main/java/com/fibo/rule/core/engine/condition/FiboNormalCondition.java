@@ -1,7 +1,5 @@
 package com.fibo.rule.core.engine.condition;
 
-import cn.hutool.core.util.ObjectUtil;
-
 /**
  * <p>普通组件执行</p>
  *
@@ -9,7 +7,6 @@ import cn.hutool.core.util.ObjectUtil;
  * @since 2022-11-18 11:00
  */
 public class FiboNormalCondition extends FiboCondition {
-
     @Override
     public void runnerBranch(Integer contextIndex) {
 

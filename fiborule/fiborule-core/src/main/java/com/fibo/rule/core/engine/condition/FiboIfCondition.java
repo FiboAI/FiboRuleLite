@@ -28,13 +28,13 @@ public class FiboIfCondition extends FiboCondition {
                 trueBranch.runner(contextIndex);
             }
         } else {
-            if(ObjectUtil.isNotNull(trueBranch)) {
+            if(ObjectUtil.isNotNull(falseBranch)) {
                 falseBranch.runner(contextIndex);
             }
         }
     }
 
-    public FiboEngineNode getIfNode() {
+    private FiboEngineNode getIfNode() {
         return (FiboEngineNode) this.getFiboRunnable();
     }
 }

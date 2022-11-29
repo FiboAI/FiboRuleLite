@@ -16,6 +16,7 @@ import com.fibo.rule.core.engine.element.FiboEngine;
 import com.fibo.rule.core.engine.element.FiboEngineNode;
 import com.fibo.rule.core.engine.element.FiboRunnable;
 import com.fibo.rule.core.enums.NodeTypeClazzEnum;
+import com.fibo.rule.core.monitor.MonitorManager;
 import com.fibo.rule.core.node.FiboNode;
 
 import java.util.*;
@@ -33,7 +34,7 @@ public class EngineBuilder {
     /**引擎*/
     private FiboEngine fiboEngine;
     /**根节点*/
-    private FiboRunnable engineRoot;
+    private FiboCondition engineRoot;
     /**引擎下所有节点*/
     private List<EngineNodeDto> nodeList;
     /**所有节点编码对应关系*/
@@ -127,7 +128,7 @@ public class EngineBuilder {
         //如果节点栈为空了，则当前节点为引擎根节点
         if(conditionStack.empty()) {
             engineRoot = fiboCondition;
-            fiboEngine.setFiboRunnable(engineRoot);
+            fiboEngine.setFiboCondition(engineRoot);
             return;
         }
         setNextRunnable(tempNodeDto, fiboCondition);
@@ -228,19 +229,18 @@ public class EngineBuilder {
             return null;
         }
         try {
-            FiboEngineNode fiboEngineNode = new FiboEngineNode();
-            fiboEngineNode.setNodeId(nodeDto.getId());
-            fiboEngineNode.setNodeName(nodeDto.getNodeName());
-            fiboEngineNode.setNodeCode(nodeDto.getNodeCode());
             String nodeConfig = nodeDto.getNodeConfig();
             if(StrUtil.isEmpty(nodeConfig)) {
                 nodeConfig = StrUtil.DELIM_START + StrUtil.DELIM_END;
             }
             FiboNode fiboNode = (FiboNode) JSONObject.parseObject(nodeConfig, Class.forName(nodeDto.getNodeClazz()));
+            fiboNode.setMonitorManager(MonitorManager.loadInstance());
             fiboNode.setNodeId(nodeDto.getId());
             fiboNode.setNodeName(nodeDto.getNodeName());
             fiboNode.setNodeCode(nodeDto.getNodeCode());
-            fiboEngineNode.setFiboNode(fiboNode);
+            fiboNode.setNodeClazz(nodeDto.getNodeClazz());
+            fiboNode.setType(NodeTypeEnum.getEnum(nodeDto.getNodeType()));
+            FiboEngineNode fiboEngineNode = new FiboEngineNode(fiboNode);
             return fiboEngineNode;
         } catch (ClassNotFoundException e) {
             // TODO: 2022/11/21 抛出异常
