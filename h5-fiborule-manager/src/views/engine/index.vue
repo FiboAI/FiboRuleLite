@@ -2,17 +2,20 @@
     <div>
 
         <div class="nodeList" :style="{ height: contentHeight }">
-            节点列表
-            <div v-for="item in nodeList" :class="'node nodeType' + item.nodeType"
-                style="cursor:pointer;user-select: none;" @mousedown="nodeMouesDown($event, item)">
-                {{ item.nodeName }}
+            <!-- 节点列表 -->
+            <!-- :class="'node nodeType' + item.nodeType" -->
+            <div v-for="item in nodeList" style="cursor:pointer;user-select: none;text-align: center;"
+                @mousedown="nodeMouesDown($event, item)">
+                <!-- {{ item.nodeName }} -->
+                <img :src="'./img/nodeimg/nodeType' + item.nodeType + '.png'" alt=""
+                    style="height: 50px;margin-top: 20px;">
             </div>
         </div>
         <!-- 引擎 -->
         <div id="canvas" :style="{ height: contentHeight, width: contentWidth }" />
-        <div v-if="addNodeStatus" :class="'tempNodeShow node nodeType' + addNodeTempShow.nodeType"
-            :style="{ top: addNodeY, left: addNodeX }">
-            {{ addNodeTempShow.nodeName }}
+        <div v-if="addNodeStatus" :class="'tempNodeShow'" :style="{ top: addNodeY, left: addNodeX }">
+            <img :src="'./img/nodeimg/nodeType' + addNodeTempShow.nodeType + '.png'" alt=""
+                style="height: 50px;margin-top: 20px;">
         </div>
         <!-- <div class="startLine" v-show="showStartLine" @mouseout="closeStartLine"
             :style="{ top: startLineTop, left: startLineLeft, height: startLineHeight, width: startLineWidth }">
@@ -38,7 +41,8 @@ export default {
             eventLayer: null,
             hoverNode: null,
             nodeList,
-            mycanvas: null
+            mycanvas: null,
+            scale: 1
         }
     },
     created() {
@@ -53,14 +57,66 @@ export default {
             this.contentHeight = window.innerHeight - 70 + 'px'
         }
         window.onresize()
+        window.onkeydown = this.debounce((e) => {
+            if (e.key == 'Alt' && this.Stage.mode != 'edit') {
+                this.Stage.setMode('edit')
+                this.hoverNode.hide()
+                this.LinkhoverNode.hide()
+                this.closeLinkMouseEnabled()
+            }
+        })
+        window.onclick = (e) => {
+            if (!window.event.altKey) {
+                this.Stage.setMode('normal')
+                this.openLinkMouseEnabled()
+            }
+        }
+        window.onkeyup = (e) => {
+            if (e.key == 'Alt') {
+                this.Stage.setMode('normal')
+                this.openLinkMouseEnabled()
+                //  this.hoverNode.show()
+            }
+        }
+
+        this.mycanvas.onwheel = (e) => {
+            let evt = e || window.event;  //考虑兼容性
+            // evt.preventDefault();
+            if (evt.deltaY > 0) {
+                // console.log("向下滚动");
+                this.scale -= 0.1
+            } else {
+                // console.log("向上滚动");
+                this.scale += 0.1
+            }
+            this.Layer.scaleX = this.scale
+            this.Layer.scaleY = this.scale
+            this.eventLayer.scaleX = this.scale
+            this.eventLayer.scaleY = this.scale
+        }
     },
     methods: {
-
+        openLinkMouseEnabled() {
+            this.Layer.children.forEach(item => {
+                if (item.isLink) {
+                    item.mouseEnabled = true
+                }
+            });
+        },
+        closeLinkMouseEnabled() {
+            this.Layer.children.forEach(item => {
+                if (item.isLink) {
+                    item.mouseEnabled = false
+                }
+            });
+        },
         initTopo() { //jtopo初始化
 
             this.Stage = new jtopo.Stage('canvas');
             this.Layer = new jtopo.Layer('def');
             this.Layer.frames = 60;
+
+
 
             this.Stage.wheelZoom = null;
             this.Layer.setBackground('url(./img/decisionBcg.jpg)', '100% 100%')
@@ -73,9 +129,9 @@ export default {
                 'shadowOffsetX': 3,
                 'shadowOffsetY': 3,
             });
-            this.Layer.removeChild = function(obj){
-                let index = this.children.findIndex(x=>x===obj)
-                this.children.splice(index,1)
+            this.Layer.removeChild = function (obj) {
+                let index = this.children.findIndex(x => x === obj)
+                this.children.splice(index, 1)
             }
 
             this.Stage.addChild(this.Layer)
@@ -84,12 +140,13 @@ export default {
                 if (this.addNodeStatus) (
                     this.addNode(e)
                 )
-                if(this.linkStatus){
+                if (this.linkStatus) {
                     this.closeLink()
                 }
             })
 
             this.hoverNodeInit()
+            this.LinkHoverNodeInit()
 
             // this.Stage.zoom(0, 0)
             // this.Stage.zoomFullStage()
@@ -98,48 +155,39 @@ export default {
             this.Stage.show()
 
 
+
         },
-        hoverNodeInit() {
-            this.eventLayer = new jtopo.Layer('eventLayer');
 
-            this.hoverNode = new jtopo.Node('');
-            var hoverNode = this.hoverNode
-            hoverNode.setXY(100, 50);
-            hoverNode.resizeTo(40, 40);
-            hoverNode.setStyles({
-                'strokeStyle': 'black',
-                'lineWidth': 2,
-                'lineDash': [6, 2]
-            });
-            hoverNode.draggable = false
-            hoverNode.visible = false
-            this.eventLayer.addChild(hoverNode)
-            this.Stage.addChild(this.eventLayer)
+        // 节流
+        debounce(func, wait = 1, immediate) {
+            var timeout;
+            return function () {
+                var context = this;
+                var args = arguments;
 
-
-
-            // 节点可以组合，下面创建一个TipNode，作为另外一个节点的角标
-            var tipNode = new jtopo.CircleNode('3');
-            tipNode.setStyles({
-                fillStyle: 'red', // 填充颜色：红色
-                textPosition: 'center', // 文本位置：居中
-                textBaseline: 'middle', // 文本定位基线，参考:html5-canvas API
-                fontColor: 'white' // 文本颜色
-            });
-            tipNode.setRadius(8);
-            tipNode.draggable = false;
-            hoverNode.addChild(tipNode);
-            tipNode.on('mouseenter', () => {
-                this.mycanvas.style.cursor = 'crosshair'
-            })
-            tipNode.on('mouseout', () => {
-                this.mycanvas.style.cursor = 'default'
-            })
-            tipNode.on('mousedown', () => {
-                this.tempLink()
-            })
-
+                if (timeout) clearTimeout(timeout);
+                // 是否在某一批事件中首次执行
+                if (immediate) {
+                    var callNow = !timeout;
+                    timeout = setTimeout(function () {
+                        timeout = null;
+                        func.apply(context, args)
+                        immediate = true;
+                    }, wait);
+                    if (callNow) {
+                        func.apply(context, args)
+                    }
+                    immediate = false;
+                } else {
+                    timeout = setTimeout(function () {
+                        func.apply(context, args);
+                        immediate = true;
+                    }, wait);
+                }
+            }
         }
+
+
 
     }
 }
@@ -155,7 +203,7 @@ export default {
     position: absolute;
     left: 0;
     /* height: 500px; */
-    width: 300px;
+    width: 120px;
     background-color: #fff;
     box-shadow: 3px 3px 60px -12px;
     z-index: 1200;
@@ -196,5 +244,10 @@ export default {
     /* padding: 3px; */
     border-radius: 10px;
     pointer-events: none;
+}
+
+img {
+    -webkit-user-drag: none;
+
 }
 </style>
