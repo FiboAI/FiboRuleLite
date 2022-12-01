@@ -12,7 +12,7 @@ import com.fibo.rule.switchtest.context.SwitchTestContext;
  * @since 2022-11-30 10:45
  */
 @FiboBean(name = "IfTestC", desc = "IfTestC")
-public class IfTestC extends FiboNode {
+public class SwitchTestC extends FiboNode {
     @Override
     public void runnerStep() {
         TestRequest req = this.getRequestData();

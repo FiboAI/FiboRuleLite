@@ -1,4 +1,4 @@
-package com.fibo.rule.iftest.context;
+package com.fibo.rule.alltest.context;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * @since 2022-11-30 10:58
  */
 @Data
-public class IfTestContext {
+public class AllTestContext {
 
     private String a;
     private String b;

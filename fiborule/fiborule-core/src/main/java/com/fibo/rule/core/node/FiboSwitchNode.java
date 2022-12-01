@@ -19,6 +19,6 @@ public abstract class FiboSwitchNode extends FiboNode {
 
     public abstract String runnerStepSwitch();
 
-    public abstract List<String> switchbranchs();
+    public abstract List<String> switchBranchs();
 
 }
