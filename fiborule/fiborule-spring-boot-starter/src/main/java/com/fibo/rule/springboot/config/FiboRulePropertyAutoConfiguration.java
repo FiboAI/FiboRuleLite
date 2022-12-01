@@ -27,8 +27,16 @@ public class FiboRulePropertyAutoConfiguration {
         FiboRuleConfig config = new FiboRuleConfig();
         config.setApp(property.getApp());
         config.setServer(property.getServer());
-        config.setPrintBanner(property.isPrintBanner());
+        config.setPrintBanner(property.getPrintBanner());
         config.setContextSize(property.getContextSize());
+        config.setSceneList(property.getSceneList());
+        config.setAllMaxWorkers(property.getAllMaxWorkers());
+        config.setAllQueueLimit(property.getAllQueueLimit());
+        config.setPrintExecuteLog(property.getPrintExecuteLog());
+        config.setEnableLog(property.getEnableLog());
+        config.setQueueLimit(property.getQueueLimit());
+        config.setDelay(property.getDelay());
+        config.setPeriod(property.getPeriod());
         return config;
     }
 }

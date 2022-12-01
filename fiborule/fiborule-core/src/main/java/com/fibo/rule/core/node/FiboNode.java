@@ -30,7 +30,7 @@ public abstract class FiboNode {
     private String nodeClazz;
     private NodeTypeEnum type;
 
-    //当前slot的index
+    //当前context的index
     private final TransmittableThreadLocal<Integer> contextIndexTL = new TransmittableThreadLocal<>();
 
     /**

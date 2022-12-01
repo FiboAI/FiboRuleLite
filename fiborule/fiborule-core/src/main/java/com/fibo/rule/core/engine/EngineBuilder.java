@@ -237,6 +237,7 @@ public class EngineBuilder {
             fiboNode.setMonitorManager(MonitorManager.loadInstance());
             fiboNode.setNodeId(nodeDto.getId());
             fiboNode.setNodeName(nodeDto.getNodeName());
+            fiboNode.setBeanName(nodeDto.getBeanName());
             fiboNode.setNodeCode(nodeDto.getNodeCode());
             fiboNode.setNodeClazz(nodeDto.getNodeClazz());
             fiboNode.setType(NodeTypeEnum.getEnum(nodeDto.getNodeType()));
