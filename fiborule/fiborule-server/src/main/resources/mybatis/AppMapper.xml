@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fibo.rule.server.dao.mapper.AppMapper">
+
+    <select id="selectListByPage"
+            resultType="com.fibo.rule.server.dao.model.entity.App"
+            parameterType="com.fibo.rule.server.dao.model.param.AppListParam">
+        SELECT
+        *
+        FROM t_app tapp
+        WHERE tapp.del_flag=0
+        <if test="null != appName and appName != ''">
+            <bind name="appName" value="'%'+appName+'%'"/>
+            AND tapp.app_name LIKE #{appName}
+        </if>
+        <if test="null != appCode and appCode != ''">
+            AND tapp.app_code=#{appCode}
+        </if>
+        <if test="null != descriptions and descriptions != ''">
+            <bind name="descriptions" value="'%'+descriptions+'%'"/>
+            AND tapp.descriptions LIKE #{descriptions}
+        </if>
+        <if test="null != status ">
+            AND tapp.status=#{status}
+        </if>
+        ORDER BY tapp.id DESC
+
+    </select>
+
+</mapper>

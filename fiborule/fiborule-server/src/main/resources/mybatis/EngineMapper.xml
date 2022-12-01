@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fibo.rule.server.dao.mapper.EngineMapper">
+
+    <select id="selectListByPage"
+            resultType="com.fibo.rule.server.dao.model.entity.Engine"
+            parameterType="com.fibo.rule.server.dao.model.param.EngineListParam">
+        SELECT
+        *
+        FROM t_engine te
+        WHERE te.del_flag=0
+        <if test="null != appId ">
+            AND te.app_id=#{appId}
+        </if>
+        <if test="null != engineName and engineName != ''">
+            <bind name="engineName" value="'%'+engineName+'%'"/>
+            AND te.engine_name LIKE #{engineName}
+        </if>
+        <if test="null != engineCode and engineCode != ''">
+            AND te.engine_code=#{engineCode}
+        </if>
+        <if test="null != descriptions and descriptions != ''">
+            <bind name="descriptions" value="'%'+descriptions+'%'"/>
+            AND te.descriptions LIKE #{descriptions}
+        </if>
+        <if test="null != bootStatus ">
+            AND te.boot_status=#{bootStatus}
+        </if>
+        <if test="null != status ">
+            AND te.status=#{status}
+        </if>
+        ORDER BY te.id DESC
+
+    </select>
+
+</mapper>
