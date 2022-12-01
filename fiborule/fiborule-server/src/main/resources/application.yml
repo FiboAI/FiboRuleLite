@@ -1,0 +1,29 @@
+server:
+  port: 8182
+  servlet:
+    context-path: /rule
+    
+spring:
+  profiles:
+    active: dev
+  
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initialSize: 20
+      minIdle: 20
+      maxActive: 100
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: true
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+      validationQuery: SELECT 1
+      validation-query-timeout: 500
+      filters: stat
+  jackson:
+    default-property-inclusion: non_null
+  
