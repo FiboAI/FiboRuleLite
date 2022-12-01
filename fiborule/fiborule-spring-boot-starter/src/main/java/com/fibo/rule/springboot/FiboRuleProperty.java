@@ -17,25 +17,29 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "fiborule", ignoreUnknownFields = true)
 public class FiboRuleProperty {
 
-    /**
-     * appId
-     */
+    /**appId*/
     private Integer app;
-    /**
-     * 服务端地址host:port
-     */
+    /**服务端地址host:port*/
     private String server;
-    /**
-     * 是否打印fiborule banner
-     */
-    private boolean printBanner;
-    /**
-     * context数量
-     */
-    private int contextSize;
-    /**
-     * 场景列表
-     */
+    /**是否打印fiborule banner*/
+    private Boolean printBanner;
+    /**context数量*/
+    private Integer contextSize;
+    /**场景列表*/
     private List<FiboSceneConfig> sceneList;
+    /**并行节点线程池最大线程数*/
+    private Integer allMaxWorkers;
+    /**并行节点线程池最大队列数量*/
+    private Integer allQueueLimit;
+    /**是否打印执行过程中日志*/
+    private Boolean printExecuteLog;
+    //是否打印监控log
+    private Boolean enableLog;
+    //监控存储信息最大队列数量
+    private Integer queueLimit;
+    //延迟多少秒打印
+    private Long delay;
+    //每隔多少秒打印
+    private Long period;
 
 }

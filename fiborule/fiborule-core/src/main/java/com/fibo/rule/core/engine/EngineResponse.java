@@ -58,9 +58,9 @@ public class EngineResponse implements Serializable {
         return this.getFiboContext().getContextBean(contextBeanClazz);
     }
 
-    public Map<Long, NodeStep> getExecuteSteps(){
-        Map<Long, NodeStep> map = new HashMap<>();
-        this.getFiboContext().getExecuteSteps().forEach(cmpStep -> map.put(cmpStep.getNodeId(), cmpStep));
+    public Map<String, NodeStep> getExecuteSteps(){
+        Map<String, NodeStep> map = new HashMap<>();
+        this.getFiboContext().getExecuteSteps().forEach(cmpStep -> map.put(cmpStep.getBeanName(), cmpStep));
         return map;
     }
 
