@@ -26,4 +26,8 @@ spring:
       filters: stat
   jackson:
     default-property-inclusion: non_null
-  
+
+    #springBoot2.6.9 与swagger2兼容
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
