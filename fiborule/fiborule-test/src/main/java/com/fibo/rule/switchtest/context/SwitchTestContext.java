@@ -16,5 +16,6 @@ public class SwitchTestContext {
     private String c;
     private String d;
     private String e;
+    private String f;
 
 }
