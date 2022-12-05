@@ -27,7 +27,5 @@ public class FiboBeanDto {
     /**节点需要配置的属性*/
     private List<FiboFieldDto> fiboFieldDtoList;
     
-    //是否缺少节点类型
-    private Integer nodeType;
 
 }

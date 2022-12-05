@@ -3,6 +3,7 @@ package com.fibo.rule.server.controller;
 import com.fibo.rule.common.dto.FiboBeanDto;
 import com.fibo.rule.server.dao.model.entity.EngineNode;
 import com.fibo.rule.server.dao.model.param.*;
+import com.fibo.rule.server.dao.model.vo.EngineNodeDetailVO;
 import com.fibo.rule.server.model.ResponseEntityBuilder;
 import com.fibo.rule.server.model.ResponseEntityDto;
 import com.fibo.rule.server.model.SimpleCommonPrimaryKeyParam;
@@ -40,6 +41,16 @@ public class EngineNodeController {
     @RequestMapping(value = "/nodeEdit", method = RequestMethod.POST)
     public ResponseEntityDto<EngineNode> nodeEdit(@RequestBody NodeEditParam param) {
         return ResponseEntityBuilder.buildNormalResponse(engineNodeService.nodeEdit(param));
+    }
+
+    /**
+     * 查看节点信息
+     * @param param
+     * @return
+     */
+    @RequestMapping(value = "/nodeDetail", method = RequestMethod.POST)
+    public ResponseEntityDto<EngineNodeDetailVO> nodeDetail(@RequestBody SimpleCommonPrimaryKeyParam param) {
+        return ResponseEntityBuilder.buildNormalResponse(engineNodeService.nodeDetail(param));
     }
 
     /**

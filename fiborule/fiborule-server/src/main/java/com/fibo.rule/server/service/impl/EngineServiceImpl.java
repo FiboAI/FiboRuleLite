@@ -3,6 +3,8 @@ package com.fibo.rule.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fibo.rule.common.enums.DelFlagEnum;
+import com.fibo.rule.common.enums.StatusEnum;
 import com.fibo.rule.server.dao.mapper.EngineMapper;
 import com.fibo.rule.server.dao.mapper.EngineNodeMapper;
 import com.fibo.rule.server.dao.model.entity.Engine;
@@ -72,8 +74,8 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
         vo.setEngine(engine);
         List<EngineNode> nodes = engineNodeMapper.selectList(new QueryWrapper<EngineNode>().lambda()
                 .eq(EngineNode::getEngineId, param.getEngineId())
-                .eq(EngineNode::getStatus, 1)
-                .eq(EngineNode::getDelFlag, 0));
+                .eq(EngineNode::getStatus, StatusEnum.VALID.status)
+                .eq(EngineNode::getDelFlag, DelFlagEnum.DEL_NO.status));
         List<EngineNodeDetailVO> nodesDetail = new ArrayList<>();
         BeanUtils.copyProperties(nodes, nodesDetail);
         vo.setNodesDetail(nodesDetail);

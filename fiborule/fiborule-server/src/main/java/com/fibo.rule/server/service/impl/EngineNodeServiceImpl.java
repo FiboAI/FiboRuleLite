@@ -7,6 +7,7 @@ import com.fibo.rule.common.dto.FiboBeanDto;
 import com.fibo.rule.server.dao.mapper.EngineNodeMapper;
 import com.fibo.rule.server.dao.model.entity.EngineNode;
 import com.fibo.rule.server.dao.model.param.*;
+import com.fibo.rule.server.dao.model.vo.EngineNodeDetailVO;
 import com.fibo.rule.server.model.SimpleCommonPrimaryKeyParam;
 import com.fibo.rule.server.nio.NioClientManager;
 import com.fibo.rule.server.service.EngineNodeService;
@@ -46,6 +47,14 @@ public class EngineNodeServiceImpl extends ServiceImpl<EngineNodeMapper, EngineN
         }
         node = engineNodeMapper.selectById(node.getId());
         return node;
+    }
+
+    @Override
+    public EngineNodeDetailVO nodeDetail(SimpleCommonPrimaryKeyParam param) {
+        EngineNodeDetailVO vo = new EngineNodeDetailVO();
+        EngineNode engineNode = engineNodeMapper.selectById(param.getId());
+        BeanUtils.copyProperties(engineNode, vo);
+        return vo;
     }
 
     @Override
