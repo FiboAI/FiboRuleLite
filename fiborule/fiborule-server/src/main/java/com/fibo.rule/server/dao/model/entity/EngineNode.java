@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @TableName("t_engine_node")
@@ -15,33 +14,35 @@ public class EngineNode {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private Integer engineId;
-    
+    private Long engineId;
+
     private String nodeName;
 
     private Integer nodeType;
 
     private String preNodes;
-    
+
     private String nextNodes;
 
     private String nodeX;
 
     private String nodeY;
 
-    private String fullClassName;
+    private String nodeClazz;
 
-    private String className;
+    private String clazzName;
+
+    private String nodeGroup;
 
     private Integer status;
 
     private LocalDateTime createTime;
-    
-    private Integer createUser;
+
+    private Long createUser;
 
     private LocalDateTime updateTime;
 
-    private Integer updateUser;
+    private Long updateUser;
 
     private Integer delFlag;
 }

@@ -9,7 +9,7 @@ import lombok.Data;
 public class EngineListParam {
 
     @ApiModelProperty("appId")
-    private Integer appId;
+    private Long appId;
     
     @ApiModelProperty("名称")
     private String engineName;

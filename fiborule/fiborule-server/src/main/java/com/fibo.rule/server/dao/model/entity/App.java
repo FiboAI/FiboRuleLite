@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class App {
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     private String appName;
 
@@ -24,11 +24,11 @@ public class App {
 
     private LocalDateTime createTime;
 
-    private Integer createUser;
+    private Long createUser;
 
     private LocalDateTime updateTime;
 
-    private Integer updateUser;
+    private Long updateUser;
 
     private Integer delFlag;
 }

@@ -9,7 +9,7 @@ import lombok.Data;
 public class AppEditParam {
 
     @ApiModelProperty("id")
-    private Integer appId;
+    private Long appId;
 
     @ApiModelProperty("名称")
     private String appName;

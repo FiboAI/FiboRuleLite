@@ -8,6 +8,10 @@ package com.fibo.rule.common.enums;
  */
 public enum NioTypeEnum {
 
+    //request
+    REQ,
+    //response
+    RSP
 
 
 }

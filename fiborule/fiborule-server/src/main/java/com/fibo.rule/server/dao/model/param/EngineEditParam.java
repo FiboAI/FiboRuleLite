@@ -5,20 +5,23 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel("编辑engine列表参数对象")
+@ApiModel("编辑engine参数对象")
 public class EngineEditParam {
 
     @ApiModelProperty("engineId")
-    private Integer engineId;
+    private Long engineId;
 
     @ApiModelProperty("appId")
-    private Integer appId;
+    private Long appId;
     
     @ApiModelProperty("名称")
     private String engineName;
 
     @ApiModelProperty("code")
     private String engineCode;
+
+    @ApiModelProperty("场景名称")
+    private String scene;
 
     @ApiModelProperty("描述")
     private String descriptions;

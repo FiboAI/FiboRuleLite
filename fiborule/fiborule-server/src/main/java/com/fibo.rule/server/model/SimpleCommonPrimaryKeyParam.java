@@ -16,7 +16,7 @@ public class SimpleCommonPrimaryKeyParam implements Serializable {
 
     @ApiModelProperty(value = "主键id")
     @NotNull(message = "id必传")
-    private Integer id;
+    private Long id;
 
 
 }

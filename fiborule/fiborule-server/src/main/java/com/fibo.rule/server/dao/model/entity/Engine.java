@@ -13,9 +13,9 @@ import java.util.Date;
 public class Engine {
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
-    private Integer appId;
+    private Long appId;
     
     private String engineName;
 
@@ -31,11 +31,11 @@ public class Engine {
 
     private LocalDateTime createTime;
     
-    private Integer createUser;
+    private Long createUser;
 
     private LocalDateTime updateTime;
 
-    private Integer updateUser;
+    private Long updateUser;
 
     private Integer delFlag;
     

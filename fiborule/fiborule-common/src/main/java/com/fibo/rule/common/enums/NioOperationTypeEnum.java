@@ -8,6 +8,11 @@ package com.fibo.rule.common.enums;
  */
 public enum NioOperationTypeEnum {
 
+    //client to server
+    INIT,
+    SLAP,
+    //server to client
+    CLAZZ_CHECK
 
 
 }

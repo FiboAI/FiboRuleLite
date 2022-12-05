@@ -23,7 +23,7 @@ public class FiboNioDto {
     /**Nio操作类型：初始化/更新信息等*/
     private NioOperationTypeEnum operationType;
     /**appId*/
-    private Long appId;
+    private Integer appId;
     /**app地址*/
     private String address;
     /**场景对应的节点信息*/
