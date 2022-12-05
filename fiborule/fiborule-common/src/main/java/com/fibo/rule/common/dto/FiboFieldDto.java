@@ -17,7 +17,7 @@ public class FiboFieldDto {
     private String fieldName;
     /**描述*/
     private String desc;
-    /**类型*/
+    /**类型-枚举*/
     private Integer type;
 
 }
