@@ -20,13 +20,13 @@ public class FiboNioDto {
     private String id;
     /**Nio请求类型：request/response*/
     private NioTypeEnum type;
-    /**Nio操作类型：初始化/更新信息等*/
+    /**Nio操作类型：初始化、更新信息、心跳包*/
     private NioOperationTypeEnum operationType;
     /**appId*/
     private Long appId;
     /**app地址*/
     private String address;
-    /**场景对应的节点信息*/
+    /**场景对应的节点信息  key：场景名称  value：自定义组件*/
     private Map<String, List<FiboBeanDto>> sceneBeansMap;
     /**引擎定义传输*/
     private List<EngineDto> engineDtoList;
