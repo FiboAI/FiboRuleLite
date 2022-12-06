@@ -23,7 +23,7 @@ public class FiboNioDto {
     /**Nio操作类型：初始化、更新信息、心跳包*/
     private NioOperationTypeEnum operationType;
     /**appId*/
-    private Integer appId;
+    private Long appId;
     /**app地址*/
     private String address;
     /**场景对应的节点信息  key：场景名称  value：自定义组件*/
@@ -31,6 +31,8 @@ public class FiboNioDto {
     /**引擎定义传输*/
     private List<EngineDto> engineDtoList;
     /**取消发布的引擎id*/
-    private Long releaseEngineId;
+    private Long unReleaseEngineId;
+    /**发布引擎错误信息*/
+    private String releaseError;
 
 }

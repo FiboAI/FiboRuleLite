@@ -10,7 +10,6 @@ import com.fibo.rule.common.model.NodeInfo;
 import com.fibo.rule.server.config.ServerProperties;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -51,7 +50,7 @@ public final class NioClientManager {
         fiboNioDto.setOperationType(NioOperationTypeEnum.INIT);
         fiboNioDto.setAppId(1);
         fiboNioDto.setType(NioTypeEnum.REQ);
-        fiboNioDto.setReleaseEngineId(1L);
+        fiboNioDto.setUnReleaseEngineId(1L);
         Map<String, List<FiboBeanDto>> sceneBeansMap = new ConcurrentHashMap<>();
         //mock节点信息
         List<FiboBeanDto> fiboBeanDtoList = new ArrayList<>();

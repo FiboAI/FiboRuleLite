@@ -1,5 +1,6 @@
 package com.fibo.rule.common.dto;
 
+import com.fibo.rule.common.enums.FieldTypeEnum;
 import lombok.Data;
 
 /**
@@ -18,6 +19,6 @@ public class FiboFieldDto {
     /**描述*/
     private String desc;
     /**类型-枚举*/
-    private Integer type;
+    private FieldTypeEnum type;
 
 }

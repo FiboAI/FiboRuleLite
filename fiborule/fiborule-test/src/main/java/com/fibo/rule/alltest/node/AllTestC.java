@@ -11,7 +11,7 @@ import com.fibo.rule.request.TestRequest;
  * @author JPX
  * @since 2022-11-30 10:45
  */
-@FiboBean(name = "IfTestC", desc = "IfTestC")
+@FiboBean(name = "AllTestC", desc = "AllTestC")
 public class AllTestC extends FiboNode {
     @Override
     public void runnerStep() {

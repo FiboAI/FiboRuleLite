@@ -18,7 +18,7 @@ import java.util.List;
  * @author JPX
  * @since 2022-11-30 10:45
  */
-@FiboBean(name = "IfTestB", desc = "IfTestB")
+@FiboBean(name = "SwitchTestB", desc = "SwitchTestB")
 public class SwitchTestB extends FiboSwitchNode {
 
     @Override

@@ -11,7 +11,7 @@ import com.fibo.rule.switchtest.context.SwitchTestContext;
  * @author JPX
  * @since 2022-11-30 10:45
  */
-@FiboBean(name = "IfTestA", desc = "IfTestA")
+@FiboBean(name = "SwitchTestA", desc = "SwitchTestA")
 public class SwitchTestA extends FiboNode {
     @Override
     public void runnerStep() {

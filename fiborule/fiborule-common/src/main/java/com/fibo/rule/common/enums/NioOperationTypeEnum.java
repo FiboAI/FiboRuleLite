@@ -12,7 +12,8 @@ public enum NioOperationTypeEnum {
     INIT,
     SLAP,
     //server to client
-    CLAZZ_CHECK
+    RELEASE_ENGINE,
+    UNRELEASE_ENGINE
 
 
 }

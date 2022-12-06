@@ -13,7 +13,7 @@ import lombok.Data;
  * @since 2022-11-30 10:45
  */
 @Data
-@FiboBean(name = "IfTestB", desc = "IfTestB")
+@FiboBean(name = "AllTestB", desc = "AllTestB")
 public class AllTestB extends FiboNode {
 
     @Override
