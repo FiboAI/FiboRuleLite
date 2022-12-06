@@ -234,7 +234,7 @@ public class EngineBuilder {
                 nodeConfig = StrUtil.DELIM_START + StrUtil.DELIM_END;
             }
             FiboNode fiboNode = (FiboNode) JSONObject.parseObject(nodeConfig, Class.forName(nodeDto.getNodeClazz()));
-            fiboNode.setMonitorManager(MonitorManager.loadInstance());
+//            fiboNode.setMonitorManager(MonitorManager.loadInstance());
             fiboNode.setNodeId(nodeDto.getId());
             fiboNode.setNodeName(nodeDto.getNodeName());
             fiboNode.setBeanName(nodeDto.getBeanName());

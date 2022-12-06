@@ -4,6 +4,7 @@ import com.fibo.rule.common.enums.NodeTypeEnum;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>节点定义信息传输对象</p>
@@ -26,6 +27,8 @@ public class FiboBeanDto {
     private String nodeClazz;
     /**节点需要配置的属性*/
     private List<FiboFieldDto> fiboFieldDtoList;
+    /**if和switch的分支  例如：key-value》Y-是*/
+    private Map<String, String> branchMap;
     
 
 }
