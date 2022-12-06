@@ -9,7 +9,6 @@ import com.fibo.rule.common.enums.NioOperationTypeEnum;
 import com.fibo.rule.common.enums.NioTypeEnum;
 import com.fibo.rule.common.enums.NodeTypeEnum;
 import com.fibo.rule.common.model.ChannelInfo;
-import com.fibo.rule.common.model.NodeInfo;
 import com.fibo.rule.server.config.ServerProperties;
 import com.fibo.rule.server.utils.JacksonUtils;
 import io.netty.channel.Channel;
@@ -43,8 +42,11 @@ public final class NioClientManager {
     private static Map<Long, Map<String, List<FiboBeanDto>>> appSceneNodesMap = new ConcurrentHashMap<>();
 
     //remain app`s last client leaf info
-    private static Map<Integer, Map<Byte, Map<String, NodeInfo>>> appNodeLeafClazzMap = new ConcurrentHashMap<>();
+//    private static Map<Integer, Map<Byte, Map<String, NodeInfo>>> appNodeLeafClazzMap = new ConcurrentHashMap<>();
 
+    @Resource
+    private ServerProperties properties;
+    
     @PostConstruct
     private void initMap() {
         FiboNioDto fiboNioDto = new FiboNioDto();
@@ -121,8 +123,7 @@ public final class NioClientManager {
 
     }
 
-    @Resource
-    private ServerProperties properties;
+    
 
     public static synchronized void unregister(Channel channel) {
         ChannelInfo info = channelInfoMap.get(channel);
@@ -241,7 +242,7 @@ public final class NioClientManager {
     private void submitRelease(Channel channel, byte[] modelBytes) {
         /*executor.submit(() -> {
             try {
-                //synchronized with IceNioServerHandler client init
+                //synchronized with NioServerHandler client init
                 synchronized (channel) {
                     NioUtils.writeModel(channel, modelBytes);
                 }

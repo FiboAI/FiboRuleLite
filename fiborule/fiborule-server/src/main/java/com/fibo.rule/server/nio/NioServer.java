@@ -1,6 +1,7 @@
 package com.fibo.rule.server.nio;
 
 import com.fibo.rule.server.config.ServerProperties;
+import com.fibo.rule.server.service.EngineService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
-public class IceNioServer {
+public class NioServer {
 
     private final ServerProperties properties;
 
@@ -26,8 +27,10 @@ public class IceNioServer {
 
     private EventLoopGroup workEventLoop;
 
+    private final EngineService engineService;
 
-    public IceNioServer(ServerProperties properties) {
+    public NioServer(ServerProperties properties, EngineService engineService) {
+        this.engineService = engineService;
         this.properties = properties;
     }
 
@@ -44,7 +47,7 @@ public class IceNioServer {
                     protected void initChannel(SocketChannel socketChannel) {
                         socketChannel.pipeline().addLast(new IdleStateHandler(properties.getReaderIdleTime(), 0, 0, TimeUnit.SECONDS));
                         socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(properties.getMaxFrameLength(), 0, 4, 0, 4));
-                        socketChannel.pipeline().addLast(new IceNioServerHandler());
+                        socketChannel.pipeline().addLast(new NioServerHandler(engineService));
                     }
                 });
         ChannelFuture channelFuture = serverBootstrap.bind(properties.getHost(), properties.getPort()).sync();

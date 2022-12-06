@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author waitmoon
  */
 @Slf4j
-public class IceNioServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
+public class NioServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     public static Map<String, Object> lockMap = new ConcurrentHashMap<>();
 
@@ -28,7 +28,7 @@ public class IceNioServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     private final EngineService engineService;
     
-    public IceNioServerHandler(EngineService engineService) {
+    public NioServerHandler(EngineService engineService) {
         this.engineService = engineService;
     }
 

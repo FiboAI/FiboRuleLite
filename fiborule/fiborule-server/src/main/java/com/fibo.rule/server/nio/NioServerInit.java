@@ -1,6 +1,7 @@
 package com.fibo.rule.server.nio;
 
 import com.fibo.rule.server.config.ServerProperties;
+import com.fibo.rule.server.service.EngineService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.CommandLineRunner;
@@ -13,30 +14,33 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Component
-public class IceNioServerInit implements CommandLineRunner, DisposableBean {
+public class NioServerInit implements CommandLineRunner, DisposableBean {
 
     @Resource
     private ServerProperties properties;
 
-    private IceNioServer iceNioServer;
+    @Resource
+    private EngineService engineService;
+
+    private NioServer nioServer;
 
     public static volatile boolean ready = false;
 
     @Override
     public void destroy() throws Exception {
-        if (iceNioServer != null) {
-            iceNioServer.destroy();
+        if (nioServer != null) {
+            nioServer.destroy();
         }
     }
 
     @Override
     public void run(String... args) throws Exception {
 //        serverService.refresh();
-        iceNioServer = new IceNioServer(properties);
+        nioServer = new NioServer(properties, engineService);
         try {
-            iceNioServer.start();
+            nioServer.start();
         } catch (Throwable t) {
-            iceNioServer.destroy();
+            nioServer.destroy();
             throw new RuntimeException("ice nio server start error", t);
         }
         ready = true;
