@@ -7,10 +7,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * @author waitmoon
- * ice nio operate
- */
 @Slf4j
 public final class NioUtils {
 
@@ -18,7 +14,7 @@ public final class NioUtils {
         try {
             return JacksonUtils.readJsonBytes(getNioModelJsonBytes(buf), FiboNioDto.class);
         } catch (Exception e) {
-            log.warn("ice nio error please check data", e);
+            log.warn("nio error please check data", e);
         }
         return null;
     }

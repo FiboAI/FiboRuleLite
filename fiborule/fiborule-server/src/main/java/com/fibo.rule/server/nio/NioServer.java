@@ -66,7 +66,7 @@ public class NioServer {
             }
         }).start();
 
-        log.info("ice nio server start success");
+        log.info("nio server start success");
     }
 
     public void destroy() throws IOException {

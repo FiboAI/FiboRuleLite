@@ -17,11 +17,8 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 import java.io.IOException;
 
-/**
- * @author waitmoon
- */
 public final class JacksonUtils {
-    //filter ice beans&ignores
+    //filter beans&ignores
     private final static FilterProvider icePropertyFilter = new SimpleFilterProvider().addFilter("icePropertyFilter", new IcePropertyFilter());
 
     private static ObjectMapper mapper() {
@@ -123,11 +120,7 @@ public final class JacksonUtils {
             return false;
         }
     }
-
-    /**
-     * @author waitmoon
-     * ignore ice beans and IceIgnore
-     */
+    
     public static class IcePropertyFilter extends SimpleBeanPropertyFilter {
 
 //        public boolean include(PropertyWriter writer) {

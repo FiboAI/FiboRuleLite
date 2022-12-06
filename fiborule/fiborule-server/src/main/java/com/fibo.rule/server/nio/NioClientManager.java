@@ -166,7 +166,7 @@ public final class NioClientManager {
                 }
                 appSceneNodesMap.remove(app);
             }
-            log.info("ice client app:{} client:{} offline", app, address);
+            log.info("client app:{} client:{} offline", app, address);
         }
     }
 
@@ -194,7 +194,7 @@ public final class NioClientManager {
         } else {
             appAddressChannelMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).put(address, channel);
             channelInfoMap.put(channel, new ChannelInfo(app, address, now));
-            log.info("ice client app:{} client:{} online", app, address);
+            log.info("client app:{} client:{} online", app, address);
         }
         appChannelTimeTreeMap.computeIfAbsent(app, k -> new TreeMap<>()).computeIfAbsent(now, k -> new HashSet<>()).add(channel);
         if (null != sceneBeansMap) {

@@ -2,19 +2,15 @@ package com.fibo.rule.server.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-/**
- * @author waitmoon
- */
 @Data
 @Component
-@ConfigurationProperties(prefix = "ice")
+@ConfigurationProperties(prefix = "fibo")
 public class ServerProperties {
 
     private String host = "0.0.0.0";
-    //ice nio port
+    //nio port
     private int port = 18121;
     //if there is no read request for readerIdleTime, close the client
     private int readerIdleTime;
@@ -22,13 +18,13 @@ public class ServerProperties {
     private int maxFrameLength = 16 * 1024 * 1024;
     //timeout for client response
     private int clientRspTimeOut = 3000;
-    //ice thread pool
-    private IceServerThreadPoolProperties pool = new IceServerThreadPoolProperties();
+    //thread pool
+    private ServerThreadPoolProperties pool = new ServerThreadPoolProperties();
 
-    private IceServerHaProperties ha = new IceServerHaProperties();
+    private ServerHaProperties ha = new ServerHaProperties();
 
     @Data
-    public static class IceServerThreadPoolProperties {
+    public static class ServerThreadPoolProperties {
         private int coreSize = 4;
         private int maxSize = 4;
         private int keepAliveSeconds = 60;
@@ -36,7 +32,7 @@ public class ServerProperties {
     }
 
     @Data
-    public static class IceServerHaProperties {
+    public static class ServerHaProperties {
         private String address;
         private int baseSleepTimeMs = 1000;
         private int maxRetries = 3;

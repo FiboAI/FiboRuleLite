@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
-/**
- * @author waitmoon
- */
+
 @Slf4j
 @Component
 public class NioServerInit implements CommandLineRunner, DisposableBean {
@@ -41,7 +39,7 @@ public class NioServerInit implements CommandLineRunner, DisposableBean {
             nioServer.start();
         } catch (Throwable t) {
             nioServer.destroy();
-            throw new RuntimeException("ice nio server start error", t);
+            throw new RuntimeException("nio server start error", t);
         }
         ready = true;
     }

@@ -16,9 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @author waitmoon
- */
 @Slf4j
 public class NioServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
@@ -101,7 +98,7 @@ public class NioServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        log.warn("ice server channel error:", cause);
+        log.warn("server channel error:", cause);
         ctx.close();
     }
 }
