@@ -14,4 +14,6 @@ public interface EngineConstant {
 
     String STR_N = "N";
 
+    String DEFAULT = "default";
+
 }

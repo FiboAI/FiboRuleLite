@@ -16,6 +16,7 @@ import com.fibo.rule.core.engine.element.FiboEngine;
 import com.fibo.rule.core.engine.element.FiboEngineNode;
 import com.fibo.rule.core.engine.element.FiboRunnable;
 import com.fibo.rule.core.enums.NodeTypeClazzEnum;
+import com.fibo.rule.core.exception.EngineBuildException;
 import com.fibo.rule.core.monitor.MonitorManager;
 import com.fibo.rule.core.node.FiboNode;
 
@@ -61,8 +62,7 @@ public class EngineBuilder {
         this.nodeDtoMap = nodeList.stream().collect(Collectors.toMap(EngineNodeDto::getNodeCode, Function.identity()));
         List<EngineNodeDto> startList = nodeList.stream().filter(item -> NodeTypeEnum.START.getType().equals(item.getNodeType())).collect(Collectors.toList());
         if(CollUtil.isEmpty(startList) || startList.size() > 1) {
-            // TODO: 2022/11/18 没有开始节点或有多个开始节点抛出异常
-            throw new RuntimeException();
+            throw new EngineBuildException(StrUtil.format("引擎[{}]开始节点异常", engineDto.getId()));
         }
         this.curNodeDto = startList.get(0);
         this.fiboEngine = new FiboEngine();
@@ -205,7 +205,7 @@ public class EngineBuilder {
         }
         NodeTypeEnum nodeTypeEnum = NodeTypeEnum.getEnum(nodeDto.getNodeType());
         if(ObjectUtil.isNull(nodeTypeEnum)) {
-            throw new RuntimeException();
+            throw new EngineBuildException(StrUtil.format("引擎[{}]节点[{}]类型错误", nodeDto.getEngineId(), nodeDto.getId()));
         }
         try {
             FiboCondition fiboCondition = NodeTypeClazzEnum.getFiboCondition(nodeTypeEnum);
@@ -215,7 +215,7 @@ public class EngineBuilder {
             }
             return fiboCondition;
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new EngineBuildException(StrUtil.format("引擎[{}]节点[{}]创建condition失败，异常：{}", nodeDto.getEngineId(), nodeDto.getId(), e));
         }
     }
 
@@ -244,8 +244,7 @@ public class EngineBuilder {
             FiboEngineNode fiboEngineNode = new FiboEngineNode(fiboNode);
             return fiboEngineNode;
         } catch (ClassNotFoundException e) {
-            // TODO: 2022/11/21 抛出异常
-            throw new RuntimeException();
+            throw new EngineBuildException(StrUtil.format("引擎[{}]节点[{}]实例化失败，异常：{}", nodeDto.getEngineId(), nodeDto.getId(), e));
         }
     }
 

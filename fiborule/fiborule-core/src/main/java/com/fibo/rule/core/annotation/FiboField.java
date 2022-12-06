@@ -1,5 +1,7 @@
 package com.fibo.rule.core.annotation;
 
+import com.fibo.rule.common.enums.FieldTypeEnum;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -19,5 +21,5 @@ public @interface FiboField {
 
     String desc() default "";
 
-    String type() default "";
+    FieldTypeEnum type() default FieldTypeEnum.STRING;
 }

@@ -8,6 +8,15 @@ package com.fibo.rule.common.enums;
  */
 public enum FieldTypeEnum {
 
-
+    /**数值型*/
+    NUMBER,
+    /**字符型*/
+    STRING,
+    /**布尔型*/
+    BOOLEAN,
+    /**时间型*/
+    DATE,
+    /**json型*/
+    JSON
 
 }

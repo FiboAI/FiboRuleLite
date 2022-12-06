@@ -37,6 +37,9 @@ public class FiboRulePropertyAutoConfiguration {
         config.setQueueLimit(property.getQueueLimit());
         config.setDelay(property.getDelay());
         config.setPeriod(property.getPeriod());
+        config.setMaxFrameLength(property.getMaxFrameLength());
+        config.setInitRetryTimes(property.getInitRetryTimes());
+        config.setInitRetrySleepMs(property.getInitRetrySleepMs());
         return config;
     }
 }

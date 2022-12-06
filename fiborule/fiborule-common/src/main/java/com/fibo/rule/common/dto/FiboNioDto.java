@@ -31,6 +31,8 @@ public class FiboNioDto {
     /**引擎定义传输*/
     private List<EngineDto> engineDtoList;
     /**取消发布的引擎id*/
-    private Long releaseEngineId;
+    private Long unReleaseEngineId;
+    /**发布引擎错误信息*/
+    private String releaseError;
 
 }

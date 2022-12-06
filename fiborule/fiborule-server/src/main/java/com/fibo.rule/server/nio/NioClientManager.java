@@ -4,6 +4,7 @@ import com.fibo.rule.common.dto.EngineDto;
 import com.fibo.rule.common.dto.FiboBeanDto;
 import com.fibo.rule.common.dto.FiboFieldDto;
 import com.fibo.rule.common.dto.FiboNioDto;
+import com.fibo.rule.common.enums.FieldTypeEnum;
 import com.fibo.rule.common.enums.NioOperationTypeEnum;
 import com.fibo.rule.common.enums.NioTypeEnum;
 import com.fibo.rule.common.enums.NodeTypeEnum;
@@ -52,7 +53,7 @@ public final class NioClientManager {
         fiboNioDto.setOperationType(NioOperationTypeEnum.INIT);
         fiboNioDto.setAppId(1L);
         fiboNioDto.setType(NioTypeEnum.REQ);
-        fiboNioDto.setReleaseEngineId(1L);
+        fiboNioDto.setUnReleaseEngineId(1L);
         Map<String, List<FiboBeanDto>> sceneBeansMap = new ConcurrentHashMap<>();
         //mock节点信息
         List<FiboBeanDto> fiboBeanDtoList = new ArrayList<>();
@@ -69,7 +70,7 @@ public final class NioClientManager {
         fiboFieldDtoIf.setDesc("自定义属性名称描述");
         fiboFieldDtoIf.setFieldName("valueA");
         //数据类型
-        fiboFieldDtoIf.setType(1);
+        fiboFieldDtoIf.setType(FieldTypeEnum.NUMBER);
         fiboFieldDtoListIf.add(fiboFieldDtoIf);
         fiboBeanDtoIf.setFiboFieldDtoList(fiboFieldDtoListIf);
         fiboBeanDtoList.add(fiboBeanDtoIf);
@@ -87,7 +88,7 @@ public final class NioClientManager {
         fiboFieldDto.setDesc("自定义属性名称描述");
         fiboFieldDto.setFieldName("valueB");
         //数据类型
-        fiboFieldDto.setType(2);
+        fiboFieldDto.setType(FieldTypeEnum.STRING);
         fiboFieldDtoList.add(fiboFieldDto);
         fiboBeanDto.setFiboFieldDtoList(fiboFieldDtoList);
         fiboBeanDtoList.add(fiboBeanDto);
@@ -104,7 +105,7 @@ public final class NioClientManager {
         fiboFieldDtoSwitch.setName("自定义属性名称");
         fiboFieldDtoSwitch.setDesc("自定义属性名称描述");
         fiboFieldDtoSwitch.setFieldName("valueC");
-        fiboFieldDtoSwitch.setType(3);
+        fiboFieldDtoSwitch.setType(FieldTypeEnum.JSON);
         fiboFieldDtoListSwitch.add(fiboFieldDtoSwitch);
         fiboBeanDtoSwitch.setFiboFieldDtoList(fiboFieldDtoListSwitch);
         fiboBeanDtoList.add(fiboBeanDtoSwitch);
@@ -220,7 +221,7 @@ public final class NioClientManager {
         if (!CollectionUtils.isEmpty(clientMap)) {
             FiboNioDto updateModel = new FiboNioDto();
             updateModel.setEngineDtoList(engineDtoList);
-            updateModel.setReleaseEngineId(engineId);
+            updateModel.setUnReleaseEngineId(engineId);
             updateModel.setAppId(app);
             updateModel.setOperationType(NioOperationTypeEnum.UPDATE);
             updateModel.setType(NioTypeEnum.REQ);
