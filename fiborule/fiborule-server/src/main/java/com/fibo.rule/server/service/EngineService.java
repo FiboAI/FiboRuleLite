@@ -2,6 +2,7 @@ package com.fibo.rule.server.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fibo.rule.common.dto.EngineDto;
 import com.fibo.rule.server.dao.model.entity.App;
 import com.fibo.rule.server.dao.model.entity.Engine;
 import com.fibo.rule.server.dao.model.param.*;
@@ -21,8 +22,11 @@ public interface EngineService extends IService<Engine> {
 
     EngineDetailVO getEngineDetail(EngineDetailParam param);
 
-    void engineDelete(SimpleCommonPrimaryKeyParam param);
+    void engineRelease(EngineReleaseParam param);
 
+    List<EngineDto> getEngineDtoList(Long appId, Long engineId);
+    
+    void engineDelete(SimpleCommonPrimaryKeyParam param);
 
 
     

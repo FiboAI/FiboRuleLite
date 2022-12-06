@@ -19,5 +19,11 @@ public class AppListParam {
     
     @ApiModelProperty("状态：1有效，0无效")
     private Integer status;
+
+    @ApiModelProperty("pageNum")
+    private Integer pageNum;
+
+    @ApiModelProperty("pageSize")
+    private Integer pageSize = 0;
     
 }

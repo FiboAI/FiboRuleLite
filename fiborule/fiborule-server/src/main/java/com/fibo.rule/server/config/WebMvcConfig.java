@@ -27,8 +27,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/error")
                 .excludePathPatterns("/webjars/**")
                 .excludePathPatterns("/swagger-resources/configuration/ui")
-                .excludePathPatterns("/swagger-resources/configuration/security")
-                .addPathPatterns("/**");    //  添加拦截器需要要拦截的路径
+                .excludePathPatterns("/swagger-resources/configuration/security");
+//                .addPathPatterns("/**");    //  添加拦截器需要要拦截的路径
     }
 
 }

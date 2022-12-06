@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 
 
 
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/app")
 public class AppController {

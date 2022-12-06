@@ -23,7 +23,7 @@ public class FiboNioDto {
     /**Nio操作类型：初始化、更新信息、心跳包*/
     private NioOperationTypeEnum operationType;
     /**appId*/
-    private Integer appId;
+    private Long appId;
     /**app地址*/
     private String address;
     /**场景对应的节点信息  key：场景名称  value：自定义组件*/

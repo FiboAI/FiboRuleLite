@@ -12,7 +12,8 @@ public enum NioOperationTypeEnum {
     INIT,
     SLAP,
     //server to client
-    CLAZZ_CHECK
+    CLAZZ_CHECK,
+    UPDATE
 
 
 }

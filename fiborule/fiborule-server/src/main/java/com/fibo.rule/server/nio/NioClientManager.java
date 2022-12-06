@@ -1,16 +1,18 @@
 package com.fibo.rule.server.nio;
 
+import com.fibo.rule.common.dto.EngineDto;
 import com.fibo.rule.common.dto.FiboBeanDto;
 import com.fibo.rule.common.dto.FiboFieldDto;
 import com.fibo.rule.common.dto.FiboNioDto;
 import com.fibo.rule.common.enums.NioOperationTypeEnum;
 import com.fibo.rule.common.enums.NioTypeEnum;
+import com.fibo.rule.common.enums.NodeTypeEnum;
 import com.fibo.rule.common.model.ChannelInfo;
 import com.fibo.rule.common.model.NodeInfo;
 import com.fibo.rule.server.config.ServerProperties;
+import com.fibo.rule.server.utils.JacksonUtils;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -25,18 +27,17 @@ import java.util.stream.Collectors;
 @Service
 public final class NioClientManager {
 
-    
-    private static Map<Integer, Map<String, Channel>> appAddressChannelMap = new ConcurrentHashMap<>();
+    //app address channel
+    private static Map<Long, Map<String, Channel>> appAddressChannelMap = new ConcurrentHashMap<>();
+    //channel channelInfo
     private static Map<Channel, ChannelInfo> channelInfoMap = new ConcurrentHashMap<>();
-    private static Map<Integer, TreeMap<Long, Set<Channel>>> appChannelTimeTreeMap = new TreeMap<>();
+    //app lastUpdateTime set<Channel>
+    private static Map<Long, TreeMap<Long, Set<Channel>>> appChannelTimeTreeMap = new TreeMap<>();
 
 
-    //app dto
-    private static Map<Long, FiboNioDto> appNioMap = new ConcurrentHashMap<>();
-    
     //app scenes
-    private static Map<Long, List<String>> appScenesMap = new ConcurrentHashMap<>();
-    
+    private static Map<Long, Set<String>> appScenesMap = new ConcurrentHashMap<>();
+
     //app scene nodes
     private static Map<Long, Map<String, List<FiboBeanDto>>> appSceneNodesMap = new ConcurrentHashMap<>();
 
@@ -44,12 +45,12 @@ public final class NioClientManager {
     private static Map<Integer, Map<Byte, Map<String, NodeInfo>>> appNodeLeafClazzMap = new ConcurrentHashMap<>();
 
     @PostConstruct
-    private void initMap(){
+    private void initMap() {
         FiboNioDto fiboNioDto = new FiboNioDto();
         fiboNioDto.setId("通信id");
         fiboNioDto.setAddress("127.0.0.1:8080");
         fiboNioDto.setOperationType(NioOperationTypeEnum.INIT);
-        fiboNioDto.setAppId(1);
+        fiboNioDto.setAppId(1L);
         fiboNioDto.setType(NioTypeEnum.REQ);
         fiboNioDto.setReleaseEngineId(1L);
         Map<String, List<FiboBeanDto>> sceneBeansMap = new ConcurrentHashMap<>();
@@ -61,7 +62,7 @@ public final class NioClientManager {
         fiboBeanDtoIf.setClazzName("TestA");
         fiboBeanDtoIf.setNodeClazz("com.fibo.rule.test.TestA");
         //节点类型 if
-        fiboBeanDtoIf.setNodeType(1);
+        fiboBeanDtoIf.setType(NodeTypeEnum.IF);
         List<FiboFieldDto> fiboFieldDtoListIf = new ArrayList<>();
         FiboFieldDto fiboFieldDtoIf = new FiboFieldDto();
         fiboFieldDtoIf.setName("自定义属性名称");
@@ -79,7 +80,7 @@ public final class NioClientManager {
         fiboBeanDto.setClazzName("TestB");
         fiboBeanDto.setNodeClazz("com.fibo.rule.test.TestB");
         //normal
-        fiboBeanDto.setNodeType(0);
+        fiboBeanDto.setType(NodeTypeEnum.NORMAL);
         List<FiboFieldDto> fiboFieldDtoList = new ArrayList<>();
         FiboFieldDto fiboFieldDto = new FiboFieldDto();
         fiboFieldDto.setName("自定义属性名称");
@@ -97,7 +98,7 @@ public final class NioClientManager {
         fiboBeanDtoSwitch.setClazzName("TestC");
         fiboBeanDtoSwitch.setNodeClazz("com.fibo.rule.test.TestC");
         //switch
-        fiboBeanDtoSwitch.setNodeType(2);
+        fiboBeanDtoSwitch.setType(NodeTypeEnum.SWITCH);
         List<FiboFieldDto> fiboFieldDtoListSwitch = new ArrayList<>();
         FiboFieldDto fiboFieldDtoSwitch = new FiboFieldDto();
         fiboFieldDtoSwitch.setName("自定义属性名称");
@@ -107,19 +108,18 @@ public final class NioClientManager {
         fiboFieldDtoListSwitch.add(fiboFieldDtoSwitch);
         fiboBeanDtoSwitch.setFiboFieldDtoList(fiboFieldDtoListSwitch);
         fiboBeanDtoList.add(fiboBeanDtoSwitch);
-        
+
         sceneBeansMap.put("mock场景", fiboBeanDtoList);
         fiboNioDto.setSceneBeansMap(sceneBeansMap);
 
-        appNioMap.put(1L,fiboNioDto);
-        List<String> sceneList = new ArrayList<>();
+        Set<String> sceneList = new HashSet<>();
         sceneList.add("mock场景");
-        appScenesMap.put(1L,sceneList);
-        appSceneNodesMap.put(1L,sceneBeansMap);
-        
-       
+        appScenesMap.put(1L, sceneList);
+        appSceneNodesMap.put(1L, sceneBeansMap);
+
+
     }
-    
+
     @Resource
     private ServerProperties properties;
 
@@ -128,7 +128,7 @@ public final class NioClientManager {
         if (info != null) {
             String address = info.getAddress();
             Long originTime = info.getLastUpdateTime();
-            int app = info.getApp();
+            Long app = info.getApp();
             channelInfoMap.remove(channel);
             Map<String, Channel> channelMap = appAddressChannelMap.get(app);
             if (!CollectionUtils.isEmpty(channelMap)) {
@@ -151,58 +151,29 @@ public final class NioClientManager {
                 }
             }
 
-            //remove client leaf class
-//            Map<String, Map<String, NodeInfo>> addressNodeClassMap = appAddressLeafClazzMap.get(app);
-            /*if (!CollectionUtils.isEmpty(addressNodeClassMap)) {
-                addressNodeClassMap.remove(address);
-                if (CollectionUtils.isEmpty(addressNodeClassMap)) {
-                    //not have any available client, but remain last appNodeLeafClazzMap
-                    appAddressLeafClazzMap.remove(app);
-                } else {
-                    //reorganize app leaf class map
-                    Map<Byte, Map<String, NodeInfo>> nodeLeafClazzMapTmp = new ConcurrentHashMap<>();
-                    for (Map<String, NodeInfo> leafTypeClassMap : addressNodeClassMap.values()) {
-                        for (NodeInfo leafNodeInfo : leafTypeClassMap.values()) {
-                            nodeLeafClazzMapTmp.computeIfAbsent(leafNodeInfo.getType(), k -> new ConcurrentHashMap<>()).put(leafNodeInfo.getClazz(), leafNodeInfo);
-                        }
+            //remove client fobiBean class
+            Set<String> scenes = appScenesMap.get(app);
+            Map<String, List<FiboBeanDto>> sceneNodesMap = appSceneNodesMap.get(app);
+            if (!CollectionUtils.isEmpty(scenes) && !CollectionUtils.isEmpty(sceneNodesMap)) {
+                appScenesMap.remove(app);
+                for (String scene : scenes) {
+                    List<FiboBeanDto> fiboBeanDtos = sceneNodesMap.get(scene);
+                    if (!CollectionUtils.isEmpty(fiboBeanDtos)) {
+                        sceneNodesMap.remove(scene);
                     }
-                    appNodeLeafClazzMap.put(app, nodeLeafClazzMapTmp);
                 }
-            }*/
+                appSceneNodesMap.remove(app);
+            }
             log.info("ice client app:{} client:{} offline", app, address);
         }
     }
 
-    /**
-     * clean client channel with expire time
-     *
-     * @param expireTime less time
-     */
-    public synchronized void cleanClientChannel(long expireTime) {
-        for (Map.Entry<Integer, TreeMap<Long, Set<Channel>>> channelTimeTreeEntry : appChannelTimeTreeMap.entrySet()) {
-            TreeMap<Long, Set<Channel>> treeMap = channelTimeTreeEntry.getValue();
-            if (treeMap != null) {
-                SortedMap<Long, Set<Channel>> cleanMap = treeMap.headMap(expireTime);
-                if (!CollectionUtils.isEmpty(cleanMap)) {
-                    Collection<Set<Channel>> cleanChannelSetList = cleanMap.values();
-                    for (Set<Channel> cleanChannelSet : cleanChannelSetList) {
-                        if (!CollectionUtils.isEmpty(cleanChannelSet)) {
-                            for (Channel cleanChannel : cleanChannelSet) {
-                                unregister(cleanChannel);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public static synchronized void register(int app, Channel channel, String address) {
+    public static synchronized void register(Long app, Channel channel, String address) {
         //slap
         register(app, channel, address, null);
     }
 
-    public static synchronized void register(int app, Channel channel, String address, List<NodeInfo> leafNodes) {
+    public static synchronized void register(Long app, Channel channel, String address, Map<String, List<FiboBeanDto>> sceneBeansMap) {
         long now = System.currentTimeMillis();
         ChannelInfo info = channelInfoMap.get(channel);
         if (info != null) {
@@ -224,137 +195,70 @@ public final class NioClientManager {
             log.info("ice client app:{} client:{} online", app, address);
         }
         appChannelTimeTreeMap.computeIfAbsent(app, k -> new TreeMap<>()).computeIfAbsent(now, k -> new HashSet<>()).add(channel);
-        if (!CollectionUtils.isEmpty(leafNodes)) {
-            for (NodeInfo leafNodeInfo : leafNodes) {
-//                appNioMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(address, k -> new ConcurrentHashMap<>()).put(leafNodeInfo.getClazz(), leafNodeInfo);
-                appNodeLeafClazzMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(leafNodeInfo.getType(), k -> new ConcurrentHashMap<>()).put(leafNodeInfo.getClazz(), leafNodeInfo);
+        if (null != sceneBeansMap) {
+            appScenesMap.put(app, sceneBeansMap.keySet());
+            for (String scene : sceneBeansMap.keySet()) {
+                appSceneNodesMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).put(scene, sceneBeansMap.get(scene));
+//                    appNodeLeafClazzMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(leafNodeInfo.getType(), k -> new ConcurrentHashMap<>()).put(leafNodeInfo.getClazz(), leafNodeInfo);
             }
         }
     }
 
-    public synchronized Set<String> getRegisterClients(int app) {
+    public synchronized Set<String> getRegisterClients(Long app) {
         Map<String, Channel> clientInfoMap = appAddressChannelMap.get(app);
         if (!CollectionUtils.isEmpty(clientInfoMap)) {
             return Collections.unmodifiableSet(clientInfoMap.keySet());
         }
         return null;
     }
-
-    public synchronized Channel getClientSocketChannel(int app, String address) {
-        if (address != null) {
-            Map<String, Channel> clientMap = appAddressChannelMap.get(app);
-            if (CollectionUtils.isEmpty(clientMap)) {
-                return null;
-            }
-            return clientMap.get(address);
-        }
-        TreeMap<Long, Set<Channel>> treeMap = appChannelTimeTreeMap.get(app);
-        if (CollectionUtils.isEmpty(treeMap)) {
-            return null;
-        }
-        Set<Channel> socketChannels = treeMap.lastEntry().getValue();
-        if (CollectionUtils.isEmpty(socketChannels)) {
-            return null;
-        }
-        return socketChannels.iterator().next();
-    }
-
-    public synchronized Map<String, NodeInfo> getLeafTypeClasses(int app, byte type) {
-        Map<Byte, Map<String, NodeInfo>> addressClazzInfoMap = appNodeLeafClazzMap.get(app);
-        if (!CollectionUtils.isEmpty(addressClazzInfoMap)) {
-            Map<String, NodeInfo> clazzInfoMap = addressClazzInfoMap.get(type);
-            if (!CollectionUtils.isEmpty(clazzInfoMap)) {
-                return clazzInfoMap;
+    
+    /**
+     * 引擎发布和取消发布
+     */
+    public void release(Long app, List<EngineDto> engineDtoList, Long engineId) {
+        Map<String, Channel> clientMap = appAddressChannelMap.get(app);
+        if (!CollectionUtils.isEmpty(clientMap)) {
+            FiboNioDto updateModel = new FiboNioDto();
+            updateModel.setEngineDtoList(engineDtoList);
+            updateModel.setReleaseEngineId(engineId);
+            updateModel.setAppId(app);
+            updateModel.setOperationType(NioOperationTypeEnum.UPDATE);
+            updateModel.setType(NioTypeEnum.REQ);
+            byte[] updateModelBytes = JacksonUtils.toJsonBytes(updateModel);
+            for (Map.Entry<String, Channel> entry : clientMap.entrySet()) {
+                submitRelease(entry.getValue(), updateModelBytes);
             }
         }
-        return null;
     }
 
-    public synchronized void cleanChannelCache() {
-        appNodeLeafClazzMap = new ConcurrentHashMap<>();
-        appNioMap = new ConcurrentHashMap<>();
-        appChannelTimeTreeMap = new ConcurrentHashMap<>();
-        appAddressChannelMap = new ConcurrentHashMap<>();
-        try {
-            if (!CollectionUtils.isEmpty(channelInfoMap)) {
-                for (Channel channel : channelInfoMap.keySet()) {
-                    channel.close();
+    /**
+     * submit release to update client config
+     *
+     * @param channel    client socket channel
+     * @param modelBytes update data
+     */
+    private void submitRelease(Channel channel, byte[] modelBytes) {
+        /*executor.submit(() -> {
+            try {
+                //synchronized with IceNioServerHandler client init
+                synchronized (channel) {
+                    NioUtils.writeModel(channel, modelBytes);
                 }
+            } catch (Throwable t) {
+                //write failed closed client, client will get update from reconnect
+                channel.close();
             }
-        } catch (Exception e) {
-            //ignore
-        }
-        channelInfoMap = new ConcurrentHashMap<>();
+        });*/
     }
-
-    public NodeInfo getNodeInfo(int app, String address, String clazz, Byte type) {
-        if (address == null) {
-            return getNodeInfoFromAllClient(app, clazz, type);
-        }
-//        Map<String, Map<String, NodeInfo>> addressLeafClazzMap = appNioMap.get(app);
-        /*if (addressLeafClazzMap == null) {
-            return getNodeInfoFromAllClient(app, clazz, type);
-        }
-        Map<String, NodeInfo> clazzMap = addressLeafClazzMap.get(address);
-        if (clazzMap == null) {
-            return getNodeInfoFromAllClient(app, clazz, type);
-        }*/
-//        return nodeInfoCopy(clazzMap.get(clazz));
-        return null;
-    }
-
-    private NodeInfo getNodeInfoFromAllClient(int app, String clazz, Byte type) {
-        Map<Byte, Map<String, NodeInfo>> nodeLeafClazzMap = appNodeLeafClazzMap.get(app);
-        if (nodeLeafClazzMap == null) {
-            return null;
-        }
-        Map<String, NodeInfo> clazzMap = nodeLeafClazzMap.get(type);
-        if (clazzMap == null) {
-            return null;
-        }
-        return nodeInfoCopy(clazzMap.get(clazz));
-    }
-
-    private static NodeInfo nodeInfoCopy(NodeInfo nodeInfo) {
-        if (nodeInfo == null) {
-            return null;
-        }
-        NodeInfo result = new NodeInfo();
-        result.setName(nodeInfo.getName());
-        result.setClazz(nodeInfo.getClazz());
-        result.setType(nodeInfo.getType());
-        result.setDesc(nodeInfo.getDesc());
-        result.setIceFields(fieldInfoListCopy(nodeInfo.getIceFields()));
-        result.setHideFields(fieldInfoListCopy(nodeInfo.getHideFields()));
-        return result;
-    }
-
-    private static List<NodeInfo.IceFieldInfo> fieldInfoListCopy(List<NodeInfo.IceFieldInfo> fieldInfoList) {
-        if (fieldInfoList == null) {
-            return null;
-        }
-        List<NodeInfo.IceFieldInfo> results = new ArrayList<>(fieldInfoList.size());
-        for (NodeInfo.IceFieldInfo fieldInfo : fieldInfoList) {
-            NodeInfo.IceFieldInfo result = new NodeInfo.IceFieldInfo();
-            result.setField(fieldInfo.getField());
-            result.setValue(fieldInfo.getValue());
-            result.setType(fieldInfo.getType());
-            result.setName(fieldInfo.getName());
-            result.setDesc(fieldInfo.getDesc());
-            results.add(result);
-        }
-        return results;
-    }
-
 
     public synchronized List<String> getSceneList(Long appId) {
-        return appScenesMap.get(appId);
+        return new ArrayList<>(appScenesMap.get(appId));
     }
 
     public synchronized List<FiboBeanDto> getNodesList(Long appId, String scene, Integer nodeType) {
         List<FiboBeanDto> fiboBeanDtoList = appSceneNodesMap.get(appId).get(scene);
-        return fiboBeanDtoList.stream().filter(fiboBeanDto -> fiboBeanDto.getNodeType().equals(nodeType)).collect(Collectors.toList());
+        return fiboBeanDtoList.stream().filter(fiboBeanDto -> fiboBeanDto.getType().getType().equals(nodeType)).collect(Collectors.toList());
     }
-    
-    
+
+
 }

@@ -50,6 +50,17 @@ public class EngineController {
         return ResponseEntityBuilder.buildNormalResponse(engineService.getEngineDetail(param));
     }
 
+    /**
+     * 引擎发布、取消发布
+     * @param param
+     * @return
+     */
+    @RequestMapping(value = "/engineRelease", method = RequestMethod.POST)
+    public ResponseEntityDto engineRelease(@RequestBody EngineReleaseParam param) {
+        engineService.engineRelease(param);
+        return ResponseEntityBuilder.buildNormalResponse();
+    }
+
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseEntityDto engineDelete(@RequestBody SimpleCommonPrimaryKeyParam param) {
         engineService.engineDelete(param);

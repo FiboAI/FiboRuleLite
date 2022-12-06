@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * ice nio operate
  */
 @Slf4j
-public final class IceNioUtils {
+public final class NioUtils {
 
     public static FiboNioDto readNioModel(ByteBuf buf) {
         try {

@@ -1,11 +1,13 @@
 package com.fibo.rule.server.dao.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @TableName("t_app")
@@ -31,4 +33,7 @@ public class App {
     private Long updateUser;
 
     private Integer delFlag;
+    
+    @TableField(exist = false)
+    private List<String> clients;
 }

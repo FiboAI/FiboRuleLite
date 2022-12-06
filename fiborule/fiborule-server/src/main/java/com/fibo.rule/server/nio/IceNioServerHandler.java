@@ -3,7 +3,8 @@ package com.fibo.rule.server.nio;
 import com.fibo.rule.common.dto.FiboNioDto;
 import com.fibo.rule.common.enums.NioOperationTypeEnum;
 import com.fibo.rule.common.enums.NioTypeEnum;
-import com.fibo.rule.server.utils.IceNioUtils;
+import com.fibo.rule.server.service.EngineService;
+import com.fibo.rule.server.utils.NioUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -25,8 +26,10 @@ public class IceNioServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     public static Map<String, FiboNioDto> resultMap = new ConcurrentHashMap<>();
 
-
-    public IceNioServerHandler() {
+    private final EngineService engineService;
+    
+    public IceNioServerHandler(EngineService engineService) {
+        this.engineService = engineService;
     }
 
     /*
@@ -39,13 +42,13 @@ public class IceNioServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-//        IceNioClientManager.unregister(channel);
+        NioClientManager.unregister(channel);
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf buf) {
         Channel channel = ctx.channel();
-        FiboNioDto nioModel = IceNioUtils.readNioModel(buf);
+        FiboNioDto nioModel = NioUtils.readNioModel(buf);
         if (nioModel != null && nioModel.getType() != null && nioModel.getOperationType() != null) {
             switch (nioModel.getType()) {
                 case REQ:
@@ -55,9 +58,9 @@ public class IceNioServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
                         response.setOperationType(NioOperationTypeEnum.INIT);
                         //synchronized for update after init
                         synchronized (channel) {
-//                            response.setInitDto(serverService.getInitConfig(nioModel.getApp()));
-                            IceNioUtils.writeNioModel(ctx, response);
-                            NioClientManager.register(nioModel.getAppId(), channel, nioModel.getAddress(), null);
+                            response.setEngineDtoList(engineService.getEngineDtoList(nioModel.getAppId(), null));
+                            NioUtils.writeNioModel(ctx, response);
+                            NioClientManager.register(nioModel.getAppId(), channel, nioModel.getAddress(), nioModel.getSceneBeansMap());
                         }
                     } else if (nioModel.getOperationType() == NioOperationTypeEnum.SLAP) {
                         NioClientManager.register(nioModel.getAppId(), channel, nioModel.getAddress());
