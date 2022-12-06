@@ -39,9 +39,9 @@ public class MonitorManager {
 	}
 
 	public static MonitorManager loadInstance(){
-		if (ObjectUtil.isNull(instance)){
-			throw new MonitorManagerNotInitException("监控类未初始化");
-		}
+//		if (ObjectUtil.isNull(instance)){
+//			throw new MonitorManagerNotInitException("监控类未初始化");
+//		}
 		return instance;
 	}
 

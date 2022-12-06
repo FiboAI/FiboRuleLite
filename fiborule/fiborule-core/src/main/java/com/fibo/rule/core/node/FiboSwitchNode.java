@@ -1,6 +1,7 @@
 package com.fibo.rule.core.node;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>IF节点抽象类</p>
@@ -19,6 +20,6 @@ public abstract class FiboSwitchNode extends FiboNode {
 
     public abstract String runnerStepSwitch();
 
-    public abstract List<String> switchBranchs();
+    public abstract Map<String, String> switchBranchs();
 
 }

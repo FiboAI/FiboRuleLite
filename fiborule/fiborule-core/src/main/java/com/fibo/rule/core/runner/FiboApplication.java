@@ -13,10 +13,8 @@ import com.fibo.rule.core.engine.element.FiboEngine;
 import com.fibo.rule.core.engine.id.IdGeneratorHolder;
 import com.fibo.rule.core.exception.EngineNotFoundException;
 import com.fibo.rule.core.exception.NoAvailableContextException;
-import com.fibo.rule.core.monitor.MonitorManager;
 import com.fibo.rule.core.property.FiboRuleConfig;
 import com.fibo.rule.core.property.FiboRuleConfigGetter;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -41,7 +39,7 @@ public class FiboApplication {
         FiboApplicationHolder.setHolder(this);
         Contextmanager.init();
         IdGeneratorHolder.init();
-        MonitorManager.loadInstance(config);
+//        MonitorManager.loadInstance(config);
     }
 
     public EngineResponse runner(Long engineId, Object param) {
@@ -113,6 +111,6 @@ public class FiboApplication {
     public void setFiboRuleConfig(FiboRuleConfig fiboRuleConfig) {
         this.fiboRuleConfig = fiboRuleConfig;
         FiboRuleConfigGetter.setFiboRuleConfig(fiboRuleConfig);
-        MonitorManager.loadInstance(fiboRuleConfig);
+//        MonitorManager.loadInstance(fiboRuleConfig);
     }
 }

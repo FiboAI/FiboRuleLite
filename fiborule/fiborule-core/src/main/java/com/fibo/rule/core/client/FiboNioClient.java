@@ -74,7 +74,7 @@ public final class FiboNioClient {
     private static final int DEFAULT_INIT_RETRY_TIMES = 3;
     private static final int DEFAULT_INIT_RETRY_SLEEP_MS = 2000;
 
-    public FiboNioClient(Long app, String server, int maxFrameLength, Map<String, Set<String>> scenePackages, int initRetryTimes, int initRetrySleepMs) throws IOException {
+    public FiboNioClient(Long app, String server, int maxFrameLength, Map<String, Set<String>> scenePackages, int initRetryTimes, int initRetrySleepMs) throws Exception {
         this.initRetryTimes = initRetryTimes < 0 ? DEFAULT_INIT_RETRY_TIMES : initRetryTimes;
         this.initRetrySleepMs = initRetrySleepMs < 0 ? DEFAULT_INIT_RETRY_SLEEP_MS : initRetrySleepMs;
         this.app = app;
@@ -85,11 +85,11 @@ public final class FiboNioClient {
         prepare();
     }
 
-    public FiboNioClient(Long app, String server, Map<String, Set<String>> scenePackages) throws IOException {
+    public FiboNioClient(Long app, String server, Map<String, Set<String>> scenePackages) throws Exception {
         this(app, server, DEFAULT_MAX_FRAME_LENGTH, scenePackages, DEFAULT_INIT_RETRY_TIMES, DEFAULT_INIT_RETRY_SLEEP_MS);
     }
 
-    public FiboNioClient(Long app, String server) throws IOException {
+    public FiboNioClient(Long app, String server) throws Exception {
         this(app, server, Collections.emptyMap());
     }
 
@@ -212,7 +212,7 @@ public final class FiboNioClient {
             started = true;
             startedLock.notifyAll();
         }
-        log.info("客户端初始化 app:{} 地址:{} 成功:{}ms", app, fiboAddress, System.currentTimeMillis() - start);
+        log.info("客户端初始化成功 app:{} 地址:{} 耗时:{}ms", app, fiboAddress, System.currentTimeMillis() - start);
     }
 
     /**
@@ -281,7 +281,7 @@ public final class FiboNioClient {
      * @param scenePackages 需要扫描的场景和包路径
      * @throws IOException 异常
      */
-    private void scanSceneNodes(Map<String, Set<String>> scenePackages) throws IOException {
+    private void scanSceneNodes(Map<String, Set<String>> scenePackages) throws Exception {
         fiboBeanMap = new HashMap<>();
         if (scenePackages == null || scenePackages.isEmpty()) {
             //默认场景
@@ -296,7 +296,7 @@ public final class FiboNioClient {
         log.info("节点信息扫描完成");
     }
 
-    private List<FiboBeanDto> scanScenePackages(String scene, Set<String> packages) throws IOException {
+    private List<FiboBeanDto> scanScenePackages(String scene, Set<String> packages) throws Exception {
         long start = System.currentTimeMillis();
         Set<Class<?>> nodeClasses;
         if (EngineConstant.DEFAULT.equals(scene)) {
@@ -351,14 +351,21 @@ public final class FiboNioClient {
                 fiboField.setFieldName(field.getName());
                 fiboField.setDesc(fieldAnnotation.desc());
                 fiboField.setType(fieldAnnotation.type());
+                if(FieldTypeEnum.DEFAULT.equals(fiboField.getType())) {
+                    fiboField.setType(FieldTypeEnum.getFieldTypeByClazz(field.getType()));
+                }
                 fiboFieldList.add(fiboField);
             }
             fiboBean.setFiboFieldDtoList(fiboFieldList);
             //设置节点类型
             if(FiboIfNode.class.isAssignableFrom(nodeClass)) {
                 fiboBean.setType(NodeTypeEnum.IF);
+                FiboIfNode fiboIfNode = (FiboIfNode) nodeClass.newInstance();
+                fiboBean.setBranchMap(fiboIfNode.ifBranchs());
             } else if(FiboSwitchNode.class.isAssignableFrom(nodeClass)) {
                 fiboBean.setType(NodeTypeEnum.SWITCH);
+                FiboSwitchNode fiboSwitchNode = (FiboSwitchNode) nodeClass.newInstance();
+                fiboBean.setBranchMap(fiboSwitchNode.switchBranchs());
             } else {
                 fiboBean.setType(NodeTypeEnum.NORMAL);
             }

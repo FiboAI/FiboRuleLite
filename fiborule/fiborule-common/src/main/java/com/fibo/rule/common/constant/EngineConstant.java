@@ -14,6 +14,10 @@ public interface EngineConstant {
 
     String STR_N = "N";
 
+    String STR_Y_CN = "是";
+
+    String STR_N_CN = "否";
+
     String DEFAULT = "default";
 
 }

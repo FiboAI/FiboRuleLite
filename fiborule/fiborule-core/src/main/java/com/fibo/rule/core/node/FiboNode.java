@@ -1,6 +1,7 @@
 package com.fibo.rule.core.node;
 
 import cn.hutool.core.date.StopWatch;
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.fibo.rule.common.enums.NodeTypeEnum;
 import com.fibo.rule.core.context.Contextmanager;
@@ -20,8 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 public abstract class FiboNode {
-
-    private MonitorManager monitorManager;
 
     private Long nodeId;
     private String nodeName;
@@ -59,8 +58,10 @@ public abstract class FiboNode {
             final long timeSpent = stopWatch.getTotalTimeMillis();
             log.debug("[{}]:节点[{}-{}]执行用时{}毫秒", context.getRequestId(), this.getNodeId(), this.getBeanName(), timeSpent);
             nodeStep.setTimeSpent(timeSpent);
-            NodeStatistics statistics = new NodeStatistics(this.getClass().getSimpleName(), timeSpent);
-            monitorManager.addStatistics(statistics);
+            if(ObjectUtil.isNotNull(MonitorManager.loadInstance())) {
+                NodeStatistics statistics = new NodeStatistics(this.getClass().getSimpleName(), timeSpent);
+                MonitorManager.loadInstance().addStatistics(statistics);
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.fibo.rule.switchtest.node;
 
+import com.fibo.rule.common.constant.EngineConstant;
 import com.fibo.rule.core.annotation.FiboBean;
 import com.fibo.rule.core.annotation.FiboField;
 import com.fibo.rule.core.node.FiboIfNode;
@@ -10,7 +11,9 @@ import com.fibo.rule.switchtest.context.SwitchTestContext;
 import lombok.Data;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p></p>
@@ -30,7 +33,11 @@ public class SwitchTestB extends FiboSwitchNode {
     }
 
     @Override
-    public List<String> switchBranchs() {
-        return Arrays.asList("C", "D", "E");
+    public Map<String, String> switchBranchs() {
+        Map<String, String> branchMap = new HashMap<>();
+        branchMap.put("C", "C");
+        branchMap.put("D", "D");
+        branchMap.put("E", "E");
+        return branchMap;
     }
 }

@@ -7,6 +7,7 @@ import com.fibo.rule.core.property.FiboRuleConfig;
 import com.fibo.rule.core.property.FiboSceneConfig;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
