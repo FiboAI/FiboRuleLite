@@ -360,8 +360,6 @@ public final class FiboNioClient {
             //设置节点类型
             if(FiboIfNode.class.isAssignableFrom(nodeClass)) {
                 fiboBean.setType(NodeTypeEnum.IF);
-                FiboIfNode fiboIfNode = (FiboIfNode) nodeClass.newInstance();
-                fiboBean.setBranchMap(fiboIfNode.ifBranchs());
             } else if(FiboSwitchNode.class.isAssignableFrom(nodeClass)) {
                 fiboBean.setType(NodeTypeEnum.SWITCH);
                 FiboSwitchNode fiboSwitchNode = (FiboSwitchNode) nodeClass.newInstance();

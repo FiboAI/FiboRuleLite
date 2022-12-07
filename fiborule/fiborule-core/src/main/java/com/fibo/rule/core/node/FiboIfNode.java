@@ -1,10 +1,5 @@
 package com.fibo.rule.core.node;
 
-import com.fibo.rule.common.constant.EngineConstant;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * <p>IF节点抽象类</p>
  *
@@ -21,12 +16,5 @@ public abstract class FiboIfNode extends FiboNode {
     }
 
     public abstract boolean runnerStepIf();
-
-    public Map<String, String> ifBranchs() {
-        Map<String, String> branchMap = new HashMap<>();
-        branchMap.put(EngineConstant.STR_Y, EngineConstant.STR_Y_CN);
-        branchMap.put(EngineConstant.STR_N, EngineConstant.STR_N_CN);
-        return branchMap;
-    }
 
 }
