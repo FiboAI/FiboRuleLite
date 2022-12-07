@@ -8,9 +8,11 @@ import com.fibo.rule.server.dao.model.param.AppListParam;
 import com.fibo.rule.server.model.SimpleCommonPrimaryKeyParam;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 public interface AppService extends IService<App> {
 
-    PageInfo<App> appList(AppListParam param);
+    List<App> appList(AppListParam param);
 
     App appEdit(AppEditParam param);
 

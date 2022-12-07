@@ -18,6 +18,8 @@ import com.fibo.rule.server.dao.model.param.EngineReleaseParam;
 import com.fibo.rule.server.dao.model.vo.EngineDetailVO;
 import com.fibo.rule.server.dao.model.vo.EngineNodeDetailVO;
 import com.fibo.rule.server.enums.BootStatusEnum;
+import com.fibo.rule.server.enums.ErrorCodeEnum;
+import com.fibo.rule.server.exception.ApiException;
 import com.fibo.rule.server.model.SimpleCommonPrimaryKeyParam;
 import com.fibo.rule.server.nio.NioClientManager;
 import com.fibo.rule.server.service.EngineService;
@@ -59,16 +61,33 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
 
     @Override
     public Engine engineEdit(EngineEditParam param) {
+        this.verifyParam(param);
         Engine engine = new Engine();
         BeanUtils.copyProperties(param, engine);
-        if (null != param.getEngineId()) {
-            engine.setId(param.getEngineId());
+        if (null != param.getId()) {
+            engine.setEngineCode(null);
             engineMapper.updateById(engine);
         } else {
             engineMapper.insert(engine);
         }
         engine = engineMapper.selectById(engine.getId());
         return engine;
+    }
+
+    private void verifyParam(EngineEditParam param) {
+        if (null == param.getId()) {
+            int count = engineMapper.selectCount(new QueryWrapper<Engine>().lambda()
+                    .eq(Engine::getDelFlag, DelFlagEnum.DEL_NO.status)
+                    .eq(Engine::getEngineCode, param.getEngineCode()));
+            if (count > 0) {
+                throw new ApiException(ErrorCodeEnum.ENGINE_CODE_REDO_EXCEPTION);
+            }
+        } else {
+            Engine engine = engineMapper.selectById(param.getId());
+            if (null != engine && engine.getBootStatus().equals(BootStatusEnum.BOOT.status)) {
+                throw new ApiException(ErrorCodeEnum.ENGINE_BOOT_EDIT_EXCEPTION);
+            }
+        }
     }
 
     @Override
@@ -89,13 +108,13 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
 
     @Override
     public void engineRelease(EngineReleaseParam param) {
-        if (param.getBootStatus().equals(BootStatusEnum.BOOT)) {
+        if (param.getBootStatus().equals(BootStatusEnum.BOOT.status)) {
             List<EngineDto> engineDtoList = this.getEngineDtoList(param.getAppId(), param.getEngineId());
             nioClientManager.release(param.getAppId(), engineDtoList, null);
         } else {
             nioClientManager.release(param.getAppId(), null, param.getEngineId());
         }
-        
+
     }
 
     @Override
@@ -139,6 +158,9 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
     @Override
     public void engineDelete(SimpleCommonPrimaryKeyParam param) {
         Engine engine = engineMapper.selectById(param.getId());
+        if (null != engine && engine.getBootStatus().equals(BootStatusEnum.BOOT.status)) {
+            throw new ApiException(ErrorCodeEnum.ENGINE_BOOT_DELETE_EXCEPTION);
+        }
         if (null != engine) {
             engine.setDelFlag(1);
             engineMapper.updateById(engine);

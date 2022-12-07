@@ -11,7 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-
+import java.util.List;
 
 
 //@CrossOrigin
@@ -23,7 +23,7 @@ public class AppController {
     private AppService appService;
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public ResponseEntityDto<PageInfo<App>> appList(@RequestBody AppListParam param) {
+    public ResponseEntityDto<List<App>> appList(@RequestBody AppListParam param) {
         return ResponseEntityBuilder.buildNormalResponse(appService.appList(param));
     }
 

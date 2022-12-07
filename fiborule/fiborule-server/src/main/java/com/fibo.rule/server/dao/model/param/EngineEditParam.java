@@ -8,8 +8,8 @@ import lombok.Data;
 @ApiModel("编辑engine参数对象")
 public class EngineEditParam {
 
-    @ApiModelProperty("engineId")
-    private Long engineId;
+    @ApiModelProperty("id")
+    private Long id;
 
     @ApiModelProperty("appId")
     private Long appId;
