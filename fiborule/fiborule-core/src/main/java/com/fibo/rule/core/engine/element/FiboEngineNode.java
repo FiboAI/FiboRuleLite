@@ -57,4 +57,14 @@ public class FiboEngineNode implements FiboRunnable {
             fiboNode.removeContextIndex();
         }
     }
+
+    @Override
+    public Long getRunnableId() {
+        return nodeId;
+    }
+
+    @Override
+    public String getRunnableName() {
+        return beanName;
+    }
 }

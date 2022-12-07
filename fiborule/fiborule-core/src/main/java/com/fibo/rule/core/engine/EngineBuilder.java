@@ -8,16 +8,12 @@ import com.fibo.rule.common.constant.EngineConstant;
 import com.fibo.rule.common.dto.EngineDto;
 import com.fibo.rule.common.dto.EngineNodeDto;
 import com.fibo.rule.common.enums.NodeTypeEnum;
-import com.fibo.rule.core.engine.condition.FiboAllCondition;
-import com.fibo.rule.core.engine.condition.FiboCondition;
-import com.fibo.rule.core.engine.condition.FiboIfCondition;
-import com.fibo.rule.core.engine.condition.FiboSwitchCondition;
+import com.fibo.rule.core.engine.condition.*;
 import com.fibo.rule.core.engine.element.FiboEngine;
 import com.fibo.rule.core.engine.element.FiboEngineNode;
 import com.fibo.rule.core.engine.element.FiboRunnable;
 import com.fibo.rule.core.enums.NodeTypeClazzEnum;
 import com.fibo.rule.core.exception.EngineBuildException;
-import com.fibo.rule.core.monitor.MonitorManager;
 import com.fibo.rule.core.node.FiboNode;
 
 import java.util.*;
@@ -34,24 +30,24 @@ public class EngineBuilder {
 
     /**引擎*/
     private FiboEngine fiboEngine;
-    /**根节点*/
-    private FiboCondition engineRoot;
     /**引擎下所有节点*/
     private List<EngineNodeDto> nodeList;
     /**所有节点编码对应关系*/
     private Map<String, EngineNodeDto> nodeDtoMap;
     /**所有节点编码对应关系*/
-    private Map<String, FiboCondition> conditionMap;
+    private Map<String, FiboRunnable> runnableMap;
     /**递归当前节点*/
     private EngineNodeDto curNodeDto;
-    /**遍历元素栈*/
-    private Stack<String> conditionStack;
     /**并行节点栈*/
-    private Stack<EngineNodeDto> parallelStack;
+//    private Stack<EngineNodeDto> parallelStack;
     /**聚合节点*/
     private EngineNodeDto aggNodeDto;
     /**并行节点记录*/
-    private Set<String> parallelSet;
+//    private Set<String> parallelSet;
+    /**串行节点栈*/
+    private Stack<FiboSerialCondition> serialStack;
+    /**已递归完成节点*/
+    private Set<String> finishNodeSet;
 
     public static EngineBuilder createEngine(EngineDto engineDto) {
         return new EngineBuilder(engineDto);
@@ -67,15 +63,30 @@ public class EngineBuilder {
         this.curNodeDto = startList.get(0);
         this.fiboEngine = new FiboEngine();
         this.fiboEngine.setEngineId(engineDto.getId());
-        this.conditionMap = new HashMap<>();
-        this.conditionStack = new Stack<>();
-        this.parallelStack = new Stack<>();
-        this.parallelSet = new HashSet<>();
+        this.fiboEngine.setEngineName(engineDto.getEngineName());
+        this.runnableMap = new HashMap<>();
+//        this.parallelStack = new Stack<>();
+//        this.parallelSet = new HashSet<>();
+        this.serialStack = new Stack<>();
+        this.finishNodeSet = new HashSet<>();
     }
 
     public void build() {
+        //创建FiboSerialCondition
+        fiboEngine.setSerialCondition(buildSerialCondition());
+        //递归解析引擎节点
         recursionEngineNode();
         EngineManager.addEngine(fiboEngine);
+    }
+
+    /**
+     * 创建串行节点，并放到栈中
+     * @return
+     */
+    private FiboSerialCondition buildSerialCondition() {
+        FiboSerialCondition serialCondition = new FiboSerialCondition();
+        serialStack.push(serialCondition);
+        return serialCondition;
     }
 
     private void recursionEngineNode() {
@@ -89,119 +100,52 @@ public class EngineBuilder {
             return;
         }
         //并行节点放到并行节点栈中
-        if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
-            parallelStack.push(tempNodeDto);
+//        if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
+//            parallelStack.push(tempNodeDto);
+//        }
+        //创建runnable
+        FiboRunnable runnable = buildRunnable(tempNodeDto);
+        if(ObjectUtil.isNotNull(runnable)) {
+            //将节点加入到串行节点中
+            FiboSerialCondition serialCondition = serialStack.peek();
+            serialCondition.addRunnable(runnable);
         }
-        //创建condition
-        FiboCondition fiboCondition = buildCondition(tempNodeDto);
+        if(finishNodeSet.contains(curNodeDto.getNodeCode())) {
+            return;
+        }
         //后续节点
         List<String> nextNodes = splitNextCodes(tempNodeDto.getNextNodes());
         //没有后续节点则跳出
         if(CollUtil.isEmpty(nextNodes)) {
             return;
         }
-        //将condition放入栈
-        if(ObjectUtil.isNotNull(fiboCondition)) {
-            conditionStack.push(tempNodeDto.getNodeCode());
-        }
 
         for (String nextNode : nextNodes) {
             EngineNodeDto temp = nodeDtoMap.get(nextNode);
             curNodeDto = temp;
-            recursionEngineNode();
             //设置if、switch、all节点的分支
-            setConditionBranch(tempNodeDto, temp, fiboCondition);
-        }
-
-        if(ObjectUtil.isNull(fiboCondition)) {
-            return;
+            boolean isHaveBranch = setConditionBranch(tempNodeDto, temp, runnable);
+            recursionEngineNode();
+            //弹出
+            if(isHaveBranch) {
+                serialStack.pop();
+            }
         }
 
         if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
-            parallelStack.pop();
+//            parallelStack.pop();
             curNodeDto = nodeDtoMap.get(aggNodeDto.getNextNodes());
             aggNodeDto = null;
-            parallelSet.add(tempNodeDto.getNodeCode());
+//            parallelSet.add(tempNodeDto.getNodeCode());
             recursionEngineNode();
         }
 
-        //如果节点栈为空了，则当前节点为引擎根节点
-        if(conditionStack.empty()) {
-            engineRoot = fiboCondition;
-            fiboEngine.setFiboCondition(engineRoot);
-            return;
-        }
-        setNextRunnable(tempNodeDto, fiboCondition);
+        finishNodeSet.add(tempNodeDto.getNodeCode());
     }
 
-    /**
-     * 设置后续节点
-     * @param tempNodeDto
-     * @param fiboCondition
-     */
-    public void setNextRunnable(EngineNodeDto tempNodeDto, FiboCondition fiboCondition) {
-        //弹出前置节点
-        String preCode = conditionStack.peek();
-        if(preCode.equals(tempNodeDto.getNodeCode())) {
-            conditionStack.pop();
-            preCode = conditionStack.peek();
-        }
-        EngineNodeDto preNodeDto = nodeDtoMap.get(preCode);
-        //if和switch不需要设置后续节点
-        if(NodeTypeEnum.IF.getType().equals(preNodeDto.getNodeType())
-                || NodeTypeEnum.SWITCH.getType().equals(preNodeDto.getNodeType())) {
-            return;
-        }
-
-        //聚合节点如果出口未遍历完成
-        if(NodeTypeEnum.ALL.getType().equals(preNodeDto.getNodeType())
-                && !parallelSet.contains(preNodeDto.getNodeCode())) {
-            return;
-        }
-
-        FiboCondition preCondition = conditionMap.get(preCode);
-        preCondition.setNextRunnable(fiboCondition);
-        conditionStack.pop();
-
-    }
-
-    /**
-     * 设置if、switch、all节点的分支
-     * @param tempNodeDto 当前节点
-     * @param temp 分支节点
-     * @param fiboCondition 当前condition
-     */
-    private void setConditionBranch(EngineNodeDto tempNodeDto, EngineNodeDto temp, FiboCondition fiboCondition) {
-        if(ObjectUtil.isNull(fiboCondition)) {
-            return;
-        }
-        //if节点分支设置
-        if(NodeTypeEnum.IF.getType().equals(tempNodeDto.getNodeType())) {
-            String lineValue = JSONObject.parseObject(temp.getNodeConfig()).getString(EngineConstant.LINE_VALUE);
-            if(lineValue.equals(EngineConstant.STR_Y)) {
-                FiboIfCondition fiboIfCondition = (FiboIfCondition) fiboCondition;
-                fiboIfCondition.setTrueBranch(conditionMap.get(temp.getNodeCode()));
-            } else if(lineValue.equals(EngineConstant.STR_N)) {
-                FiboIfCondition fiboIfCondition = (FiboIfCondition) fiboCondition;
-                fiboIfCondition.setFalseBranch(conditionMap.get(temp.getNodeCode()));
-            }
-        } else if(NodeTypeEnum.SWITCH.getType().equals(tempNodeDto.getNodeType())) {
-            String lineValue = JSONObject.parseObject(temp.getNodeConfig()).getString(EngineConstant.LINE_VALUE);
-            FiboSwitchCondition fiboSwitchCondition = (FiboSwitchCondition) fiboCondition;
-            fiboSwitchCondition.addSwitchFiboRunnalbe(lineValue, conditionMap.get(temp.getNodeCode()));
-        } else if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
-            FiboAllCondition fiboAllCondition = (FiboAllCondition) fiboCondition;
-            fiboAllCondition.addRunnable(conditionMap.get(temp.getNodeCode()));
-        }
-    }
-
-    /**
-     * 创建condition
-     * @return
-     */
-    private FiboCondition buildCondition(EngineNodeDto nodeDto) {
-        if(conditionMap.containsKey(nodeDto.getNodeCode())) {
-            return conditionMap.get(nodeDto.getNodeCode());
+    private FiboRunnable buildRunnable(EngineNodeDto nodeDto) {
+        if(runnableMap.containsKey(nodeDto.getNodeCode())) {
+            return runnableMap.get(nodeDto.getNodeCode());
         }
         NodeTypeEnum nodeTypeEnum = NodeTypeEnum.getEnum(nodeDto.getNodeType());
         if(ObjectUtil.isNull(nodeTypeEnum)) {
@@ -209,14 +153,71 @@ public class EngineBuilder {
         }
         try {
             FiboCondition fiboCondition = NodeTypeClazzEnum.getFiboCondition(nodeTypeEnum);
-            if(ObjectUtil.isNotNull(fiboCondition)) {
-                fiboCondition.setFiboRunnable(buildEngineNode(nodeDto));
-                conditionMap.put(nodeDto.getNodeCode(), fiboCondition);
+            FiboEngineNode engineNode = buildEngineNode(nodeDto);
+            //if/switch节点
+            if(ObjectUtil.isNotNull(fiboCondition) && ObjectUtil.isNotNull(engineNode)) {
+                fiboCondition.addRunnable(engineNode);
             }
-            return fiboCondition;
+            //all节点
+            if(ObjectUtil.isNotNull(fiboCondition)) {
+                fiboCondition.setId(nodeDto.getId());
+                fiboCondition.setName(nodeDto.getBeanName());
+                runnableMap.put(nodeDto.getNodeCode(), fiboCondition);
+                return fiboCondition;
+            }
+            //普通节点
+            if(ObjectUtil.isNotNull(engineNode)) {
+                runnableMap.put(nodeDto.getNodeCode(), engineNode);
+                return engineNode;
+            }
+            return null;
         } catch (Exception e) {
             throw new EngineBuildException(StrUtil.format("引擎[{}]节点[{}]创建condition失败，异常：{}", nodeDto.getEngineId(), nodeDto.getId(), e));
         }
+    }
+
+    /**
+     * 设置if、switch、all节点的分支
+     * @param tempNodeDto 当前节点
+     * @param temp 分支节点
+     * @param fiboRunnable 当前condition
+     */
+    private boolean setConditionBranch(EngineNodeDto tempNodeDto, EngineNodeDto temp, FiboRunnable fiboRunnable) {
+        if(ObjectUtil.isNull(fiboRunnable)) {
+            return false;
+        }
+        //if节点分支设置
+        if(NodeTypeEnum.IF.getType().equals(tempNodeDto.getNodeType())) {
+            String lineValue = JSONObject.parseObject(temp.getNodeConfig()).getString(EngineConstant.LINE_VALUE);
+            //Y分支
+            if(EngineConstant.STR_Y.equals(lineValue)) {
+                FiboIfCondition fiboIfCondition = (FiboIfCondition) fiboRunnable;
+                fiboIfCondition.setTrueBranch(buildSerialCondition());
+                return true;
+            }
+            //N分支
+            if(EngineConstant.STR_N.equals(lineValue)) {
+                FiboIfCondition fiboIfCondition = (FiboIfCondition) fiboRunnable;
+                fiboIfCondition.setFalseBranch(buildSerialCondition());
+                return true;
+            }
+            //分支lineValue值不对
+            throw new EngineBuildException(StrUtil.format("引擎[{}]节点[{}]IF分支创建失败，lineValue：[{}]", tempNodeDto.getEngineId(), tempNodeDto.getId(), lineValue));
+        }
+        //switch节点
+        if(NodeTypeEnum.SWITCH.getType().equals(tempNodeDto.getNodeType())) {
+            String lineValue = JSONObject.parseObject(temp.getNodeConfig()).getString(EngineConstant.LINE_VALUE);
+            FiboSwitchCondition fiboSwitchCondition = (FiboSwitchCondition) fiboRunnable;
+            fiboSwitchCondition.addSwitchRunnalbe(lineValue, buildSerialCondition());
+            return true;
+        }
+        //all节点
+        if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
+            FiboAllCondition fiboAllCondition = (FiboAllCondition) fiboRunnable;
+            fiboAllCondition.addRunnable(buildSerialCondition());
+            return true;
+        }
+        return false;
     }
 
     /**

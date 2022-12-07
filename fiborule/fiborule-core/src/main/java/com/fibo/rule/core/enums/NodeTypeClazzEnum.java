@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *<p></p>
+ *<p>节点类型对应的condition</p>
  *
  *@author JPX
  *@since 2022/11/18 14:21
@@ -20,7 +20,7 @@ public enum NodeTypeClazzEnum {
     /**结束节点*/
     END(NodeTypeEnum.END, null),
     /**普通节点*/
-    NORMAL(NodeTypeEnum.NORMAL, FiboNormalCondition.class),
+    NORMAL(NodeTypeEnum.NORMAL, null),
     /**IF节点*/
     IF(NodeTypeEnum.IF, FiboIfCondition.class),
     /**SWITCH节点*/

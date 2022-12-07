@@ -107,7 +107,7 @@ public final class NioClientManager {
         fiboFieldDtoSwitch.setName("自定义属性名称");
         fiboFieldDtoSwitch.setDesc("自定义属性名称描述");
         fiboFieldDtoSwitch.setFieldName("valueC");
-        fiboFieldDtoSwitch.setType(FieldTypeEnum.JSON);
+//        fiboFieldDtoSwitch.setType(FieldTypeEnum.JSON);
         fiboFieldDtoListSwitch.add(fiboFieldDtoSwitch);
         fiboBeanDtoSwitch.setFiboFieldDtoList(fiboFieldDtoListSwitch);
         fiboBeanDtoList.add(fiboBeanDtoSwitch);

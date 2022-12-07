@@ -7,4 +7,8 @@ public interface FiboRunnable {
 
     void runner(Integer contextIndex);
 
+    Long getRunnableId();
+
+    String getRunnableName();
+
 }

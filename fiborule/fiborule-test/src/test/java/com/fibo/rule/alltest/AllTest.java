@@ -9,6 +9,7 @@ import com.fibo.rule.core.engine.EngineResponse;
 import com.fibo.rule.core.exception.EngineNotFoundException;
 import com.fibo.rule.core.runner.FiboApplication;
 import com.fibo.rule.request.TestRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.util.List;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AllTest.class)
 @EnableAutoConfiguration
@@ -57,6 +59,7 @@ public class AllTest {
         Assert.assertEquals("C", engineResponse.getContextBean(AllTestContext.class).getC());
         Assert.assertEquals("D", engineResponse.getContextBean(AllTestContext.class).getD());
         Assert.assertEquals("E", engineResponse.getContextBean(AllTestContext.class).getE());
+        log.info(engineResponse.getExecuteStepStr());
     }
 
     @Test(expected = EngineNotFoundException.class)

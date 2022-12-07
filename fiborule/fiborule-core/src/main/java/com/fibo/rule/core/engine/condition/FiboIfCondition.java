@@ -16,11 +16,12 @@ import lombok.Data;
 @Data
 public class FiboIfCondition extends FiboCondition {
 
-    private FiboRunnable trueBranch;
-    private FiboRunnable falseBranch;
+    private FiboSerialCondition trueBranch;
+    private FiboSerialCondition falseBranch;
 
     @Override
-    public void runnerBranch(Integer contextIndex) {
+    public void runner(Integer contextIndex) {
+        this.getIfNode().runner(contextIndex);
         FiboContext context = Contextmanager.getContext(contextIndex);
         boolean result = context.getIfResult(this.getIfNode().getNodeCode());
         if(result) {
@@ -35,6 +36,8 @@ public class FiboIfCondition extends FiboCondition {
     }
 
     private FiboEngineNode getIfNode() {
-        return (FiboEngineNode) this.getFiboRunnable();
+        return (FiboEngineNode) this.getRunnableList().get(0);
     }
+
+
 }

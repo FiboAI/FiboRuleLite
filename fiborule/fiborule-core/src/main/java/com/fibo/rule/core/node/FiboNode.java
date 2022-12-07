@@ -53,6 +53,7 @@ public abstract class FiboNode {
         } catch (Exception e) {
             nodeStep.setSuccess(false);
             nodeStep.setException(e);
+            throw e;
         } finally {
             stopWatch.stop();
             final long timeSpent = stopWatch.getTotalTimeMillis();
