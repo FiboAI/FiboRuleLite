@@ -1,13 +1,13 @@
-package com.fibo.rule.springboot.config;
+package com.fibo.rule.springboot;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.fibo.rule.common.utils.LOGOPrinter;
 import com.fibo.rule.core.client.FiboNioClient;
 import com.fibo.rule.core.property.FiboRuleConfig;
 import com.fibo.rule.core.property.FiboSceneConfig;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -33,6 +33,9 @@ public class FiboNioClientInit implements InitializingBean, DisposableBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        if(properties.getPrintBanner()) {
+            LOGOPrinter.print();
+        }
         Map<String, Set<String>> scenePackages;
         if(CollUtil.isNotEmpty(properties.getSceneList())) {
             scenePackages = properties.getSceneList().stream().collect(Collectors.toMap(FiboSceneConfig::getName, item -> {

@@ -5,12 +5,12 @@
     <parent>
         <artifactId>fiborule</artifactId>
         <groupId>com.fibo.rule</groupId>
-        <version>${revision}</version>
+        <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>fiborule-client-spring-boot-starter</artifactId>
+    <artifactId>fiborule-spring-boot-starter</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.fibo.rule</groupId>
             <artifactId>fiborule-spring</artifactId>
-            <version>${revision}</version>
+            <version>${fiborule.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -32,14 +32,5 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

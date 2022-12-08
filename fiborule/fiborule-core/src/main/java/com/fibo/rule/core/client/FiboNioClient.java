@@ -212,7 +212,7 @@ public final class FiboNioClient {
             started = true;
             startedLock.notifyAll();
         }
-        log.info("客户端初始化成功 app:{} 地址:{} 耗时:{}ms", app, fiboAddress, System.currentTimeMillis() - start);
+        log.info("客户端启动成功 app:{} 地址:{} 耗时:{}ms", app, fiboAddress, System.currentTimeMillis() - start);
     }
 
     /**

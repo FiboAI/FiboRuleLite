@@ -10,9 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -46,7 +44,7 @@ public class FiboAllCondition extends FiboCondition {
         boolean match = futures.stream().allMatch(item -> {
             try {
                 return item.get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (Exception e) {
                 log.error(StrUtil.format("[{}]:并行节点[{}-{}]执行异常", context.getRequestId(), this.getRunnableId(), this.getRunnableName()), e);
                 return false;
             }

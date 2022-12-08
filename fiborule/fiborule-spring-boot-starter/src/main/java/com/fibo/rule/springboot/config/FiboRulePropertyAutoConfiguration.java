@@ -1,6 +1,7 @@
 package com.fibo.rule.springboot.config;
 
 import com.fibo.rule.core.property.FiboRuleConfig;
+import com.fibo.rule.springboot.FiboRuleMonitorProperty;
 import com.fibo.rule.springboot.FiboRuleProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -16,14 +17,14 @@ import org.springframework.context.annotation.PropertySource;
  *@since 2022/11/28 16:53
  */
 @Configuration
-@EnableConfigurationProperties({FiboRuleProperty.class})
+@EnableConfigurationProperties({FiboRuleProperty.class, FiboRuleMonitorProperty.class})
 @PropertySource(
         name = "Fiborule Default Properties",
         value = "classpath:/META-INF/fiborule-default.properties")
 public class FiboRulePropertyAutoConfiguration {
 
     @Bean
-    public FiboRuleConfig fiboRuleConfig(FiboRuleProperty property){
+    public FiboRuleConfig fiboRuleConfig(FiboRuleProperty property, FiboRuleMonitorProperty monitorProperty){
         FiboRuleConfig config = new FiboRuleConfig();
         config.setApp(property.getApp());
         config.setServer(property.getServer());
@@ -33,10 +34,10 @@ public class FiboRulePropertyAutoConfiguration {
         config.setAllMaxWorkers(property.getAllMaxWorkers());
         config.setAllQueueLimit(property.getAllQueueLimit());
         config.setPrintExecuteLog(property.getPrintExecuteLog());
-        config.setEnableLog(property.getEnableLog());
-        config.setQueueLimit(property.getQueueLimit());
-        config.setDelay(property.getDelay());
-        config.setPeriod(property.getPeriod());
+        config.setEnableLog(monitorProperty.getEnableLog());
+        config.setQueueLimit(monitorProperty.getQueueLimit());
+        config.setDelay(monitorProperty.getDelay());
+        config.setPeriod(monitorProperty.getPeriod());
         config.setMaxFrameLength(property.getMaxFrameLength());
         config.setInitRetryTimes(property.getInitRetryTimes());
         config.setInitRetrySleepMs(property.getInitRetrySleepMs());
