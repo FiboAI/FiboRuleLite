@@ -1,8 +1,5 @@
 package com.fibo.rule.common.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Optional;
 
 /**
@@ -12,8 +9,6 @@ import java.util.Optional;
  *@since 2022/12/8 13:46
  */
 public class LOGOPrinter {
-
-	private static final Logger LOG = LoggerFactory.getLogger(LOGOPrinter.class);
 	/**
 	 * 当前版本号
 	 */
@@ -21,7 +16,6 @@ public class LOGOPrinter {
 
 	public static void print() {
 		StringBuilder str = new StringBuilder("\n");
-		str.append("\n");
 		str.append("  ______   _   _               _____            _        \n");
 		str.append(" |  ____| (_) | |             |  __ \\          | |       \n");
 		str.append(" | |__     _  | |__     ___   | |__) |  _   _  | |   ___ \n");
@@ -29,7 +23,7 @@ public class LOGOPrinter {
 		str.append(" | |      | | | |_) | | (_) | | | \\ \\  | |_| | | | |  __/\n");
 		str.append(" |_|      |_| |_.__/   \\___/  |_|  \\_\\  \\__,_| |_|  \\___|\n");
 		str.append("\n  Version: " + VERSION_NO + "\n");
-		LOG.info(str.toString());
+		System.out.println(str);
 	}
 
 	private static String getVersion(){

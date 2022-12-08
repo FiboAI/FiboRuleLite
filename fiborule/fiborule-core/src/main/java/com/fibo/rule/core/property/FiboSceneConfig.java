@@ -18,6 +18,6 @@ public class FiboSceneConfig {
     /**
      * 场景路径
      */
-    private String url;
+    private String path;
 
 }

@@ -16,27 +16,27 @@ public class FiboRuleConfig {
     private Long app;
     /**服务端地址host:port*/
     private String server;
-    /**是否打印fiborule banner*/
+    /**是否打印fiborule banner，默认true*/
     private Boolean printBanner;
-    /**context数量*/
+    /**context数量，默认1024*/
     private Integer contextSize;
-    /**场景列表*/
+    /**场景列表，默认场景default，扫描全包*/
     private List<FiboSceneConfig> sceneList;
-    /**并行节点线程池最大线程数*/
+    /**并行节点线程池最大线程数，默认16*/
     private Integer allMaxWorkers;
-    /**并行节点线程池最大队列数量*/
+    /**并行节点线程池最大队列数量，默认512*/
     private Integer allQueueLimit;
-    /**是否打印执行过程中日志*/
+    /**是否打印执行过程中日志，默认true*/
     private Boolean printExecuteLog;
-    /**是否打印监控log*/
+    /**是否打印监控log，默认false*/
     private Boolean enableLog;
-    /**监控存储信息最大队列数量*/
+    /**监控存储信息最大队列数量，默认200*/
     private Integer queueLimit;
-    /**延迟多少秒打印*/
+    /**监控信息延迟多少秒打印，默认5分钟*/
     private Long delay;
-    /**每隔多少秒打印*/
+    /**监控信息每隔多少秒打印，默认5分钟*/
     private Long period;
-    /**default 16M, size bigger than this may dirty data*/
+    /**默认16M，大小大于此值可能会损坏数据*/
     private Integer maxFrameLength;
     /**初始化重试次数，默认3次*/
     private Integer initRetryTimes;

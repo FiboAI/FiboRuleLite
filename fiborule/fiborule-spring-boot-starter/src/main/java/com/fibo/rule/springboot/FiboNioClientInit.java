@@ -39,10 +39,10 @@ public class FiboNioClientInit implements InitializingBean, DisposableBean {
         Map<String, Set<String>> scenePackages;
         if(CollUtil.isNotEmpty(properties.getSceneList())) {
             scenePackages = properties.getSceneList().stream().collect(Collectors.toMap(FiboSceneConfig::getName, item -> {
-                if (StrUtil.isEmpty(item.getUrl())) {
+                if (StrUtil.isEmpty(item.getPath())) {
                     return new HashSet<>();
                 }
-                return new HashSet<>(StrUtil.split(item.getUrl(), StrUtil.C_COMMA));
+                return new HashSet<>(StrUtil.split(item.getPath(), StrUtil.C_COMMA));
             }));
         } else {
             scenePackages = new HashMap<>();
