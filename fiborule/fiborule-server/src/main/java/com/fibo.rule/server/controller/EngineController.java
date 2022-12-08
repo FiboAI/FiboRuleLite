@@ -1,14 +1,14 @@
 package com.fibo.rule.server.controller;
 
-import com.fibo.rule.common.dto.FiboBeanDto;
-import com.fibo.rule.server.dao.model.entity.App;
 import com.fibo.rule.server.dao.model.entity.Engine;
-import com.fibo.rule.server.dao.model.param.*;
+import com.fibo.rule.server.dao.model.param.EngineDetailParam;
+import com.fibo.rule.server.dao.model.param.EngineEditParam;
+import com.fibo.rule.server.dao.model.param.EngineListParam;
+import com.fibo.rule.server.dao.model.param.EngineReleaseParam;
 import com.fibo.rule.server.dao.model.vo.EngineDetailVO;
 import com.fibo.rule.server.model.ResponseEntityBuilder;
 import com.fibo.rule.server.model.ResponseEntityDto;
 import com.fibo.rule.server.model.SimpleCommonPrimaryKeyParam;
-import com.fibo.rule.server.service.AppService;
 import com.fibo.rule.server.service.EngineService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/engine")
 public class EngineController {
-    
+
     @Resource
     private EngineService engineService;
 
@@ -42,6 +42,7 @@ public class EngineController {
 
     /**
      * 获取引擎详情
+     *
      * @param param
      * @return
      */
@@ -52,6 +53,7 @@ public class EngineController {
 
     /**
      * 引擎发布、取消发布
+     *
      * @param param
      * @return
      */
@@ -67,5 +69,5 @@ public class EngineController {
         return ResponseEntityBuilder.buildNormalResponse();
     }
 
-    
+
 }

@@ -10,5 +10,5 @@ import java.util.List;
 public interface AppMapper extends BaseMapper<App> {
 
 
-    List<App> selectListByPage(AppListParam param);
+    List<App> selectList(AppListParam param);
 }

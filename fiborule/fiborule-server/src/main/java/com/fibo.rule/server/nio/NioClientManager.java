@@ -41,14 +41,18 @@ public final class NioClientManager {
     //app scene nodes
     private static Map<Long, Map<String, List<FiboBeanDto>>> appSceneNodesMap = new ConcurrentHashMap<>();
 
+    //app scene clazzName fiboBeanDto
+    private static Map<Long, Map<String, Map<String, FiboBeanDto>>> appSceneClazzNodeMap = new ConcurrentHashMap<>();
+
     //remain app`s last client leaf info
 //    private static Map<Integer, Map<Byte, Map<String, NodeInfo>>> appNodeLeafClazzMap = new ConcurrentHashMap<>();
 
     @Resource
     private ServerProperties properties;
-    
+
     @PostConstruct
     private void initMap() {
+
         FiboNioDto fiboNioDto = new FiboNioDto();
         fiboNioDto.setId("通信id");
         fiboNioDto.setAddress("127.0.0.1:8080");
@@ -57,6 +61,7 @@ public final class NioClientManager {
         fiboNioDto.setType(NioTypeEnum.REQ);
         fiboNioDto.setUnReleaseEngineId(1L);
         Map<String, List<FiboBeanDto>> sceneBeansMap = new ConcurrentHashMap<>();
+
         //mock节点信息
         List<FiboBeanDto> fiboBeanDtoList = new ArrayList<>();
         FiboBeanDto fiboBeanDtoIf = new FiboBeanDto();
@@ -64,6 +69,7 @@ public final class NioClientManager {
         fiboBeanDtoIf.setDesc("节点名称描述");
         fiboBeanDtoIf.setClazzName("TestA");
         fiboBeanDtoIf.setNodeClazz("com.fibo.rule.test.TestA");
+
         //节点类型 if
         fiboBeanDtoIf.setType(NodeTypeEnum.IF);
         List<FiboFieldDto> fiboFieldDtoListIf = new ArrayList<>();
@@ -107,9 +113,14 @@ public final class NioClientManager {
         fiboFieldDtoSwitch.setName("自定义属性名称");
         fiboFieldDtoSwitch.setDesc("自定义属性名称描述");
         fiboFieldDtoSwitch.setFieldName("valueC");
-//        fiboFieldDtoSwitch.setType(FieldTypeEnum.JSON);
+        fiboFieldDtoSwitch.setType(FieldTypeEnum.STRING);
         fiboFieldDtoListSwitch.add(fiboFieldDtoSwitch);
         fiboBeanDtoSwitch.setFiboFieldDtoList(fiboFieldDtoListSwitch);
+        Map<String, String> branchMap = new HashMap<>();
+        branchMap.put("String", "字符串");
+        branchMap.put("Number", "数字类型");
+        branchMap.put("Date", "时间类型");
+        fiboBeanDtoSwitch.setBranchMap(branchMap);
         fiboBeanDtoList.add(fiboBeanDtoSwitch);
 
         sceneBeansMap.put("mock场景", fiboBeanDtoList);
@@ -123,7 +134,6 @@ public final class NioClientManager {
 
     }
 
-    
 
     public static synchronized void unregister(Channel channel) {
         ChannelInfo info = channelInfoMap.get(channel);
@@ -156,6 +166,7 @@ public final class NioClientManager {
             //remove client fobiBean class
             Set<String> scenes = appScenesMap.get(app);
             Map<String, List<FiboBeanDto>> sceneNodesMap = appSceneNodesMap.get(app);
+            Map<String, Map<String, FiboBeanDto>> sceneClazzNodeMap = appSceneClazzNodeMap.get(app);
             if (!CollectionUtils.isEmpty(scenes) && !CollectionUtils.isEmpty(sceneNodesMap)) {
                 appScenesMap.remove(app);
                 for (String scene : scenes) {
@@ -163,6 +174,13 @@ public final class NioClientManager {
                     if (!CollectionUtils.isEmpty(fiboBeanDtos)) {
                         sceneNodesMap.remove(scene);
                     }
+                    if (!CollectionUtils.isEmpty(sceneClazzNodeMap)) {
+                        Map<String, FiboBeanDto> clazzNodeMap = sceneClazzNodeMap.get(scene);
+                        if (!CollectionUtils.isEmpty(clazzNodeMap)) {
+//                            FiboBeanDto fiboBeanDto = clazzNodeMap.get()
+                        }
+                    }
+                    sceneClazzNodeMap.get(scene);
                 }
                 appSceneNodesMap.remove(app);
             }
@@ -200,8 +218,13 @@ public final class NioClientManager {
         if (null != sceneBeansMap) {
             appScenesMap.put(app, sceneBeansMap.keySet());
             for (String scene : sceneBeansMap.keySet()) {
-                appSceneNodesMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).put(scene, sceneBeansMap.get(scene));
-//                    appNodeLeafClazzMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(leafNodeInfo.getType(), k -> new ConcurrentHashMap<>()).put(leafNodeInfo.getClazz(), leafNodeInfo);
+                List<FiboBeanDto> fiboBeanDtoList = sceneBeansMap.get(scene);
+                appSceneNodesMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).put(scene, fiboBeanDtoList);
+                for (FiboBeanDto fiboBeanDto : fiboBeanDtoList) {
+                    appSceneClazzNodeMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(scene, k -> new ConcurrentHashMap<>()).put(fiboBeanDto.getClazzName(), fiboBeanDto);
+                }
+
+                //appNodeLeafClazzMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(leafNodeInfo.getType(), k -> new ConcurrentHashMap<>()).put(leafNodeInfo.getClazz(), leafNodeInfo);
             }
         }
     }
@@ -213,7 +236,7 @@ public final class NioClientManager {
         }
         return null;
     }
-    
+
     /**
      * 引擎发布和取消发布
      */
@@ -224,8 +247,13 @@ public final class NioClientManager {
             updateModel.setEngineDtoList(engineDtoList);
             updateModel.setUnReleaseEngineId(engineId);
             updateModel.setAppId(app);
-            updateModel.setOperationType(NioOperationTypeEnum.UPDATE);
             updateModel.setType(NioTypeEnum.REQ);
+            
+            if (null == engineId) {
+                updateModel.setOperationType(NioOperationTypeEnum.RELEASE_ENGINE);
+            } else {
+                updateModel.setOperationType(NioOperationTypeEnum.UNRELEASE_ENGINE);
+            }
             byte[] updateModelBytes = JacksonUtils.toJsonBytes(updateModel);
             for (Map.Entry<String, Channel> entry : clientMap.entrySet()) {
                 submitRelease(entry.getValue(), updateModelBytes);
@@ -260,6 +288,10 @@ public final class NioClientManager {
     public synchronized List<FiboBeanDto> getNodesList(Long appId, String scene, Integer nodeType) {
         List<FiboBeanDto> fiboBeanDtoList = appSceneNodesMap.get(appId).get(scene);
         return fiboBeanDtoList.stream().filter(fiboBeanDto -> fiboBeanDto.getType().getType().equals(nodeType)).collect(Collectors.toList());
+    }
+
+    public synchronized FiboBeanDto getNodeByClazz(Long appId, String scene, String clazzName) {
+        return appSceneClazzNodeMap.get(appId).get(scene).get(clazzName);
     }
 
 

@@ -14,8 +14,6 @@ public class ControllerException {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object handleValidException(MethodArgumentNotValidException e) {
         //将错误信息返回给前台
-        
-//        return Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage();
         return ResponseEntityBuilder.buildErrorResponse(ErrorCodeEnum.PARAMS_EXCEPTION.getCode(), e.getBindingResult().getFieldError().getDefaultMessage());
     }
 
