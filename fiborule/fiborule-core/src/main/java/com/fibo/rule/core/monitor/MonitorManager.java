@@ -3,12 +3,9 @@ package com.fibo.rule.core.monitor;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.fibo.rule.core.context.Contextmanager;
-import com.fibo.rule.core.exception.MonitorManagerNotInitException;
 import com.fibo.rule.core.property.FiboRuleConfig;
 import com.fibo.rule.core.util.BoundedPriorityBlockingQueue;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -39,9 +36,6 @@ public class MonitorManager {
 	}
 
 	public static MonitorManager loadInstance(){
-//		if (ObjectUtil.isNull(instance)){
-//			throw new MonitorManagerNotInitException("监控类未初始化");
-//		}
 		return instance;
 	}
 
@@ -60,12 +54,12 @@ public class MonitorManager {
 	}
 
 	public void addStatistics(NodeStatistics statistics){
-		if(statisticsMap.containsKey(statistics.getComponentClazzName())){
-			statisticsMap.get(statistics.getComponentClazzName()).add(statistics);
+		if(statisticsMap.containsKey(statistics.getNodeClazzName())){
+			statisticsMap.get(statistics.getNodeClazzName()).offer(statistics);
 		}else{
 			BoundedPriorityBlockingQueue<NodeStatistics> queue = new BoundedPriorityBlockingQueue<>(config.getQueueLimit());
 			queue.offer(statistics);
-			statisticsMap.put(statistics.getComponentClazzName(), queue);
+			statisticsMap.put(statistics.getNodeClazzName(), queue);
 		}
 	}
 

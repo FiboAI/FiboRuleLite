@@ -13,6 +13,11 @@ import com.fibo.rule.core.node.FiboNode;
 public class ComplexM extends FiboNode {
     @Override
     public void runnerStep() {
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         ComplexRequest req = this.getRequestData();
         ComplexContext contextBean = this.getContextBean(ComplexContext.class);
         contextBean.setM(req.getM());

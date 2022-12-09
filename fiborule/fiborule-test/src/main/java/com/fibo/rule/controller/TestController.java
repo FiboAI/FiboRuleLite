@@ -1,6 +1,8 @@
 package com.fibo.rule.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.fibo.rule.complex.context.ComplexContext;
+import com.fibo.rule.complex.request.ComplexRequest;
 import com.fibo.rule.core.engine.EngineResponse;
 import com.fibo.rule.core.runner.FiboApplication;
 import com.fibo.rule.iftest.context.IfTestContext;
@@ -34,6 +36,14 @@ public class TestController {
         req.setD("D");
         req.setE("E");
         EngineResponse engineResponse = fiboApplication.runner(1l, req, IfTestContext.class);
+        return JSON.toJSONString(engineResponse);
+    }
+
+    @RequestMapping(value = "/test1", method = RequestMethod.POST)
+    public String test1() {
+        ComplexRequest req = new ComplexRequest();
+        req.setF("I");
+        EngineResponse engineResponse = fiboApplication.runner(2l, req, ComplexContext.class);
         return JSON.toJSONString(engineResponse);
     }
 

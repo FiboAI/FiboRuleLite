@@ -13,13 +13,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "fiborule.monitor", ignoreUnknownFields = true)
 public class FiboRuleMonitorProperty {
 
-    /**是否打印监控log*/
+    /**是否打印监控log，默认false*/
     private Boolean enableLog;
-    /**监控存储信息最大队列数量*/
+    /**监控存储信息最大队列数量，默认200*/
     private Integer queueLimit;
-    /**延迟多少秒打印*/
+    /**监控信息延迟多少秒打印，默认5分钟*/
     private Long delay;
-    /**每隔多少秒打印*/
+    /**监控信息每隔多少秒打印，默认5分钟*/
     private Long period;
 
 }

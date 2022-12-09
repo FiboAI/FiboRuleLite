@@ -8,7 +8,7 @@ package com.fibo.rule.core.monitor;
  */
 public class NodeStatistics implements Comparable<NodeStatistics>{
 
-	private String componentClazzName;
+	private String nodeClazzName;
 
 	private long timeSpent;
 
@@ -16,17 +16,17 @@ public class NodeStatistics implements Comparable<NodeStatistics>{
 
 	private long recordTime;
 	
-	public NodeStatistics(String componentClazzName, long timeSpent) {
-		this.componentClazzName = componentClazzName;
+	public NodeStatistics(String nodeClazzName, long timeSpent) {
+		this.nodeClazzName = nodeClazzName;
 		this.timeSpent = timeSpent;
 		this.recordTime = System.currentTimeMillis();
 	}
-	public String getComponentClazzName() {
-		return componentClazzName;
+	public String getNodeClazzName() {
+		return nodeClazzName;
 	}
 
-	public void setComponentClazzName(String componentClazzName) {
-		this.componentClazzName = componentClazzName;
+	public void setNodeClazzName(String nodeClazzName) {
+		this.nodeClazzName = nodeClazzName;
 	}
 
 	public long getTimeSpent() {

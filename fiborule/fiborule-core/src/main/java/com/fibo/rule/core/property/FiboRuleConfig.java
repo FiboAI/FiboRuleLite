@@ -16,7 +16,7 @@ public class FiboRuleConfig {
     private Long app;
     /**服务端地址host:port*/
     private String server;
-    /**是否打印fiborule banner，默认true*/
+    /**是否打印fiborule logo，默认true*/
     private Boolean printBanner;
     /**context数量，默认1024*/
     private Integer contextSize;
