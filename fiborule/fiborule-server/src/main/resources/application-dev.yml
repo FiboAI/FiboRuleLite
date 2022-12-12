@@ -1,6 +1,6 @@
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/fibo_rule?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://127.0.0.1:13306/fibo_rule?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
       username: root
-      password: 123456
+      password: 4paradigm_test

@@ -61,7 +61,7 @@
             </encoder>
         </appender>
 
-        <root level="INFO">
+        <root level="DEBUG">
             <!--appender将会添加到这个loger-->
             <appender-ref ref="fileInfoLog"/>
         </root>

@@ -2,11 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fibo.rule.server.dao.mapper.AppMapper">
 
+    <sql id="Base_Column_List">
+        id, app_name, app_code, descriptions, status
+    </sql>
+    
     <select id="selectList"
             resultType="com.fibo.rule.server.dao.model.entity.App"
             parameterType="com.fibo.rule.server.dao.model.param.AppListParam">
         SELECT
-        *
+        <include refid="Base_Column_List"/>
         FROM t_app tapp
         WHERE tapp.del_flag=0
         <if test="null != appName and appName != ''">

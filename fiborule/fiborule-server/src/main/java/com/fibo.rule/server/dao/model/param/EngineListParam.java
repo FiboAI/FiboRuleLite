@@ -25,5 +25,11 @@ public class EngineListParam {
     
     @ApiModelProperty("状态：1有效，0无效")
     private Integer status;
+
+    @ApiModelProperty("pageNum")
+    private Integer pageNum = 1;
+
+    @ApiModelProperty("pageSize")
+    private Integer pageSize = 10;
     
 }

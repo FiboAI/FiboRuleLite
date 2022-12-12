@@ -50,7 +50,7 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
 
     @Override
     public PageInfo<Engine> engineList(EngineListParam param) {
-        return PageHelper.startPage(1, 10)
+        return PageHelper.startPage(param.getPageNum(), param.getPageSize())
                 .doSelectPageInfo(() -> engineMapper.selectListByPage(param));
     }
 
