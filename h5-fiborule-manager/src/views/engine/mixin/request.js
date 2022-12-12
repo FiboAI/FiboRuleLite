@@ -12,7 +12,6 @@ export default{
             nodeEdit({
                 "engineId": this.engineId,
                 "nodeGroup": "",
-                
                 "nodeName":node.userData.nodeName,
                 "nodeType": node.userData.nodeType,
                 "nodeX": node.x,
