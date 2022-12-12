@@ -23,6 +23,7 @@ export default {
             this.currNode = node
             if (this.Stage.mode != 'edit') {
                 this.hoverNode.visible = true
+                this.LinkhoverNode.visible = false
             }
             this.hoverNode.x = node.x - 2
             this.hoverNode.y = node.y - 2
@@ -36,11 +37,17 @@ export default {
             // console.log(1)
             // this.hoverNode.visible = false
         },
+        
         tempLink() {
+
+            
+
             this.linkStartNode = this.currNode
+            if(this.linkStartVerdict()){
+                this.linkStartNode = null
+                return
+            }
             this.linkStatus = true
-
-
         },
         closeLink() {
 
@@ -59,17 +66,27 @@ export default {
                 this.linkAddevent(link)
 
 
-            } else if (this.currLink.userData.lastEnd) {
+            } else if (this.currLink.userData&&this.currLink.userData.lastEnd) {
                 let LinkModel = this.getLinkModel(this.currLink.begin.object, this.currLink.userData.lastEnd)
                 this.currLink.setEnd(this.currLink.userData.lastEnd, LinkModel.end)
                 this.currLink.begin.position = LinkModel.start
                 this.currLink.direction = LinkModel.direction
                 // console.log(this.currLink.userData.lastEnd)
             } else {
+                this.currLink.begin.object.removeOutLink(this.currLink)
                 this.Layer.removeChild(this.currLink)
             }
 
             this.currLink = null
+
+        },
+        linkStartVerdict(){
+            // console.log(this.linkStartNode.outLinks,!this.linkStartNode.userData.haveMoreChildren)
+            // 非多子节点只能出一条线
+            // console.log(this.linkStartNode.outLinks)
+            if(this.linkStartNode.outLinks&&this.linkStartNode.outLinks.length>0&&!this.linkStartNode.userData.haveMoreChildren){
+                return true
+            }
 
         },
         linkAddevent(link) {
@@ -94,6 +111,7 @@ export default {
                 that.currHoverLink = this
                 that.LinkhoverNode.translateCenterTo(endPoint.x, endPoint.y)
                 that.LinkhoverNode.show()
+                that.hoverNode.hide()
             })
         },
         // 检测坐标是否在节点内
@@ -121,8 +139,27 @@ export default {
                 this.linkStatus = true
                 this.LinkhoverNode.hide()
             })
+
+            var deleteTipNode = this.newTipNode('x')
+            deleteTipNode.translateCenterTo(hoverNode.width, 0);
+            deleteTipNode.setStyles({
+                fillStyle:'red'
+            })
+            deleteTipNode.on('mouseenter',()=>{
+                this.mycanvas.style.cursor = 'pointer'
+            })
+            deleteTipNode.on('click',()=>{
+                this.deleteLink()
+            })
+
             hoverNode.addChild(tipNode)
+            hoverNode.addChild(deleteTipNode)
             this.eventLayer.addChild(hoverNode)
+        },
+        deleteLink(){
+            // console.log(this.currHoverLink)
+            this.Layer.removeChild(this.currHoverLink)
+            this.LinkhoverNode.hide()
         },
         getLinkModel(startLocation, endLocation) {
             let x = Math.abs(startLocation.x - endLocation.x)
@@ -170,7 +207,7 @@ export default {
                     link.toArrowSize = 15;
                     link.direction = 'vertical'
                     link.setStyles('lineDash', [6, 2]);
-                    link.setStyles('lineWidth', 2);
+                    link.setStyles('lineWidth', 1);
                     link.setStyles('strokeStyle', '#000');
                     link.showSelected = false
                     // link.direction = 'horizontal';

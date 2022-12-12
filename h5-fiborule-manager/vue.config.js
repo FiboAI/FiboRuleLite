@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
+const { resolve } = require('path')
 const path = require('path')
 const proxyObj = require('./baseUrl')
 module.exports = defineConfig({
@@ -10,5 +11,12 @@ module.exports = defineConfig({
     proxy: process.env.OPEN_PROXY === false ? {} : proxyObj,
 		port: 8888,
 		open: false,
+  },
+  configureWebpack:{
+    resolve:{
+      alias:{
+        'c':resolve('src/components')
+      }
+    }
   }
 })

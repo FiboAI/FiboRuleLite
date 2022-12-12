@@ -4,20 +4,12 @@ var proxyObj = {}
 switch (process.env.NODE_ENV) {
 	case 'development': // 个人服务器后端地址
 		proxyObj = {
-			'/Riskmanage': {
+			'/rule': {
 				target: 'http://localhost:8080', // 个人服务器后端地址 - Riskmanage
 				changeOrigin: true, // 是否跨域
 				pathRewrite: {
-					'^/Riskmanage': '/Riskmanage'
+					'^/rule': '/rule'
 				}
-			},
-			'/trading': {
-				target: 'http://localhost:8080', // 开发环境 - trading
-				changeOrigin: true, // 是否跨域
-				pathRewrite: {
-					'^/trading': '/trading'
-				},
-	
 			},
 		}
 		break

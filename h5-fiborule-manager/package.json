@@ -4,7 +4,11 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "serve:nian": "vue-cli-service serve --mode A",
+    "serve:B": "vue-cli-service serve --mode B",
+    "serve:C": "vue-cli-service serve --mode C",
+    "serve:D": "vue-cli-service serve --mode D"
   },
   "dependencies": {
     "axios": "^0.18.1",

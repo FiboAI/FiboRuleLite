@@ -4,18 +4,18 @@
         <div class="nodeList" :style="{ height: contentHeight }">
             <!-- 节点列表 -->
             <!-- :class="'node nodeType' + item.nodeType" -->
-            <div v-for="item in nodeList" style="cursor:pointer;user-select: none;text-align: center;"
+            <div v-for="item in nodeList" v-if="item.listShow" style="cursor:pointer;user-select: none;text-align: center;"
                 @mousedown="nodeMouesDown($event, item)">
                 <!-- {{ item.nodeName }} -->
-                <img :src="'./img/nodeimg/nodeType' + item.nodeType + '.png'" alt=""
+                <img :src="'./img/nodeimg/nodeType' + 1 + '.png'" alt=""
                     style="height: 50px;margin-top: 20px;">
             </div>
         </div>
         <!-- 引擎 -->
         <div id="canvas" :style="{ height: contentHeight, width: contentWidth }" />
         <div v-if="addNodeStatus" :class="'tempNodeShow'" :style="{ top: addNodeY, left: addNodeX }">
-            <img :src="'./img/nodeimg/nodeType' + addNodeTempShow.nodeType + '.png'" alt=""
-                style="height: 50px;margin-top: 20px;">
+            <!-- <img :src="'./img/nodeimg/nodeType' + addNodeTempShow.nodeType + '.png'" alt=""
+                style="height: 50px;margin-top: 20px;"> -->
         </div>
         <!-- <div class="startLine" v-show="showStartLine" @mouseout="closeStartLine"
             :style="{ top: startLineTop, left: startLineLeft, height: startLineHeight, width: startLineWidth }">
@@ -28,9 +28,10 @@
 import nodeList from './nodeList'
 import addNode from './mixin/addNode'
 import link from './mixin/link'
+import request from './mixin/request'
 
 export default {
-    mixins: [link, addNode],
+    mixins: [link, addNode,request],
     data() {
         return {
             contentWidth: '100vw',
@@ -42,15 +43,17 @@ export default {
             hoverNode: null,
             nodeList,
             mycanvas: null,
-            scale: 1
+            scale: 1,
+            engineId:0
         }
     },
     created() {
-        console.log(this.nodeList)
+        this.engineId = this.$route.params.engineId
     },
     mounted() {
 
         this.initTopo()
+        this.getNodeList()
         this.mycanvas = document.querySelector('#canvas')
         window.onresize = (e) => {
             this.contentWidth = window.innerWidth + 'px'
@@ -120,15 +123,7 @@ export default {
 
             this.Stage.wheelZoom = null;
             this.Layer.setBackground('url(./img/decisionBcg.jpg)', '100% 100%')
-            this.Layer.setStyles({
-                'lineWidth': 8,
-                'strokeStyle': '#E1E1E1',
-                'font': '12px arial',
-                'shadowColor': '#E1E1E1',
-                'shadowBlur': 5,
-                'shadowOffsetX': 3,
-                'shadowOffsetY': 3,
-            });
+           
             this.Layer.removeChild = function (obj) {
                 let index = this.children.findIndex(x => x === obj)
                 this.children.splice(index, 1)
@@ -138,7 +133,7 @@ export default {
 
             this.Stage.on('mouseup', (e) => {
                 if (this.addNodeStatus) (
-                    this.addNode(e)
+                    this.addNode(this.addNodeTempShow)
                 )
                 if (this.linkStatus) {
                     this.closeLink()

@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/engineList',
+    redirect: '/app',
   },
   {
     path: '/',
@@ -15,14 +15,22 @@ const routes = [
     component: () => import('../views/home.vue'),
     children: [
       {
-        path: '/engineList',
+        path: '/engineList/:appId',
         name: 'engineList',
+        meta: { title: '引擎列表' },
         component: () => import('../views/engineList.vue')
       },
       {
-        path: '/engine',
+        path: '/engine/:engineId',
         name: 'engine',
+        meta: { },
         component: () => import('../views/engine/index.vue')
+      },
+      {
+        path: '/app',
+        name: 'app',
+        meta: { title: 'APP列表' },
+        component: () => import('../views/appList.vue')
       },
     ]
   },

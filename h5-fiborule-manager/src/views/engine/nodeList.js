@@ -1,54 +1,68 @@
 export default [
     {
-        nodeType: 0,
+        nodeType: 1,
         nodeName: '开始',
         edges: 3,
         shape: 'polyNode',
         width: 50,
         height: 50,
-        fillStyle:'#2775b6'
-    },
-
-    {
-        nodeType: 1,
-        nodeName: '初始化',
-        shape: 'rectangle',
-
-        width: 100,
-        height: 50,
-        fillStyle:'#c2c2ff'
+        fillStyle:'#fff',
+        listShow:false,
     },
     {
         nodeType: 2,
-        nodeName: '配置',
-        shape: 'rectangle',
-        width: 100,
-        height: 50,
-        fillStyle:'#c2c2ff'
-    },
-    {
-        nodeType: 3,
-        nodeName: '条件',
-        edges: 4,
-        shape: 'polyNode',
-        
-        width: 100,
-        height: 50,
-        fillStyle:'#fbc31d'
-    }
-    ,
-    {
-        nodeType: 4,
-        nodeName: '并行聚合',
-        shape: 'circle',
-        size: 50,
-        fillStyle:'#9be4f1'
-    },
-    {
-        nodeType: 5,
         nodeName: '结束',
         shape: 'circle',
         size: 50,
-        fillStyle:'#000'
-    }
+        fillStyle:'#fff',
+        listShow:true,
+    },
+    {
+        nodeType: 3,
+        nodeName: '普通节点',
+        shape: 'circle',
+        size: 50,
+        fillStyle:'#fff',
+        listShow:true,
+    },
+    {
+        nodeType: 4,
+        nodeName: 'if节点',
+        edges: 4,
+        shape: 'polyNode',
+        width: 70,
+        height: 50,
+        fillStyle:'#fff',
+        listShow:true,
+    },
+    {
+        nodeType: 5,
+        nodeName: 'switch',
+        shape: 'polyNode',
+        edges: 5,
+        width: 50,
+        height: 50,
+        fillStyle:'#fff',
+        haveMoreChildren:true,
+        listShow:true,
+    },
+    {
+        nodeType: 6,
+        nodeName: '并行',
+        shape: 'circle',
+        size: 50,
+        fillStyle:'#fff',
+        listShow:true,
+        haveMoreChildren:true,
+        deriveNode:7
+    },
+    {
+        nodeType: 7,
+        nodeName: '聚合',
+        shape: 'circle',
+        size: 50,
+        fillStyle:'#fff',
+        listShow:false,
+    },
+    
 ]
