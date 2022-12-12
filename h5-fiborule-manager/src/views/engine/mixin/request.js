@@ -10,6 +10,7 @@ export default{
         requestAddNode(node){
             console.log(node)
             nodeEdit({
+                
                 "engineId": this.engineId,
                 "nodeGroup": "",
                 "nodeName":node.userData.nodeName,
