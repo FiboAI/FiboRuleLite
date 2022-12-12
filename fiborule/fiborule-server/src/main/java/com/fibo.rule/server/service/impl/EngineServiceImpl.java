@@ -101,7 +101,11 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
                 .eq(EngineNode::getStatus, StatusEnum.VALID.status)
                 .eq(EngineNode::getDelFlag, DelFlagEnum.DEL_NO.status));
         List<EngineNodeDetailVO> nodesDetail = new ArrayList<>();
-        BeanUtils.copyProperties(nodes, nodesDetail);
+        for (EngineNode node : nodes) {
+            EngineNodeDetailVO detailVO = new EngineNodeDetailVO();
+            BeanUtils.copyProperties(node, detailVO);
+            nodesDetail.add(detailVO);
+        }
         vo.setNodesDetail(nodesDetail);
         return vo;
     }
@@ -149,7 +153,12 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
                 .eq(EngineNode::getStatus, StatusEnum.VALID.status));
         List<EngineNodeDto> nodeList = new ArrayList<>();
         if (!CollectionUtils.isEmpty(engineNodeList)) {
-            BeanUtils.copyProperties(engineNodeList, nodeList);
+            for (EngineNode engineNode : engineNodeList) {
+                EngineNodeDto engineNodeDto = new EngineNodeDto();
+                BeanUtils.copyProperties(engineNode, engineNodeDto);
+                nodeList.add(engineNodeDto);
+            }
+            
         }
         engineDto.setNodeList(nodeList);
         engineDtoList.add(engineDto);

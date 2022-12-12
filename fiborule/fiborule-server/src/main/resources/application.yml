@@ -5,7 +5,7 @@ server:
     
 spring:
   profiles:
-    active: dev
+    active: yu
   
   datasource:
     druid:
