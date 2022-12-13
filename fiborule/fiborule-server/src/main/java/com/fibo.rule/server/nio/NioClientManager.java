@@ -1,5 +1,6 @@
 package com.fibo.rule.server.nio;
 
+import com.alibaba.fastjson.JSON;
 import com.fibo.rule.common.dto.EngineDto;
 import com.fibo.rule.common.dto.FiboBeanDto;
 import com.fibo.rule.common.dto.FiboFieldDto;
@@ -10,7 +11,6 @@ import com.fibo.rule.common.enums.NioTypeEnum;
 import com.fibo.rule.common.enums.NodeTypeEnum;
 import com.fibo.rule.common.model.ChannelInfo;
 import com.fibo.rule.server.config.ServerProperties;
-import com.fibo.rule.server.utils.JacksonUtils;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -248,13 +248,13 @@ public final class NioClientManager {
             updateModel.setUnReleaseEngineId(engineId);
             updateModel.setAppId(app);
             updateModel.setType(NioTypeEnum.REQ);
-            
+
             if (null == engineId) {
                 updateModel.setOperationType(NioOperationTypeEnum.RELEASE_ENGINE);
             } else {
                 updateModel.setOperationType(NioOperationTypeEnum.UNRELEASE_ENGINE);
             }
-            byte[] updateModelBytes = JacksonUtils.toJsonBytes(updateModel);
+            byte[] updateModelBytes = JSON.toJSONBytes(updateModel);
             for (Map.Entry<String, Channel> entry : clientMap.entrySet()) {
                 submitRelease(entry.getValue(), updateModelBytes);
             }

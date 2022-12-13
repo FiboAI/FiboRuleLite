@@ -3,8 +3,8 @@ package com.fibo.rule.server.nio;
 import com.fibo.rule.common.dto.FiboNioDto;
 import com.fibo.rule.common.enums.NioOperationTypeEnum;
 import com.fibo.rule.common.enums.NioTypeEnum;
+import com.fibo.rule.common.utils.FiboNioUtils;
 import com.fibo.rule.server.service.EngineService;
-import com.fibo.rule.server.utils.NioUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -45,7 +45,7 @@ public class NioServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf buf) {
         Channel channel = ctx.channel();
-        FiboNioDto nioModel = NioUtils.readNioModel(buf);
+        FiboNioDto nioModel = FiboNioUtils.readNioModel(buf);
         if (nioModel != null && nioModel.getType() != null && nioModel.getOperationType() != null) {
             switch (nioModel.getType()) {
                 case REQ:
@@ -56,7 +56,7 @@ public class NioServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
                         //synchronized for update after init
                         synchronized (channel) {
                             response.setEngineDtoList(engineService.getEngineDtoList(nioModel.getAppId(), null));
-                            NioUtils.writeNioModel(ctx, response);
+                            FiboNioUtils.writeNioModel(ctx, response);
                             NioClientManager.register(nioModel.getAppId(), channel, nioModel.getAddress(), nioModel.getSceneBeansMap());
                         }
                     } else if (nioModel.getOperationType() == NioOperationTypeEnum.SLAP) {
