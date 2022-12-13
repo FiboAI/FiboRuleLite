@@ -12,7 +12,7 @@ import com.fibo.rule.core.node.FiboNode;
  */
 public class ComplexD extends FiboNode {
     @Override
-    public void runnerStep() {
+    public void runnerStep(String nodeCode) {
         ComplexRequest req = this.getRequestData();
         ComplexContext contextBean = this.getContextBean(ComplexContext.class);
         contextBean.setD(req.getD());

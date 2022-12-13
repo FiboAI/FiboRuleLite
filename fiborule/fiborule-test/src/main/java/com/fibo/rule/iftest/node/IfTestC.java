@@ -14,7 +14,7 @@ import com.fibo.rule.iftest.context.IfTestContext;
 @FiboBean(name = "IfTestC", desc = "IfTestC")
 public class IfTestC extends FiboNode {
     @Override
-    public void runnerStep() {
+    public void runnerStep(String nodeCode) {
         TestRequest req = this.getRequestData();
         IfTestContext contextBean = this.getContextBean(IfTestContext.class);
         contextBean.setC(req.getC());

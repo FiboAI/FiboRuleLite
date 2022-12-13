@@ -11,10 +11,10 @@ import java.util.Map;
 public abstract class FiboSwitchNode extends FiboNode {
 
     @Override
-    public void runnerStep() {
+    public void runnerStep(String nodeCode) {
         String result = this.runnerStepSwitch();
         //将结果放到参数池中
-        this.getContext().setSwitchResult(this.getNodeCode(), result);
+        this.getContext().setSwitchResult(nodeCode, result);
     }
 
     public abstract String runnerStepSwitch();

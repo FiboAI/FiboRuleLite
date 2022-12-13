@@ -9,10 +9,10 @@ package com.fibo.rule.core.node;
 public abstract class FiboIfNode extends FiboNode {
 
     @Override
-    public void runnerStep() {
+    public void runnerStep(String nodeCode) {
         boolean result = this.runnerStepIf();
         //将结果放到参数池中
-        this.getContext().setIfResult(this.getNodeCode(), result);
+        this.getContext().setIfResult(nodeCode, result);
     }
 
     public abstract boolean runnerStepIf();

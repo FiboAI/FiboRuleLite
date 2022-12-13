@@ -14,7 +14,7 @@ import com.fibo.rule.switchtest.context.SwitchTestContext;
 @FiboBean(name = "SwitchTestC", desc = "SwitchTestC")
 public class SwitchTestC extends FiboNode {
     @Override
-    public void runnerStep() {
+    public void runnerStep(String nodeCode) {
         TestRequest req = this.getRequestData();
         SwitchTestContext contextBean = this.getContextBean(SwitchTestContext.class);
         contextBean.setC(req.getC());

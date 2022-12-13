@@ -17,7 +17,7 @@ import lombok.Data;
 public class AllTestB extends FiboNode {
 
     @Override
-    public void runnerStep() {
+    public void runnerStep(String nodeCode) {
         TestRequest req = this.getRequestData();
         AllTestContext contextBean = this.getContextBean(AllTestContext.class);
         contextBean.setB(req.getB());

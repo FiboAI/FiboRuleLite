@@ -22,10 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 public abstract class FiboNode {
 
-    private Long nodeId;
-    private String nodeName;
+//    private Long nodeId;
+//    private String nodeName;
     private String beanName;
-    private String nodeCode;
+//    private String nodeCode;
     private String nodeClazz;
     private NodeTypeEnum type;
 
@@ -34,8 +34,11 @@ public abstract class FiboNode {
 
     /**
      * 执行方法
+     * @param nodeId
+     * @param nodeName
+     * @param nodeCode
      */
-    public void runner() {
+    public void runner(Long nodeId, String nodeName, String nodeCode) {
         FiboContext context = this.getContext();
 
         //新增步骤信息
@@ -47,7 +50,7 @@ public abstract class FiboNode {
 
         try {
             //执行逻辑
-            this.runnerStep();
+            this.runnerStep(nodeCode);
             //设置步骤为true
             nodeStep.setSuccess(true);
         } catch (Exception e) {
@@ -57,7 +60,7 @@ public abstract class FiboNode {
         } finally {
             stopWatch.stop();
             final long timeSpent = stopWatch.getTotalTimeMillis();
-            log.debug("[{}]:节点[{}-{}]执行用时{}毫秒", context.getRequestId(), this.getNodeId(), this.getBeanName(), timeSpent);
+            log.debug("[{}]:节点[{}-{}]执行用时{}毫秒", context.getRequestId(), nodeId, beanName, timeSpent);
             nodeStep.setTimeSpent(timeSpent);
             if(ObjectUtil.isNotNull(MonitorManager.loadInstance())) {
                 NodeStatistics statistics = new NodeStatistics(this.getClass().getSimpleName(), timeSpent);
@@ -66,7 +69,7 @@ public abstract class FiboNode {
         }
     }
 
-    public abstract void runnerStep();
+    public abstract void runnerStep(String nodeCode);
 
     public FiboContext getContext(){
         return Contextmanager.getContext(this.contextIndexTL.get());

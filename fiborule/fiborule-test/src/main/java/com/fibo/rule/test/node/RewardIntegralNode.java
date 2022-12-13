@@ -16,7 +16,7 @@ public class RewardIntegralNode extends FiboNode {
     private Integer threshold;
 
     @Override
-    public void runnerStep() {
+    public void runnerStep(String nodeCode) {
         RewardContext contextBean = this.getContextBean(RewardContext.class);
         contextBean.setIntegral(threshold);
     }

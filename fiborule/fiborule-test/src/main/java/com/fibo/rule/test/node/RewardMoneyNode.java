@@ -18,7 +18,7 @@ public class RewardMoneyNode extends FiboNode {
     private BigDecimal threshold;
 
     @Override
-    public void runnerStep() {
+    public void runnerStep(String nodeCode) {
         RewardContext contextBean = this.getContextBean(RewardContext.class);
         contextBean.setRewardMoney(threshold);
     }

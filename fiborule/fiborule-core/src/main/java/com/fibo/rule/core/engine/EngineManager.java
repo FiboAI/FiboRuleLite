@@ -1,7 +1,9 @@
 package com.fibo.rule.core.engine;
 
 import com.fibo.rule.common.dto.EngineDto;
+import com.fibo.rule.common.enums.NodeTypeEnum;
 import com.fibo.rule.core.engine.element.FiboEngine;
+import com.fibo.rule.core.node.FiboNode;
 import com.fibo.rule.core.util.CopyOnWriteHashMap;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +20,8 @@ import java.util.Map;
 public class EngineManager {
 
     private static final Map<Long, FiboEngine> engineMap = new CopyOnWriteHashMap<>();
+
+    private static final Map<String, FiboNode> nodeMap = new CopyOnWriteHashMap<>();
 
     private EngineManager() {
     }
@@ -48,12 +52,17 @@ public class EngineManager {
         return engineMap.containsKey(engineId);
     }
 
+    public static Map<String, FiboNode> getNodeMap(){
+        return nodeMap;
+    }
+
     public static Map<Long, FiboEngine> getEngineMap(){
         return engineMap;
     }
 
     public static void cleanCache() {
         engineMap.clear();
+        nodeMap.clear();
     }
 
     public static boolean removeEngine(Long engineId){
@@ -63,5 +72,26 @@ public class EngineManager {
         }else{
             return false;
         }
+    }
+
+    public static FiboNode getNode(String nodeClazz) {
+        return nodeMap.get(nodeClazz);
+    }
+
+    public static void addNode(String beanName, Class<?> nodeClass, NodeTypeEnum type) {
+        try {
+            FiboNode fiboNode = (FiboNode) nodeClass.newInstance();
+            fiboNode.setBeanName(beanName);
+            fiboNode.setNodeClazz(nodeClass.getName());
+            fiboNode.setType(type);
+            nodeMap.put(nodeClass.getName(), fiboNode);
+        } catch (Exception e) {
+            log.error("节点[{}]注册失败", beanName);
+            throw new RuntimeException();
+        }
+    }
+
+    public static boolean containNode(String nodeClazz) {
+        return nodeMap.containsKey(nodeClazz);
     }
 }
