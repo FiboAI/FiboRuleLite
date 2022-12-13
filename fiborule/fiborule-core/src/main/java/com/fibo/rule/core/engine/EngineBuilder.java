@@ -149,7 +149,7 @@ public class EngineBuilder {
             //all节点
             if(ObjectUtil.isNotNull(fiboCondition)) {
                 fiboCondition.setId(nodeDto.getId());
-                fiboCondition.setName(nodeDto.getBeanName());
+                fiboCondition.setName(ObjectUtil.isEmpty(nodeDto.getBeanName()) ? nodeDto.getNodeCode() : nodeDto.getBeanName());
                 runnableMap.put(nodeDto.getNodeCode(), fiboCondition);
                 return fiboCondition;
             }
