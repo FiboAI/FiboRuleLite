@@ -1,5 +1,6 @@
 package com.fibo.rule.core.client;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fibo.rule.common.constant.EngineConstant;
@@ -366,6 +367,9 @@ public final class FiboNioClient {
                 fiboBean.setBranchMap(fiboSwitchNode.switchBranchs());
             } else {
                 fiboBean.setType(NodeTypeEnum.NORMAL);
+            }
+            if(nodeFields.length == 0) {
+                EngineManager.addNode(fiboBean.getName(), nodeClass, fiboBean.getType());
             }
             fiboBeanList.add(fiboBean);
         }
