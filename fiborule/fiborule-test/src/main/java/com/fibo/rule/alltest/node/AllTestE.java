@@ -12,7 +12,7 @@ import com.fibo.rule.request.TestRequest;
  */
 public class AllTestE extends FiboNode {
     @Override
-    public void runnerStep(String nodeCode) {
+    public void runnerStep() {
         TestRequest req = this.getRequestData();
         AllTestContext contextBean = this.getContextBean(AllTestContext.class);
         contextBean.setE(req.getE());

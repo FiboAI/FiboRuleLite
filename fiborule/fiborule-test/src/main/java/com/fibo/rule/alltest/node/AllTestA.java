@@ -14,7 +14,7 @@ import com.fibo.rule.request.TestRequest;
 @FiboBean(name = "AllTestA", desc = "AllTestA")
 public class AllTestA extends FiboNode {
     @Override
-    public void runnerStep(String nodeCode) {
+    public void runnerStep() {
         TestRequest req = this.getRequestData();
         AllTestContext contextBean = this.getContextBean(AllTestContext.class);
         contextBean.setA(req.getA());

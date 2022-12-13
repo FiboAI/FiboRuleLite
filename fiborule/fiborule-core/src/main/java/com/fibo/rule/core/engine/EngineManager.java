@@ -78,7 +78,7 @@ public class EngineManager {
         return nodeMap.get(nodeClazz);
     }
 
-    public static void addNode(String beanName, Class<?> nodeClass, NodeTypeEnum type) {
+    public static void addNode(String beanName, Class<?> nodeClass, NodeTypeEnum type) throws Exception {
         try {
             FiboNode fiboNode = (FiboNode) nodeClass.newInstance();
             fiboNode.setBeanName(beanName);
@@ -87,7 +87,7 @@ public class EngineManager {
             nodeMap.put(nodeClass.getName(), fiboNode);
         } catch (Exception e) {
             log.error("节点[{}]注册失败", beanName);
-            throw new RuntimeException();
+            throw e;
         }
     }
 

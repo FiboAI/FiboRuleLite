@@ -12,7 +12,7 @@ import com.fibo.rule.core.node.FiboNode;
  */
 public class ComplexM extends FiboNode {
     @Override
-    public void runnerStep(String nodeCode) {
+    public void runnerStep() {
         try {
             Thread.sleep(10);
         } catch (InterruptedException e) {

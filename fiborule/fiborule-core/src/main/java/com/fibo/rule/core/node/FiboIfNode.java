@@ -8,12 +8,19 @@ package com.fibo.rule.core.node;
  */
 public abstract class FiboIfNode extends FiboNode {
 
+    /**
+     * 需要用到nodeCode参数，重写带参数runnerStep方法
+     * @param nodeCode
+     */
     @Override
-    public void runnerStep(String nodeCode) {
+    void runnerStep(String nodeCode) {
         boolean result = this.runnerStepIf();
         //将结果放到参数池中
         this.getContext().setIfResult(nodeCode, result);
     }
+
+    @Override
+    public void runnerStep() {}
 
     public abstract boolean runnerStepIf();
 

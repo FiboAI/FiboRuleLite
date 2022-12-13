@@ -12,7 +12,7 @@ import com.fibo.rule.iftest.context.IfTestContext;
  */
 public class IfTestE extends FiboNode {
     @Override
-    public void runnerStep(String nodeCode) {
+    public void runnerStep() {
         TestRequest req = this.getRequestData();
         IfTestContext contextBean = this.getContextBean(IfTestContext.class);
         contextBean.setE(req.getE());

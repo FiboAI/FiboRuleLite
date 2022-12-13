@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.fibo.rule.core.annotation.FiboBean;
 import com.fibo.rule.core.annotation.FiboField;
 import com.fibo.rule.core.node.FiboIfNode;
-import com.fibo.rule.core.node.FiboNode;
 import com.fibo.rule.iftest.context.IfTestContext;
 import com.fibo.rule.request.TestRequest;
 import lombok.Data;
@@ -45,4 +44,5 @@ public class IfTestB extends FiboIfNode {
         }
         return false;
     }
+
 }

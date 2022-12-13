@@ -22,10 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 public abstract class FiboNode {
 
-//    private Long nodeId;
-//    private String nodeName;
     private String beanName;
-//    private String nodeCode;
     private String nodeClazz;
     private NodeTypeEnum type;
 
@@ -69,7 +66,21 @@ public abstract class FiboNode {
         }
     }
 
-    public abstract void runnerStep(String nodeCode);
+    /**
+     * 需要用到nodeCode参数可重写此方法
+     * 例如：If和switch节点抽象类重写此方法，
+     *      并实现runnerStep()空方法，
+     *      子类不需要实现runnerStep()方法，不会执行
+     * @param nodeCode
+     */
+    void runnerStep(String nodeCode) {
+        runnerStep();
+    }
+
+    /**
+     * 普通节点实现此方法
+     */
+    public abstract void runnerStep();
 
     public FiboContext getContext(){
         return Contextmanager.getContext(this.contextIndexTL.get());

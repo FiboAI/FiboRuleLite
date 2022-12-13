@@ -38,12 +38,8 @@ public class EngineBuilder {
     private Map<String, FiboRunnable> runnableMap;
     /**递归当前节点*/
     private EngineNodeDto curNodeDto;
-    /**并行节点栈*/
-//    private Stack<EngineNodeDto> parallelStack;
     /**聚合节点*/
     private EngineNodeDto aggNodeDto;
-    /**并行节点记录*/
-//    private Set<String> parallelSet;
     /**串行节点栈*/
     private Stack<FiboSerialCondition> serialStack;
     /**已递归完成节点*/
@@ -65,8 +61,6 @@ public class EngineBuilder {
         this.fiboEngine.setEngineId(engineDto.getId());
         this.fiboEngine.setEngineName(engineDto.getEngineName());
         this.runnableMap = new HashMap<>();
-//        this.parallelStack = new Stack<>();
-//        this.parallelSet = new HashSet<>();
         this.serialStack = new Stack<>();
         this.finishNodeSet = new HashSet<>();
     }
@@ -99,10 +93,6 @@ public class EngineBuilder {
             aggNodeDto = tempNodeDto;
             return;
         }
-        //并行节点放到并行节点栈中
-//        if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
-//            parallelStack.push(tempNodeDto);
-//        }
         //创建runnable
         FiboRunnable runnable = buildRunnable(tempNodeDto);
         if(ObjectUtil.isNotNull(runnable)) {
@@ -133,10 +123,8 @@ public class EngineBuilder {
         }
 
         if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
-//            parallelStack.pop();
             curNodeDto = nodeDtoMap.get(aggNodeDto.getNextNodes());
             aggNodeDto = null;
-//            parallelSet.add(tempNodeDto.getNodeCode());
             recursionEngineNode();
         }
 

@@ -48,7 +48,7 @@ public class IfTest {
         req.setE("E");
         EngineResponse engineResponse = fiboApplication.runner(1l, req, IfTestContext.class);
         Assert.assertTrue(engineResponse.isSuccess());
-        Assert.assertEquals("[2]:[IfTestA]==>[3]:[IfTestB]==>[4]:[IfTestC]==>[6]:[IfTestE]", engineResponse.getExecuteStepStr());
+        Assert.assertEquals("[2]:[A]==>[3]:[B]==>[4]:[C]==>[6]:[E]", engineResponse.getExecuteStepStr());
         Assert.assertEquals("A", engineResponse.getContextBean(IfTestContext.class).getA());
         Assert.assertEquals("B", engineResponse.getContextBean(IfTestContext.class).getB());
         Assert.assertNull(engineResponse.getContextBean(IfTestContext.class).getD());
@@ -66,7 +66,7 @@ public class IfTest {
         req.setE("E");
         EngineResponse engineResponse = fiboApplication.runner(1l, req, IfTestContext.class);
         Assert.assertTrue(engineResponse.isSuccess());
-        Assert.assertEquals("[2]:[IfTestA]==>[3]:[IfTestB]==>[5]:[IfTestD]==>[6]:[IfTestE]", engineResponse.getExecuteStepStr());
+        Assert.assertEquals("[2]:[A]==>[3]:[B]==>[5]:[D]==>[6]:[E]", engineResponse.getExecuteStepStr());
         Assert.assertEquals("A", engineResponse.getContextBean(IfTestContext.class).getA());
         Assert.assertEquals("B1", engineResponse.getContextBean(IfTestContext.class).getB());
         Assert.assertNull(engineResponse.getContextBean(IfTestContext.class).getC());

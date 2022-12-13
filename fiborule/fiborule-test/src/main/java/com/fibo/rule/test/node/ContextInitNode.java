@@ -15,7 +15,7 @@ import com.fibo.rule.test.request.RechargeRequestVo;
 public class ContextInitNode extends FiboNode {
 
     @Override
-    public void runnerStep(String nodeCode) {
+    public void runnerStep() {
         RechargeRequestVo req = this.getRequestData();
         RewardContext contextBean = this.getContextBean(RewardContext.class);
         contextBean.setRechargeDate(req.getRechargeDate());
