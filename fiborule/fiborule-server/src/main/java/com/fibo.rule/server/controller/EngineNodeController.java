@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 import java.util.List;
 
 
-@CrossOrigin
 @RestController
 @RequestMapping("/engineNode")
 public class EngineNodeController {

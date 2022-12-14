@@ -77,6 +77,7 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
     private void verifyParam(EngineEditParam param) {
         if (null == param.getId()) {
             int count = engineMapper.selectCount(new QueryWrapper<Engine>().lambda()
+                    .eq(Engine::getAppId, param.getAppId())
                     .eq(Engine::getDelFlag, DelFlagEnum.DEL_NO.status)
                     .eq(Engine::getEngineCode, param.getEngineCode()));
             if (count > 0) {

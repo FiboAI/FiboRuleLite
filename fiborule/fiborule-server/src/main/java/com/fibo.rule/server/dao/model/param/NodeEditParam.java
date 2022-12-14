@@ -17,6 +17,9 @@ public class NodeEditParam {
     @ApiModelProperty("名称")
     private String nodeName;
 
+    @ApiModelProperty("nodeCode")
+    private String nodeCode;
+
     @ApiModelProperty("节点类型：开始节点、结束节点、普通节点、IF节点、switch节点、并行节点、聚合节点")
     private Integer nodeType;
 
