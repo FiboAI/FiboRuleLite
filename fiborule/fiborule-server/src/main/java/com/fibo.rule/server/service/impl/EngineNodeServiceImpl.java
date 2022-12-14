@@ -90,7 +90,7 @@ public class EngineNodeServiceImpl extends ServiceImpl<EngineNodeMapper, EngineN
             updateWrapper.lambda()
                     .set(EngineNode::getPreNodes, nodeConnect.getPreNodes())
                     .set(EngineNode::getNextNodes, nodeConnect.getNextNodes())
-                    .eq(EngineNode::getId, nodeConnect.getNodeId());
+                    .eq(EngineNode::getId, nodeConnect.getId());
             engineNodeMapper.update(null, updateWrapper);
         }
     }
