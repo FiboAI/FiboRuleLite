@@ -38,12 +38,8 @@ public class EngineBuilder {
     private Map<String, FiboRunnable> runnableMap;
     /**递归当前节点*/
     private EngineNodeDto curNodeDto;
-    /**并行节点栈*/
-//    private Stack<EngineNodeDto> parallelStack;
     /**聚合节点*/
     private EngineNodeDto aggNodeDto;
-    /**并行节点记录*/
-//    private Set<String> parallelSet;
     /**串行节点栈*/
     private Stack<FiboSerialCondition> serialStack;
     /**已递归完成节点*/
@@ -65,8 +61,6 @@ public class EngineBuilder {
         this.fiboEngine.setEngineId(engineDto.getId());
         this.fiboEngine.setEngineName(engineDto.getEngineName());
         this.runnableMap = new HashMap<>();
-//        this.parallelStack = new Stack<>();
-//        this.parallelSet = new HashSet<>();
         this.serialStack = new Stack<>();
         this.finishNodeSet = new HashSet<>();
     }
@@ -99,10 +93,6 @@ public class EngineBuilder {
             aggNodeDto = tempNodeDto;
             return;
         }
-        //并行节点放到并行节点栈中
-//        if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
-//            parallelStack.push(tempNodeDto);
-//        }
         //创建runnable
         FiboRunnable runnable = buildRunnable(tempNodeDto);
         if(ObjectUtil.isNotNull(runnable)) {
@@ -133,10 +123,8 @@ public class EngineBuilder {
         }
 
         if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
-//            parallelStack.pop();
             curNodeDto = nodeDtoMap.get(aggNodeDto.getNextNodes());
             aggNodeDto = null;
-//            parallelSet.add(tempNodeDto.getNodeCode());
             recursionEngineNode();
         }
 
@@ -161,7 +149,7 @@ public class EngineBuilder {
             //all节点
             if(ObjectUtil.isNotNull(fiboCondition)) {
                 fiboCondition.setId(nodeDto.getId());
-                fiboCondition.setName(nodeDto.getBeanName());
+                fiboCondition.setName(ObjectUtil.isEmpty(nodeDto.getBeanName()) ? nodeDto.getNodeCode() : nodeDto.getBeanName());
                 runnableMap.put(nodeDto.getNodeCode(), fiboCondition);
                 return fiboCondition;
             }
@@ -229,24 +217,26 @@ public class EngineBuilder {
         if(StrUtil.isEmpty(nodeDto.getNodeClazz())) {
             return null;
         }
-        try {
-            String nodeConfig = nodeDto.getNodeConfig();
-            if(StrUtil.isEmpty(nodeConfig)) {
-                nodeConfig = StrUtil.DELIM_START + StrUtil.DELIM_END;
-            }
-            FiboNode fiboNode = (FiboNode) JSONObject.parseObject(nodeConfig, Class.forName(nodeDto.getNodeClazz()));
-//            fiboNode.setMonitorManager(MonitorManager.loadInstance());
-            fiboNode.setNodeId(nodeDto.getId());
-            fiboNode.setNodeName(nodeDto.getNodeName());
-            fiboNode.setBeanName(nodeDto.getBeanName());
-            fiboNode.setNodeCode(nodeDto.getNodeCode());
-            fiboNode.setNodeClazz(nodeDto.getNodeClazz());
-            fiboNode.setType(NodeTypeEnum.getEnum(nodeDto.getNodeType()));
-            FiboEngineNode fiboEngineNode = new FiboEngineNode(fiboNode);
-            return fiboEngineNode;
-        } catch (ClassNotFoundException e) {
-            throw new EngineBuildException(StrUtil.format("引擎[{}]节点[{}]实例化失败，异常：{}", nodeDto.getEngineId(), nodeDto.getId(), e));
+        FiboNode fiboNode = null;
+        if(EngineManager.containNode(nodeDto.getNodeClazz())) {
+            fiboNode = EngineManager.getNode(nodeDto.getNodeClazz());
         }
+        if(ObjectUtil.isNull(fiboNode)) {
+            try {
+                String nodeConfig = nodeDto.getNodeConfig();
+                if(StrUtil.isEmpty(nodeConfig)) {
+                    nodeConfig = StrUtil.DELIM_START + StrUtil.DELIM_END;
+                }
+                fiboNode = (FiboNode) JSONObject.parseObject(nodeConfig, Class.forName(nodeDto.getNodeClazz()));
+                fiboNode.setBeanName(nodeDto.getBeanName());
+                fiboNode.setNodeClazz(nodeDto.getNodeClazz());
+                fiboNode.setType(NodeTypeEnum.getEnum(nodeDto.getNodeType()));
+            } catch (ClassNotFoundException e) {
+                throw new EngineBuildException(StrUtil.format("引擎[{}]节点[{}]实例化失败，异常：{}", nodeDto.getEngineId(), nodeDto.getId(), e));
+            }
+        }
+        FiboEngineNode fiboEngineNode = new FiboEngineNode(fiboNode, nodeDto);
+        return fiboEngineNode;
     }
 
     private List<String> splitNextCodes(String str) {

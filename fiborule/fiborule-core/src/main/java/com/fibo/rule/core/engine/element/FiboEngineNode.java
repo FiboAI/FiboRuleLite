@@ -2,6 +2,7 @@ package com.fibo.rule.core.engine.element;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.fibo.rule.common.dto.EngineNodeDto;
 import com.fibo.rule.common.enums.NodeTypeEnum;
 import com.fibo.rule.core.context.Contextmanager;
 import com.fibo.rule.core.context.FiboContext;
@@ -30,11 +31,11 @@ public class FiboEngineNode implements FiboRunnable {
     private NodeTypeEnum type;
     private FiboNode fiboNode;
 
-    public FiboEngineNode(FiboNode fiboNode) {
-        this.nodeId = fiboNode.getNodeId();
-        this.nodeName = fiboNode.getNodeName();
+    public FiboEngineNode(FiboNode fiboNode, EngineNodeDto nodeDto) {
+        this.nodeId = nodeDto.getId();
+        this.nodeName = nodeDto.getNodeName();
         this.beanName = fiboNode.getBeanName();
-        this.nodeCode = fiboNode.getNodeCode();
+        this.nodeCode = nodeDto.getNodeCode();
         this.nodeClazz = fiboNode.getNodeClazz();
         this.type = fiboNode.getType();
         this.fiboNode = fiboNode;
@@ -48,7 +49,7 @@ public class FiboEngineNode implements FiboRunnable {
         FiboContext context = Contextmanager.getContext(contextIndex);
         try {
             fiboNode.setContextIndex(contextIndex);
-            fiboNode.runner();
+            fiboNode.runner(nodeId, nodeName, nodeCode);
         } catch (Exception e) {
             String errorMsg = StrUtil.format("[{}]:节点[{}-{}]，执行报错，错误信息:{}", context.getRequestId(), nodeId, beanName, e.getMessage());
             log.error(errorMsg);

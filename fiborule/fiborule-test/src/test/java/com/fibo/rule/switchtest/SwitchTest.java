@@ -50,7 +50,7 @@ public class SwitchTest {
         req.setF("F");
         EngineResponse engineResponse = fiboApplication.runner(2l, req, SwitchTestContext.class);
         Assert.assertTrue(engineResponse.isSuccess());
-        Assert.assertEquals("[2]:[SwitchTestA]==>[3]:[SwitchTestB]==>[4]:[SwitchTestC]==>[7]:[SwitchTestE]", engineResponse.getExecuteStepStr());
+        Assert.assertEquals("[2]:[A]==>[3]:[B]==>[4]:[C]==>[7]:[E]", engineResponse.getExecuteStepStr());
         Assert.assertEquals("A", engineResponse.getContextBean(SwitchTestContext.class).getA());
         Assert.assertEquals("C", engineResponse.getContextBean(SwitchTestContext.class).getB());
         Assert.assertEquals("C", engineResponse.getContextBean(SwitchTestContext.class).getC());
@@ -70,7 +70,7 @@ public class SwitchTest {
         req.setF("F");
         EngineResponse engineResponse = fiboApplication.runner(2l, req, SwitchTestContext.class);
         Assert.assertTrue(engineResponse.isSuccess());
-        Assert.assertEquals("[2]:[SwitchTestA]==>[3]:[SwitchTestB]==>[5]:[SwitchTestD]==>[7]:[SwitchTestE]", engineResponse.getExecuteStepStr());
+        Assert.assertEquals("[2]:[A]==>[3]:[B]==>[5]:[D]==>[7]:[E]", engineResponse.getExecuteStepStr());
         Assert.assertEquals("A", engineResponse.getContextBean(SwitchTestContext.class).getA());
         Assert.assertEquals("D", engineResponse.getContextBean(SwitchTestContext.class).getB());
         Assert.assertEquals("D", engineResponse.getContextBean(SwitchTestContext.class).getD());
@@ -91,7 +91,7 @@ public class SwitchTest {
         req.setF("F");
         EngineResponse engineResponse = fiboApplication.runner(2l, req, SwitchTestContext.class);
         Assert.assertTrue(engineResponse.isSuccess());
-        Assert.assertEquals("[2]:[SwitchTestA]==>[3]:[SwitchTestB]==>[6]:[SwitchTestF]==>[7]:[SwitchTestE]", engineResponse.getExecuteStepStr());
+        Assert.assertEquals("[2]:[A]==>[3]:[B]==>[6]:[F]==>[7]:[E]", engineResponse.getExecuteStepStr());
         Assert.assertEquals("A", engineResponse.getContextBean(SwitchTestContext.class).getA());
         Assert.assertEquals("F", engineResponse.getContextBean(SwitchTestContext.class).getB());
         Assert.assertEquals("F", engineResponse.getContextBean(SwitchTestContext.class).getF());
