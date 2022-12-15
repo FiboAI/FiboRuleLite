@@ -22,6 +22,7 @@
         <module>fiborule-common</module>
         <module>fiborule-server</module>
         <module>fiborule-test</module>
+        <module>fiborule-test-mall</module>
         <!--<module>server-test</module>-->
     </modules>
 

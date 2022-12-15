@@ -29,6 +29,5 @@ public class FiboBeanDto {
     private List<FiboFieldDto> fiboFieldDtoList;
     /**if和switch的分支  例如：key-value》Y-是*/
     private Map<String, String> branchMap;
-    
 
 }

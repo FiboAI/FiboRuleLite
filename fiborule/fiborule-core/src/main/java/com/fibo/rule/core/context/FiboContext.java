@@ -1,8 +1,10 @@
 package com.fibo.rule.core.context;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.fibo.rule.core.engine.id.IdGeneratorHolder;
 import com.fibo.rule.core.engine.step.NodeStep;
+import com.fibo.rule.core.exception.ContextNotFoundException;
 import com.fibo.rule.core.exception.NullParamException;
 import com.fibo.rule.core.property.FiboRuleConfigGetter;
 import lombok.Data;
@@ -98,11 +100,9 @@ public class FiboContext {
     }
 
     public <T> T getContextBean(Class<T> contextBeanClazz) {
-        T t = (T) this.contextBeanList.stream().filter((o) -> {
-            return o.getClass().equals(contextBeanClazz);
-        }).findFirst().orElse((Object)null);
+        T t = (T) this.contextBeanList.stream().filter((o) -> o.getClass().equals(contextBeanClazz)).findFirst().orElse(null);
         if (t == null) {
-            throw new RuntimeException();
+            throw new ContextNotFoundException(StrUtil.format("未找到context实体：[{}]", contextBeanClazz.getName()));
         } else {
             return t;
         }
