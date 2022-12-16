@@ -4,8 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import com.fibo.rule.core.annotation.FiboBean;
 import com.fibo.rule.core.annotation.FiboField;
 import com.fibo.rule.core.node.FiboNode;
-import com.fibo.rule.test.mall.context.PriceContext;
 import com.fibo.rule.test.mall.enums.AmountTypeEnum;
+import com.fibo.rule.test.mall.context.PriceContext;
 import com.fibo.rule.test.mall.vo.DiscountVo;
 import lombok.Data;
 

@@ -3,10 +3,12 @@ package com.fibo.rule.test.mall.node;
 import com.fibo.rule.core.annotation.FiboBean;
 import com.fibo.rule.core.node.FiboNode;
 import com.fibo.rule.test.mall.context.PriceContext;
-import com.fibo.rule.test.mall.vo.AmountStepVo;
+import com.fibo.rule.test.mall.service.SendService;
 import com.fibo.rule.test.mall.vo.GoodsVo;
+import com.fibo.rule.test.mall.vo.AmountStepVo;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.MessageFormat;
@@ -17,6 +19,10 @@ import java.text.MessageFormat;
 @Slf4j
 @FiboBean(name = "计算步骤日志生成", desc = "计算步骤日志生成")
 public class AmountStepPrintNode extends FiboNode {
+
+    @Resource
+    private SendService sendService;
+
     @Override
     public void runnerStep() {
         //获取context
@@ -42,5 +48,7 @@ public class AmountStepPrintNode extends FiboNode {
         logStr.append("|====================================================================\n");
         log.info(logStr.toString());
         priceContext.setPrintLog(logStr.toString());
+        sendService.sendOriginalPrice(priceContext.getOrderNo(), priceContext.getOriginalPrice());
+        sendService.sendFinalPrice(priceContext.getOrderNo(), priceContext.getFinalPrice());
     }
 }

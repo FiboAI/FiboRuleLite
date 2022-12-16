@@ -1,10 +1,8 @@
 package com.fibo.rule.test.mall.node;
 
 import com.fibo.rule.core.annotation.FiboBean;
-import com.fibo.rule.core.annotation.FiboField;
 import com.fibo.rule.core.node.FiboNode;
 import com.fibo.rule.test.mall.context.PriceContext;
-import com.fibo.rule.test.mall.enums.AmountTypeEnum;
 import com.fibo.rule.test.mall.vo.AmountStepVo;
 import com.fibo.rule.test.mall.vo.DiscountVo;
 import lombok.Data;
@@ -13,7 +11,6 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * <p>最大折扣金额计算</p>

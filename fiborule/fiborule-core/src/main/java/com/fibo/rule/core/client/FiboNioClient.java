@@ -368,7 +368,7 @@ public final class FiboNioClient {
             } else {
                 fiboBean.setType(NodeTypeEnum.NORMAL);
             }
-            if(nodeFields.length == 0) {
+            if(CollUtil.isEmpty(fiboFieldList)) {
                 EngineManager.addNode(fiboBean.getName(), nodeClass, fiboBean.getType());
             }
             fiboBeanList.add(fiboBean);

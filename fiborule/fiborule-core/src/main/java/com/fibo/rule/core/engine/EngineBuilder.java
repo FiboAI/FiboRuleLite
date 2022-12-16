@@ -15,6 +15,7 @@ import com.fibo.rule.core.engine.element.FiboRunnable;
 import com.fibo.rule.core.enums.NodeTypeClazzEnum;
 import com.fibo.rule.core.exception.EngineBuildException;
 import com.fibo.rule.core.node.FiboNode;
+import com.fibo.rule.core.util.FiboBeanUtils;
 
 import java.util.*;
 import java.util.function.Function;
@@ -231,6 +232,7 @@ public class EngineBuilder {
                 fiboNode.setBeanName(nodeDto.getBeanName());
                 fiboNode.setNodeClazz(nodeDto.getNodeClazz());
                 fiboNode.setType(NodeTypeEnum.getEnum(nodeDto.getNodeType()));
+                FiboBeanUtils.autowireBean(fiboNode);
             } catch (ClassNotFoundException e) {
                 throw new EngineBuildException(StrUtil.format("引擎[{}]节点[{}]实例化失败，异常：{}", nodeDto.getEngineId(), nodeDto.getId(), e));
             }

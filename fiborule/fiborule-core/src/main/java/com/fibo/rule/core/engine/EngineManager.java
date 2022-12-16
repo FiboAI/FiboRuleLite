@@ -5,6 +5,7 @@ import com.fibo.rule.common.enums.NodeTypeEnum;
 import com.fibo.rule.core.engine.element.FiboEngine;
 import com.fibo.rule.core.node.FiboNode;
 import com.fibo.rule.core.util.CopyOnWriteHashMap;
+import com.fibo.rule.core.util.FiboBeanUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -84,6 +85,7 @@ public class EngineManager {
             fiboNode.setBeanName(beanName);
             fiboNode.setNodeClazz(nodeClass.getName());
             fiboNode.setType(type);
+            FiboBeanUtils.autowireBean(fiboNode);
             nodeMap.put(nodeClass.getName(), fiboNode);
         } catch (Exception e) {
             log.error("节点[{}]注册失败", beanName);

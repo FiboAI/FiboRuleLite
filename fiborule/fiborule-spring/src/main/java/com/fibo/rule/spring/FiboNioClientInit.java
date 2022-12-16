@@ -1,4 +1,4 @@
-package com.fibo.rule.springboot;
+package com.fibo.rule.spring;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
@@ -8,7 +8,7 @@ import com.fibo.rule.core.property.FiboRuleConfig;
 import com.fibo.rule.core.property.FiboSceneConfig;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Import;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  *@author JPX
  *@since 2022/12/5 17:43
  */
-@Component
+@Import(FiboSpringBeanFactory.class)
 public class FiboNioClientInit implements InitializingBean, DisposableBean {
 
     @Resource
