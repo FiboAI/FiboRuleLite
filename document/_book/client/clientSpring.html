@@ -1,0 +1,340 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Client接入(Spring) · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="clientNoSpring.html" />
+    
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    前言
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1" >
+            
+                <span>
+            
+                    
+                    开发指南
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="1.1.1.1" data-path="clientSpring.html">
+            
+                <a href="clientSpring.html">
+            
+                    
+                    Client接入(Spring)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.1.2" data-path="clientNoSpring.html">
+            
+                <a href="clientNoSpring.html">
+            
+                    
+                    Client接入(非Spring)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.1.3" data-path="nodeDevelop.html">
+            
+                <a href="nodeDevelop.html">
+            
+                    
+                    组件开发
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.1.4" data-path="runnerContext.html">
+            
+                <a href="runnerContext.html">
+            
+                    
+                    执行上下文
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.1.5" data-path="runnerEngine.html">
+            
+                <a href="runnerEngine.html">
+            
+                    
+                    执行引擎
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Client接入(Spring)</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="client&#x63A5;&#x5165;spring">Client&#x63A5;&#x5165;(Spring)</h2>
+<h3 id="&#x589E;&#x52A0;pom&#x4F9D;&#x8D56;">&#x589E;&#x52A0;pom&#x4F9D;&#x8D56;</h3>
+<hr>
+<p>&#x4EE5;1.0.0&#x7248;&#x672C;&#x4E3A;&#x4F8B;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fibo.rule<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>fiborule-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<h3 id="&#x589E;&#x52A0;&#x914D;&#x7F6E;">&#x589E;&#x52A0;&#x914D;&#x7F6E;</h3>
+<hr>
+<pre><code class="lang-Java"><span class="hljs-comment">//&#x540E;&#x53F0;&#x914D;&#x7F6E;&#x7684;appId</span>
+fiborule.app=<span class="hljs-number">1</span>
+<span class="hljs-comment">//server&#x5730;&#x5740;&#xFF1A;ip&#x548C;&#x7AEF;&#x53E3;</span>
+fiborule.server=<span class="hljs-number">127.0</span>.0.1:<span class="hljs-number">18121</span>
+
+<span class="hljs-comment">//&#x573A;&#x666F;&#x914D;&#x7F6E;&#xFF1A;&#x53EF;&#x4EE5;&#x914D;&#x7F6E;&#x591A;&#x4E2A;&#x573A;&#x666F;&#xFF1B;&#x6CA1;&#x6709;&#x914D;&#x7F6E;&#x7684;&#x8BDD;&#xFF0C;&#x9ED8;&#x8BA4;&#x573A;&#x666F;&#x540D;&#x79F0;&#x4E3A;default&#xFF0C;&#x626B;&#x63CF;&#x5168;&#x5305;</span>
+<span class="hljs-comment">//&#x573A;&#x666F;&#x540D;&#x79F0;</span>
+fiborule.scene-list[<span class="hljs-number">0</span>].name=mall-price
+<span class="hljs-comment">//&#x573A;&#x666F;&#x5BF9;&#x5E94;&#x7684;&#x5305;&#xFF0C;&#x53EF;&#x4EE5;&#x914D;&#x7F6E;&#x591A;&#x4E2A;&#x5305;&#xFF0C;&#x9017;&#x53F7;&#x5206;&#x9694;</span>
+fiborule.scene-list[<span class="hljs-number">0</span>].path=com.fibo.rule.test.mall
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                
+                <a href="clientNoSpring.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Client接入(非Spring)">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Client接入(Spring)","level":"1.1.1.1","depth":3,"next":{"title":"Client接入(非Spring)","level":"1.1.1.2","depth":3,"path":"client/clientNoSpring.md","ref":"client/clientNoSpring.md","articles":[]},"previous":{"title":"开发指南","level":"1.1.1","depth":2,"ref":"","articles":[{"title":"Client接入(Spring)","level":"1.1.1.1","depth":3,"path":"client/clientSpring.md","ref":"client/clientSpring.md","articles":[]},{"title":"Client接入(非Spring)","level":"1.1.1.2","depth":3,"path":"client/clientNoSpring.md","ref":"client/clientNoSpring.md","articles":[]},{"title":"组件开发","level":"1.1.1.3","depth":3,"path":"client/nodeDevelop.md","ref":"client/nodeDevelop.md","articles":[]},{"title":"执行上下文","level":"1.1.1.4","depth":3,"path":"client/runnerContext.md","ref":"client/runnerContext.md","articles":[]},{"title":"执行引擎","level":"1.1.1.5","depth":3,"path":"client/runnerEngine.md","ref":"client/runnerEngine.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"client/clientSpring.md","mtime":"2022-12-19T10:02:30.475Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-12-19T10:26:47.108Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
