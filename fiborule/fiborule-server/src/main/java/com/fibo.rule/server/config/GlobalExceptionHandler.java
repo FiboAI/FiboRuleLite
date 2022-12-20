@@ -43,6 +43,15 @@ public class GlobalExceptionHandler {
     /**
      * 处理运行时异常
      */
+    @ExceptionHandler(value = NullPointerException.class)
+    public void handleException(HttpServletRequest request, HttpServletResponse response, NullPointerException e) {
+        log.warn("NullPointerException:", e);
+        write(response, ResponseEntityBuilder.buildErrorResponse(ErrorCodeEnum.SERVER_ERROR.getCode(), "NullPointerException"));
+    }
+
+    /**
+     * 处理运行时异常
+     */
     @ExceptionHandler(value = RuntimeException.class)
     public void handleException(HttpServletRequest request, HttpServletResponse response, RuntimeException e) {
         log.error("RuntimeException:", e);
