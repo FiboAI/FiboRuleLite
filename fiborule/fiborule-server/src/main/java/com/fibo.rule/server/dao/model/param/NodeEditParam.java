@@ -17,6 +17,9 @@ public class NodeEditParam {
     @ApiModelProperty("名称")
     private String nodeName;
 
+    @ApiModelProperty("beanName")
+    private String beanName;
+
     @ApiModelProperty("nodeCode")
     private String nodeCode;
 

@@ -4,7 +4,9 @@ package com.fibo.rule.server.service.impl;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fibo.rule.common.dto.FiboBeanDto;
+import com.fibo.rule.server.dao.mapper.EngineMapper;
 import com.fibo.rule.server.dao.mapper.EngineNodeMapper;
+import com.fibo.rule.server.dao.model.entity.Engine;
 import com.fibo.rule.server.dao.model.entity.EngineNode;
 import com.fibo.rule.server.dao.model.param.*;
 import com.fibo.rule.server.dao.model.vo.EngineNodeDetailVO;
@@ -16,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,12 +30,19 @@ public class EngineNodeServiceImpl extends ServiceImpl<EngineNodeMapper, EngineN
     private EngineNodeMapper engineNodeMapper;
 
     @Resource
+    private EngineMapper engineMapper;
+
+    @Resource
     private NioClientManager nioClientManager;
 
 
     @Override
     public List<FiboBeanDto> listNodesByType(NodesListParam param) {
-        return nioClientManager.getNodesList(param.getAppId(), param.getScene(), param.getNodeType());
+        Engine engine = engineMapper.selectById(param.getEngineId());
+        if(null == engine) {
+            return new ArrayList<>();
+        }
+        return nioClientManager.getNodesList(engine.getAppId(), engine.getScene(), param.getNodeType());
     }
 
     @Override

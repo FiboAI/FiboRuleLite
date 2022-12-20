@@ -18,6 +18,8 @@ public class EngineNode {
 
     private String nodeName;
 
+    private String beanName;
+
     private String nodeCode;
     
     private Integer nodeType;
