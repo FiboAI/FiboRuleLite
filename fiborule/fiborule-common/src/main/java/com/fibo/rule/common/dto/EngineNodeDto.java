@@ -21,5 +21,7 @@ public class EngineNodeDto {
     private String nextNodes;
     private String nodeConfig;
     private String nodeClazz;
+    //后续节点对应的分支值-[{"key":"Y",value:"node1"}]
+    private String nextNodeValue;
 
 }
