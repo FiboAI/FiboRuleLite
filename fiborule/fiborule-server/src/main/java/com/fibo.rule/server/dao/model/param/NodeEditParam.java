@@ -50,6 +50,9 @@ public class NodeEditParam {
     @ApiModelProperty("node组")
     private String nodeGroup;
 
+    //后续节点对应的分支值-[{"key":"Y",value:"node1"}]
+    private String nextNodeValue;
+
     @ApiModelProperty("状态：1有效，0无效")
     private Integer status;
     

@@ -40,6 +40,9 @@ public class EngineNode {
 
     private String nodeGroup;
 
+    //后续节点对应的分支值-[{"key":"Y",value:"node1"}]
+    private String nextNodeValue;
+
     private Integer status;
 
     private LocalDateTime createTime;
