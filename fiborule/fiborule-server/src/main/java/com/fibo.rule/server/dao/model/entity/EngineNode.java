@@ -28,6 +28,8 @@ public class EngineNode {
 
     private String nextNodes;
 
+    private String nodeConfig;
+    
     private String nodeX;
 
     private String nodeY;
