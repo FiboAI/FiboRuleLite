@@ -25,6 +25,14 @@ export const engineDelete = (params) => request.post('/rule/engine/delete',param
 export const getEngineDetail = (params) => request.post('/rule/engine/getEngineDetail',params)
 // 节点添加编辑
 export const nodeEdit = (params) => request.post('/rule/engineNode/nodeEdit',params)
+// 节点移动
+export const nodeMoveLocation = (params) => request.post('/rule/engineNode/moveLocation',params)
+// 节点删除
+export const nodeDelete = (params) => request.post('/rule/engineNode/nodeDelete',params)
+// 连线
+export const connectLine = (params) => request.post('/rule/engineNode/connectLine',params)
+// 获取节点配置列表
+export const getNodeConfigList = (params) => request.post('/rule/engineNode/listNodesByType',params)
 // // 引擎场景值
 // export const getSceneList = (params) => request.post('/rule/engine/getSceneList',params)
 // // 引擎场景值

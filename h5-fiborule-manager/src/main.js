@@ -30,6 +30,13 @@ Date.prototype.format = function(fmt = 'yyyy-MM-dd hh:mm:ss') {
 	return fmt;
 }
 
+Array.prototype.deleteValue = function(value){
+	let index = this.indexOf(value)
+	if(index!=-1){
+		this.splice(index,1)
+	}
+	return this
+}
 
 new Vue({
   router,

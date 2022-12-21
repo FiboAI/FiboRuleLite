@@ -1,13 +1,25 @@
 export default [
     {
+        // 节点类型
         nodeType: 1,
+        // 节点默认名称
         nodeName: '开始',
+        // 节点边数
         edges: 3,
+        // 节点显示类型  polyNode多边形  circle 圆形 
         shape: 'polyNode',
+        // 节点 宽
         width: 50,
+        // 节点 高
         height: 50,
+        // 节点填充颜色
         fillStyle:'#fff',
+        // 节点 是否在左侧列表显示
         listShow:false,
+        // 节点 code 前缀
+        codePrefix:'start',
+        // 节点 是否需要配置
+        haveConfig:false
     },
     {
         nodeType: 2,
@@ -16,6 +28,8 @@ export default [
         size: 50,
         fillStyle:'#fff',
         listShow:true,
+        codePrefix:'end',
+        haveConfig:false
     },
     {
         nodeType: 3,
@@ -24,6 +38,8 @@ export default [
         size: 50,
         fillStyle:'#fff',
         listShow:true,
+        codePrefix:'general',
+        haveConfig:true
     },
     {
         nodeType: 4,
@@ -34,6 +50,9 @@ export default [
         height: 50,
         fillStyle:'#fff',
         listShow:true,
+        codePrefix:'if',
+        haveConfig:true,
+        nextNodeType:['Y','N']
     },
     {
         nodeType: 5,
@@ -45,6 +64,9 @@ export default [
         fillStyle:'#fff',
         haveMoreChildren:true,
         listShow:true,
+        codePrefix:'switch',
+        haveConfig:true,
+        nextNodeType:[]
     },
     {
         nodeType: 6,
@@ -53,8 +75,12 @@ export default [
         size: 50,
         fillStyle:'#fff',
         listShow:true,
+        // 节点是否含有衍生节点
         haveMoreChildren:true,
-        deriveNode:7
+        // 节点衍生节点类型
+        deriveNode:7,
+        codePrefix:'parallel',
+        haveConfig:false
     },
     {
         nodeType: 7,
@@ -63,6 +89,8 @@ export default [
         size: 50,
         fillStyle:'#fff',
         listShow:false,
+        codePrefix:'aggregation',
+        haveConfig:false
     },
     
 ]

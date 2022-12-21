@@ -26,9 +26,6 @@ instance.interceptors.request.use((config) => {
 			config.headers['responseType'] = 'blob'
 		}
 	}
-	// if (localStorage.getItem('token')) {
-	// 	config.headers['token'] = localStorage.getItem('token');
-	// }
 	return config
 })
 instance.interceptors.response.use((response) => {
