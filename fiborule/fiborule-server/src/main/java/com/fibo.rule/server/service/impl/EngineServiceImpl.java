@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fibo.rule.common.dto.EngineDto;
 import com.fibo.rule.common.dto.EngineNodeDto;
 import com.fibo.rule.common.enums.DelFlagEnum;
+import com.fibo.rule.common.enums.NodeTypeEnum;
 import com.fibo.rule.common.enums.StatusEnum;
 import com.fibo.rule.server.dao.mapper.EngineMapper;
 import com.fibo.rule.server.dao.mapper.EngineNodeMapper;
@@ -69,6 +70,15 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
             engineMapper.updateById(engine);
         } else {
             engineMapper.insert(engine);
+            EngineNode engineNode = new EngineNode();
+            engineNode.setEngineId(engine.getId());
+            engineNode.setNodeName("startNode");
+            engineNode.setNodeCode("start_1");
+            engineNode.setNodeType(NodeTypeEnum.START.getType());
+            engineNode.setNodeX("0");
+            engineNode.setNodeY("0");
+            engineNodeMapper.insert(engineNode);
+            
         }
         engine = engineMapper.selectById(engine.getId());
         return engine;
