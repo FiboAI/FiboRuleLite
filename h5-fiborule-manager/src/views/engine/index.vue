@@ -4,8 +4,8 @@
         <div class="nodeList" :style="{ height: contentHeight }">
             <!-- 节点列表 -->
             <!-- :class="'node nodeType' + item.nodeType" -->
-            <div v-for="item in nodeList" v-if="item.listShow" style="cursor:pointer;user-select: none;text-align: center;"
-                @mousedown="nodeMouesDown($event, item)">
+            <div v-for="item in nodeList" v-if="item.listShow"
+                style="cursor:pointer;user-select: none;text-align: center;" @mousedown="nodeMouesDown($event, item)">
                 <!-- {{ item.nodeName }} -->
                 <img :src="'./img/nodeimg/nodeType' + item.nodeType + '.png'" alt=""
                     style="height: 65px;margin-top: 20px;">
@@ -15,20 +15,26 @@
         <div id="canvas" :style="{ height: contentHeight, width: contentWidth }" />
         <div v-if="addNodeStatus" :class="'tempNodeShow'" :style="{ top: addNodeY, left: addNodeX }">
             <img :src="'./img/nodeimg/nodeType' + addNodeTempShow.nodeType + '.png'" alt=""
-                style="height: 65px;margin-top: 20px;">
+                style="height: 80px;margin-top: 20px;">
         </div>
         <!-- <div class="startLine" v-show="showStartLine" @mouseout="closeStartLine"
             :style="{ top: startLineTop, left: startLineLeft, height: startLineHeight, width: startLineWidth }">
 
 
         </div> -->
-        <div class="nodeConfig" :style="{ height: contentHeight }" >
+        <div class="nodeConfig" :style="{ height: contentHeight }" v-if="tempCurrNodeUserData">
             <!-- {{clickNode&&clickNode.nodeName}} -->
-            <switchNode :data="tempCurrNodeUserData" :moduleList="moduleList" @setNodeConfig="setNodeConfig"/>
-
-
-
+            <!-- <SwitchIfGeneral :data="tempCurrNodeUserData" :moduleList="moduleList" @setNodeConfig="setNodeConfig" @changeNodeClazz="changeNodeClazz" /> -->
+            <component :is="tempCurrNodeUserData.configVue" :data="tempCurrNodeUserData" :moduleList="moduleList" @setNodeConfig="setNodeConfig" @changeNodeClazz="changeNodeClazz" />
         </div>
+
+        <el-dialog title="请选择连线的模式" :visible.sync="LinkTypeSelectDialog" width="500px" :close-on-press-escape="false"
+            :show-close="false" :close-on-click-modal="false">
+            <el-button v-for="LinkType in LinkTypeList" type="primary" size="medium" @click="setLinkType(LinkType)" :disabled="LinkType.disabled">{{ LinkType.label }}</el-button>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="cancelSelectLinkType">取消连线</el-button>
+            </span>
+        </el-dialog>
 
 
     </div>
@@ -39,10 +45,11 @@ import node from './mixin/node'
 import link from './mixin/link'
 import request from './mixin/request'
 import nodeConfig from './mixin/nodeConfig'
-import switchNode from './nodeConfig/switch.vue'
+import SwitchIfGeneral from './nodeConfig/SwitchIfGeneral.vue'
+import NoConfig from './nodeConfig/NoConfig.vue'
 export default {
-    mixins: [link, node,request,nodeConfig],
-    components:{switchNode},
+    mixins: [link, node, request, nodeConfig],
+    components: { SwitchIfGeneral ,NoConfig},
     data() {
         return {
             contentWidth: '100vw',
@@ -55,7 +62,7 @@ export default {
             nodeList,
             mycanvas: null,
             scale: 1,
-            engineId:0
+            engineId: 0
         }
     },
     created() {
@@ -135,19 +142,19 @@ export default {
 
             this.Stage.wheelZoom = null;
             this.Layer.setBackground('url(./img/decisionBcg.jpg)', '100% 100%')
-           
+
             // 重写删除子节点方法
             this.Layer.removeChild = function (obj) {
                 let index = this.children.findIndex(x => x === obj)
-                index!=-1&&this.children.splice(index, 1)
+                index != -1 && this.children.splice(index, 1)
 
                 // 如果被删除的子节点是 连线节点
-                if(obj.isLink){
+                if (obj.isLink) {
                     // 清除 连线两端的 节点的  outLinks inLinks 属性中的 本条线
                     let begin = obj.begin.object
                     let end = obj.end.object
-                    begin.outLinks&&begin.outLinks.splice(begin.outLinks.findIndex(x=>x===obj),1)
-                    end.inLinks&&end.inLinks.splice(end.inLinks.findIndex(x=>x===obj),1)
+                    begin.outLinks && begin.outLinks.splice(begin.outLinks.findIndex(x => x === obj), 1)
+                    end.inLinks && end.inLinks.splice(end.inLinks.findIndex(x => x === obj), 1)
                 }
 
 
@@ -223,7 +230,7 @@ export default {
     position: absolute;
     left: 0;
     /* height: 500px; */
-    width: 150px;
+    width: 90px;
     background-color: #fff;
     box-shadow: 3px 3px 60px -12px;
     z-index: 1200;
@@ -270,7 +277,8 @@ img {
     -webkit-user-drag: none;
 
 }
-.nodeConfig{
+
+.nodeConfig {
     width: 350px;
     position: absolute;
     right: 0;

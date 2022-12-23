@@ -12,13 +12,54 @@ export default{
             NodeConfig:{}
         }
     },
+    created(){
+
+        getNodeConfigList({
+            nodeType:5,
+            engineId:this.$route.params.engineId,
+        }).then(res=>{
+            this.NodeConfig[5] = res.data
+        })
+
+    },
     methods:{
+
+        // 切换nodeClazz要断掉已有所有连线 以及 清除 nextConfig
+        changeNodeClazz(){
+            
+
+            if (this.clickNode.inLinks) {
+                let number = this.clickNode.inLinks.length
+                for (let i = 0; i < number; i++) {
+                    this.deleteLink(this.clickNode.inLinks[0])
+                }
+            }
+            
+            if (this.clickNode.outLinks) {
+                let number = this.clickNode.outLinks.length
+                for (let i = 0; i < number; i++) {
+                    console.log(i)
+                    this.deleteLink(this.clickNode.outLinks[0])
+                }
+            }
+            this.clickNode.userData.nextConfig = []
+
+        },
+        // 设置节点的 nodeConif （配置信息） 以及 nextConfig(次级节点配置信息)
         setNodeConfig(e){
-            // console.log(e)
             Object.assign(this.clickNode.userData,e)
-            // console.log(this.clickNode)
             this.clickNode.setStyles('strokeStyle',"#666")
-            this.requestSetNode(this.clickNode)
+            console.log(this.moduleList,e.nodeClazz)
+            let module = this.moduleList.find(x=>x.nodeClazz==e.nodeClazz)
+            if(this.clickNode.userData.nextNodeType&&module&&module.branchMap){
+                // console.log()
+                this.clickNode.userData.nextNodeType = this.$getArrayByMap(module.branchMap)
+            }
+            this.clickNode.text = e.nodeName
+            this.requestSetNode(this.clickNode,()=>{
+                this.$message.success('提交成功')
+                this.tempCurrNodeUserData = this.clickNode.userData
+            })
         },
         getNodeConfigList(node){
             this.clickNode = node

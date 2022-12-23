@@ -29,6 +29,7 @@ export default {
                     })
                     nodes.nodeClazz&&(newNodeConfig.nodeClazz =  nodes.nodeClazz)
                     nodes.nodeConfig&&(newNodeConfig.nodeConfig =  JSON.parse(nodes.nodeConfig))
+                    nodes.nextNodeValue&&(newNodeConfig.nextConfig =  JSON.parse(nodes.nextNodeValue))
                     // console.log(newNodeConfig)
                     this.addNode(newNodeConfig, 0, nodes.nodeGroup)
                 });
@@ -63,9 +64,9 @@ export default {
             })
         },
         // 设置节点的请求 
-        requestSetNode(node) {
+        requestSetNode(node,callBack) {
             console.log(node)
-            nodeEdit({
+            let params = {
                 "nodeId":node.userData.id,
                 "nodeName": node.userData.nodeName,
                 "nodeConfig":JSON.stringify(node.userData.nodeConfig),
@@ -77,6 +78,11 @@ export default {
                 "nodeY": node.y,
                 "nodeGroup": node.userData && node.userData.pairRandom,
                 "nodeCode": node.userData.nodeCode
+            }
+            node.userData.nextConfig&&(params.nextNodeValue = JSON.stringify(node.userData.nextConfig))
+
+            nodeEdit(params).then(res=>{
+                callBack&&callBack()
             })
         },
         // 节点移动的请求
@@ -96,7 +102,7 @@ export default {
         // 添加线 删除线 （同一方法）
         addAndDeleteLinkRequest(link) {
 
-            console.log(link)
+            // console.log(link)
 
             let begin = link.begin.object
             let end = link.end.object
@@ -113,7 +119,7 @@ export default {
                     preNodes: this.getPreNode(end).join(','),
                 }]
             }
-            if(link.userData&&link.userData.lastEnd){
+            if(link.userData&&link.userData.lastEnd&&link.userData.lastEnd!=end){
                 let lastEnd = link.userData.lastEnd
                 params.nodes.push({
                     id: lastEnd.userData.id,

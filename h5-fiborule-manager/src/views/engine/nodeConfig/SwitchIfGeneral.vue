@@ -1,7 +1,7 @@
 <template>
-    <nodeHome v-if="data" :data="data" style="text-align: center;">
+    <nodeHome v-if="data" :data="data" style="text-align: center;" ref="nodeHome">
         <mySelete v-model="data.nodeClazz" :options="moduleList" :keys="{ value: 'nodeClazz', label: 'name' }"
-            style="margin-top: 20px;" />
+            style="margin-top: 10px;" placeholder="请选择实例" />
         <!-- {{data}} -->
         <!-- {{fiboFieldDtoList}} -->
         <div v-for="fiboFieldDto in fiboFieldDtoList" class="fiboFieldDto">
@@ -21,7 +21,7 @@
             </p>
         </div>
         <div style="margin-top: 20px;">
-            <el-button type="primary" @click="submit">提交</el-button>
+            <el-button type="primary" @click="submit" :disabled="disabled">提交</el-button>
         </div>
 
     </nodeHome>
@@ -32,6 +32,11 @@ import mySelete from 'c/select.vue'
 import myInput from 'c/input.vue'
 export default {
     components: { nodeHome, mySelete, myInput },
+    data() {
+        return {
+            lastNodeClazz: ''
+        }
+    },
     props: {
         data: {
             type: Object,
@@ -42,18 +47,48 @@ export default {
             default: () => []
         }
     },
+    watch: {
+        data() {
+            this.lastNodeClazz = this.data.nodeClazz
+        }
+    },
     methods: {
         submit() {
-            console.log(this.data)
+
+            if(this.$refs.nodeHome.Name==''){
+                this.$message.error('节点名称不能为空')
+                return 
+            }
+
+            if (this.lastNodeClazz != this.data.nodeClazz) {
+                this.$emit('changeNodeClazz')
+            }
+            this.lastNodeClazz = this.data.nodeClazz
 
             this.$emit('setNodeConfig', {
                 nodeConfig: this.data.nodeConfig,
                 nodeClazz: this.data.nodeClazz,
-                nodeName: this.data.nodeName
+                nodeName: this.$refs.nodeHome.Name,
             })
+
         }
     },
     computed: {
+        disabled() {
+            let is = false
+           
+            if (this.data.nodeConfig) {
+                Object.keys(this.data.nodeConfig).forEach(key => {
+                    if (this.data.nodeConfig[key] === '' || this.data.nodeConfig[key] == null) {
+                        is = true
+                    }
+                })
+                return is
+            }else{
+                return true
+            }
+
+        },
         fiboFieldDtoList() {
             let module = this.moduleList.find(x => x.nodeClazz == this.data.nodeClazz)
             if (module && !this.data.nodeConfig) {

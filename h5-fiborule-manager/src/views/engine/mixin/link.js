@@ -10,7 +10,13 @@ export default {
             // 鼠标移动到连线上时 显示的虚线框节点
             LinkhoverNode: null,
             // 当前虚线框 所在的 连线
-            currHoverLink: null
+            currHoverLink: null,
+            // 选择连线模式的弹出框
+            LinkTypeSelectDialog: false,
+            // 连线模式列表
+            LinkTypeList: [],
+            // 当前正在被选择模式的连线
+            theSelectedModeLink: null
         }
     },
     mounted() {
@@ -35,9 +41,16 @@ export default {
                         // 如果存在这个次级节点 并且 次级节点的 上级节点 也包括此节点的话
                         if (endNode && endNode.preNodes.indexOf(nodes.nodeCode) != -1) {
                             // 进行链接
-                            let begin = this.Layer.children.find(x => x.isNode && (x.userData&&x.userData.nodeCode == nodes.nodeCode))
-                            let end = this.Layer.children.find(x => x.isNode && (x.userData&&x.userData.nodeCode == endNode.nodeCode))
-                            let link = this.newLink('', begin, end)
+                            let begin = this.Layer.children.find(x => x.isNode && (x.userData && x.userData.nodeCode == nodes.nodeCode))
+                            let end = this.Layer.children.find(x => x.isNode && (x.userData && x.userData.nodeCode == endNode.nodeCode))
+
+                            let LinkText = ''
+                            // 判断开始的节点是否为多子节点 且 是否有配置好的连线模式
+                            if(begin.userData.haveMoreChildren&&begin.userData.nextConfig){
+                                let nextConfig= begin.userData.nextConfig.find(x=>x.value==nodeCode)
+                                LinkText = nextConfig&&nextConfig.label
+                            }
+                            let link = this.newLink(LinkText, begin, end)
                             link.userData = { lastEnd: end }
                             this.linkAddevent(link)
                         }
@@ -45,33 +58,24 @@ export default {
                 }
             });
         },
-        // 打开节点的框
-        openStartLine(node) {
-            this.currNode = node
-            if (this.Stage.mode != 'edit') {
-                this.hoverNode.visible = true
-                this.LinkhoverNode.visible = false
-            }
-            this.hoverNode.x = node.x - 2
-            this.hoverNode.y = node.y - 2
-            this.hoverNode.resizeTo((node.width || node.size) + 4, (node.height || node.size) + 4)
-            this.tempHoverNode = this.hoverNode.children
-            this.tempHoverNode[0].translateCenterTo(this.hoverNode.width, this.hoverNode.height);
-            this.tempHoverNode[1].translateCenterTo(this.hoverNode.width, 0);
 
-
-        },
-        // 关闭节点的框
-        closeStartLine() {
-            // console.log(1)
-            // this.hoverNode.visible = false
-        },
-
+        // 开始连线
         tempLink() {
 
-
-
             this.linkStartNode = this.currNode
+
+            // 先检测此节点 是否有nextNodeType 是否应该有
+
+            console.log(this.currNode)
+            let userData = this.currNode.userData
+            if(userData.nextNodeType&&userData.nextNodeType.length==0&&userData.nodeClazz){
+                let NodeConfigItem = this.NodeConfig[userData.nodeType].find(x=>x.nodeClazz == userData.nodeClazz)
+                NodeConfigItem&&(userData.nextNodeType = this.$getArrayByMap(NodeConfigItem.branchMap))
+            }
+        
+
+
+
             if (this.linkStartVerdict()) {
                 this.linkStartNode = null
                 return
@@ -82,7 +86,7 @@ export default {
         closeLink() {
             // 寻找鼠标松开的位置是否有节点
             let endNode = this.Layer.getChildren().find(x => {
-                return !x.isLink && !x.userData.isHoverNode &&x!=this.currLink.begin.object && this.getCoordsInNode(this.currLink.end.object, x)
+                return !x.isLink && !x.userData.isHoverNode && x != this.currLink.begin.object && this.getCoordsInNode(this.currLink.end.object, x)
             })
             this.linkStatus = false
             // 如果有节点 并且能通过验证
@@ -96,11 +100,30 @@ export default {
                     // 则将上一个连接节点的 inLinks 属性中 清除掉 此连线
                     let lastEnd = link.userData.lastEnd
                     lastEnd.inLinks.splice(lastEnd.inLinks.findIndex(x => x === link), 1)
+
+                    // 如果开始节点是多子节点 那么需要处理一下开始节点的nextConfig
+                    if(link.begin.object.userData.nextConfig){
+                        let nextConfig = link.begin.object.userData.nextConfig.find(x=>x.key == link.text)
+                        nextConfig&&(nextConfig.value = endNode.userData.nodeCode)
+                        this.requestSetNode(link.begin.object)
+                    }
+
                 }
 
-                // 连线添加事件以及 发送给后端
+                // 连线添加事件
                 this.linkAddevent(link)
-                this.addAndDeleteLinkRequest(link)
+
+
+                
+
+                // 如果连线的开始节点是 if 或者 switch 则需要选择连线的模式 （Yes 或者 No） 并且 不是移动过来的线
+                // 如果不需要选择连线模式 就直接发送给后端存储
+                if (link.begin.object.userData.nextNodeType&&(!link.userData||!link.userData.lastEnd)) {
+                    this.selectLinkType(link)
+                } else {
+                    this.addAndDeleteLinkRequest(link)
+                }
+
 
                 // 切换 lastEnd 
                 if (link.userData) {
@@ -108,6 +131,7 @@ export default {
                 } else {
                     link.userData = { lastEnd: endNode }
                 }
+
 
                 // 如果鼠标松开的位置 没有节点 但是 此线有上一个被连接的 结束节点
             } else if (this.currLink.userData && this.currLink.userData.lastEnd) {
@@ -126,15 +150,69 @@ export default {
             this.currLink = null
 
         },
+        // 选择连线的模式
+        setLinkType(LinkType) {
+
+           
+            let userData = this.theSelectedModeLink.begin.object.userData
+            if (userData.nextConfig) {
+                userData.nextConfig.push({
+                    key: LinkType.key,
+                    label:LinkType.label,
+                    value: this.theSelectedModeLink.end.object.userData.nodeCode
+                })
+            } else {
+                userData.nextConfig = [{
+                    key: LinkType.key,
+                    label:LinkType.label,
+                    value: this.theSelectedModeLink.end.object.userData.nodeCode
+                }]
+            }
+            this.addAndDeleteLinkRequest(this.theSelectedModeLink)
+            this.requestSetNode(this.theSelectedModeLink.begin.object)
+
+            this.theSelectedModeLink.text = LinkType.label
+            this.theSelectedModeLink.textOffsetX = -20
+            this.theSelectedModeLink.textOffsetY = -20
+            console.log(this.theSelectedModeLink)
+
+            this.theSelectedModeLink = null
+            this.LinkTypeSelectDialog = false
+        },
+        // 打开选择连线的模式的弹窗
+        selectLinkType(link) {
+            this.LinkTypeSelectDialog = true
+            let userData = link.begin.object.userData
+            this.LinkTypeList = userData.nextNodeType.map(value=>({
+                key:value.key,
+                label:value.label,
+                disabled:userData.nextConfig&&userData.nextConfig.find(x=>x.key==value.key)?true:false
+            }))
+            this.theSelectedModeLink = link
+        },
+        // 取消选择连线的模式
+        cancelSelectLinkType() {
+            this.LinkTypeSelectDialog = false
+            this.Layer.removeChild(this.theSelectedModeLink)
+            this.theSelectedModeLink = null
+        },
         // 开始连线前的验证 通过验证才能成功拉出线
         linkStartVerdict() {
+
+            let userData = this.linkStartNode.userData
             // 非多子节点只能出一条线
-            if (this.linkStartNode.outLinks && this.linkStartNode.outLinks.length > 0 && !this.linkStartNode.userData.haveMoreChildren) {
+            if (this.linkStartNode.outLinks && this.linkStartNode.outLinks.length > 0 && !userData.haveMoreChildren) {
                 this.$message.error('非多子节点只能出一条线')
                 return true
             }
-            if(this.linkStartNode.userData.haveConfig&&!this.linkStartNode.userData.nodeClazz){
+            // haveConfig必须先配置完毕才能连线
+            if (userData.haveConfig && !userData.nodeClazz) {
                 this.$message.error('此节点必须先配置完毕才能连线')
+                return true
+            }
+            // 连线是否达上限
+            if (userData.haveMoreChildren && userData.nextNodeType &&userData.nextConfig&&userData.nextNodeType.length<=userData.nextConfig.length) {
+                this.$message.error('此节点连线以达上限')
                 return true
             }
 
@@ -166,21 +244,21 @@ export default {
             // console.log(endNode)
             let nestRelation = false
             let aaaarr = []
-            const nestRelationfn = (node,arr)=>{
+            const nestRelationfn = (node, arr) => {
 
                 // 聚合节点
-                if(node.userData.nodeType == 7){
+                if (node.userData.nodeType == 7) {
                     // arr.push()
 
-                // 并行
-                }else if(node.userData.nodeType == 6){
+                    // 并行
+                } else if (node.userData.nodeType == 6) {
 
                 }
 
 
             }
 
-            
+
 
 
 
@@ -255,13 +333,24 @@ export default {
 
             hoverNode.addChild(tipNode)
             hoverNode.addChild(deleteTipNode)
-            hoverNode.userData={}
+            hoverNode.userData = {}
             this.Layer.addChild(hoverNode)
         },
         deleteLink(link) {
             console.log(link)
-            this.Layer.removeChild(link||this.currHoverLink)
-            this.addAndDeleteLinkRequest(link||this.currHoverLink)
+            link = link || this.currHoverLink
+            this.Layer.removeChild(link)
+
+            let userData = link.begin.object.userData
+            if(userData.nextNodeType&&userData.nextConfig){
+                let index = userData.nextConfig.findIndex(x=>x.key == link.text)
+
+                index != -1 && userData.nextConfig.splice(index,1)
+            }
+
+
+
+            this.addAndDeleteLinkRequest(link)
             this.LinkhoverNode.hide()
         },
         getLinkModel(startLocation, endLocation) {
@@ -303,9 +392,14 @@ export default {
 
             link.toArrowSize = 15;
             link.direction = 'vertical'
-            link.setStyles('lineDash', [6, 2]);
-            link.setStyles('lineWidth', 1);
-            link.setStyles('strokeStyle', '#000');
+
+            link.setStyles({
+                'lineDash':[6, 2],
+                'lineWidth': 1,
+                'strokeStyle': '#000',
+                'fontColor': '#000',
+                'font': 'bold 20px 仿宋',
+            });
             link.showSelected = false
             this.Layer.addChild(link)
 

@@ -30,7 +30,7 @@ export default {
                 this.addNodeY = e.clientY - 45 + 'px'
             }
             window.onmouseup = () => {
-                this.addNodeStatus = false
+                this.addNodeStatus = false 
                 window.onmousemove = null
                 window.onmouseup = null
             }
@@ -48,7 +48,7 @@ export default {
                 textPosition: 'center',
                 fontColor: '#000',
                 lineWidth: 3,
-                'strokeStyle':!addNodeTempShow.haveConfig||addNodeTempShow.nodeClazz?'#666':'#f00',
+                'strokeStyle': !addNodeTempShow.haveConfig || addNodeTempShow.nodeClazz ? '#666' : '#f00',
                 'fillStyle': addNodeTempShow.fillStyle,
             }
 
@@ -163,11 +163,32 @@ export default {
                     });
                 }
             }));
-            node.on('click',(e)=>{
+            node.on('click', (e) => {
                 this.getNodeConfigList(node)
             })
         },
-       
+        // 打开节点hoverNode的框
+        openStartLine(node) {
+            this.currNode = node
+            if (this.Stage.mode != 'edit') {
+                this.hoverNode.visible = true
+                this.LinkhoverNode.visible = false
+            }
+            this.hoverNode.x = node.x - 2
+            this.hoverNode.y = node.y - 2
+            this.hoverNode.resizeTo((node.width || node.size) + 4, (node.height || node.size) + 4)
+            this.tempHoverNode = this.hoverNode.children
+            this.tempHoverNode[0].translateCenterTo(this.hoverNode.width, this.hoverNode.height);
+            this.tempHoverNode[1].translateCenterTo(this.hoverNode.width, 0);
+
+
+        },
+        // 关闭节点hoverNode的框
+        closeStartLine() {
+            // console.log(1)
+            // this.hoverNode.visible = false
+        },
+
         hoverNodeInit() {
             this.eventLayer = new jtopo.Layer('eventLayer');
 
@@ -200,35 +221,59 @@ export default {
                 this.deleteNode()
             })
             hoverNode.userData = {
-                isHoverNode : true
+                isHoverNode: true
             }
 
             hoverNode.addChild(tempHoverNode);
             hoverNode.addChild(deleteTipNode);
         },
         deleteNode(node = this.currNode) {
-            // this.Layer.removeChild(node)
+            const deleteNodeLink = (node) => {
+            
+
+                // deleteLink方法里会删除掉inLinks和outLinks里的内容 导致forEach顺序错乱 以及length变动 不能完全删除 只能这样调用 不能forEach
+                if (node.inLinks) {
+                    let number = node.inLinks.length
+                    for (let i = 0; i < number; i++) {
+                        this.deleteLink(node.inLinks[0])
+                    }
+                }
+                
+                if (node.outLinks) {
+                    let number = node.outLinks.length
+                    for (let i = 0; i < number; i++) {
+                        console.log(i)
+                        this.deleteLink(node.outLinks[0])
+                    }
+                }
+
+
+
+            }
+
+
+
             this.hoverNode.hide()
             if (node.userData.pairRandom) {
                 console.log(this.Layer.children)
                 let groupNodeArr = this.Layer.children.filter(x => x.userData.pairRandom == node.userData.pairRandom)
                 groupNodeArr.forEach(groupNode => {
                     this.Layer.removeChild(groupNode)
+
+                    deleteNodeLink(groupNode)
                     this.deleteNodeRequest(groupNode)
                 })
 
             } else {
                 this.Layer.removeChild(node)
-              
-                node.inLinks&&node.inLinks.forEach(link=>{
-                    this.deleteLink(link)
-                })
-                node.outLinks&&node.outLinks.forEach(link=>{
-                    this.deleteLink(link)
-                })
+
+                deleteNodeLink(node)
 
                 this.deleteNodeRequest(node)
             }
+
+
+
         },
         newHoverNode() {
             var hoverNode = new jtopo.Node('');

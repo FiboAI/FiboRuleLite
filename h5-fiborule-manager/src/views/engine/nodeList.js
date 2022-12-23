@@ -18,8 +18,9 @@ export default [
         listShow:false,
         // 节点 code 前缀
         codePrefix:'start',
-        // 节点 是否需要配置
-        haveConfig:false
+        // 节点 是否需要配置才能连线
+        haveConfig:false,
+        configVue:'NoConfig'
     },
     {
         nodeType: 2,
@@ -29,7 +30,8 @@ export default [
         fillStyle:'#fff',
         listShow:true,
         codePrefix:'end',
-        haveConfig:false
+        haveConfig:false,
+        configVue:'NoConfig'
     },
     {
         nodeType: 3,
@@ -39,7 +41,8 @@ export default [
         fillStyle:'#fff',
         listShow:true,
         codePrefix:'general',
-        haveConfig:true
+        haveConfig:true,
+        configVue:'SwitchIfGeneral'
     },
     {
         nodeType: 4,
@@ -52,7 +55,9 @@ export default [
         listShow:true,
         codePrefix:'if',
         haveConfig:true,
-        nextNodeType:['Y','N']
+        haveMoreChildren:true,
+        nextNodeType:[{value:'Y',label:'Yes'},{value:'N',label:'No'},],
+        configVue:'SwitchIfGeneral'
     },
     {
         nodeType: 5,
@@ -66,7 +71,8 @@ export default [
         listShow:true,
         codePrefix:'switch',
         haveConfig:true,
-        nextNodeType:[]
+        nextNodeType:[],
+        configVue:'SwitchIfGeneral'
     },
     {
         nodeType: 6,
@@ -80,7 +86,8 @@ export default [
         // 节点衍生节点类型
         deriveNode:7,
         codePrefix:'parallel',
-        haveConfig:false
+        haveConfig:false,
+        configVue:'NoConfig'
     },
     {
         nodeType: 7,
@@ -90,7 +97,8 @@ export default [
         fillStyle:'#fff',
         listShow:false,
         codePrefix:'aggregation',
-        haveConfig:false
+        haveConfig:false,
+        configVue:'NoConfig'
     },
     
 ]

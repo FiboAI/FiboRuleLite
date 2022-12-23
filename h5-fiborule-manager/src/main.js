@@ -9,7 +9,7 @@ import defData from '@/utils/class'
 Vue.use(ElementUI, { size: 'mini' });
 Vue.config.productionTip = false
 Vue.prototype.defData = defData
-Date.prototype.format = function(fmt = 'yyyy-MM-dd hh:mm:ss') {
+Date.prototype.format = function (fmt = 'yyyy-MM-dd hh:mm:ss') {
 	var o = {
 		"M+": this.getMonth() + 1, //月份 
 		"d+": this.getDate(), //日 
@@ -30,16 +30,26 @@ Date.prototype.format = function(fmt = 'yyyy-MM-dd hh:mm:ss') {
 	return fmt;
 }
 
-Array.prototype.deleteValue = function(value){
+Array.prototype.deleteValue = function (value) {
 	let index = this.indexOf(value)
-	if(index!=-1){
-		this.splice(index,1)
+	if (index != -1) {
+		this.splice(index, 1)
 	}
 	return this
 }
+Vue.prototype.$getArrayByMap = function (obj) {
+	let arr = []
+	Object.keys(obj).forEach(value => {
+		arr.push({
+			key: value,
+			label: obj[value]
+		})
+	})
+	return arr
+}
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+	router,
+	store,
+	render: h => h(App)
 }).$mount('#app')
