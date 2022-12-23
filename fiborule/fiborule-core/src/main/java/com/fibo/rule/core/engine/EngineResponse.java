@@ -22,8 +22,6 @@ public class EngineResponse implements Serializable {
 
     private boolean success;
 
-    private String code;
-
     private String message;
 
     private Exception cause;

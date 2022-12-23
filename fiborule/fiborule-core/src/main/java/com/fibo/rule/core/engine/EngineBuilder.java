@@ -3,6 +3,8 @@ package com.fibo.rule.core.engine;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fibo.rule.common.constant.EngineConstant;
 import com.fibo.rule.common.dto.EngineDto;
@@ -16,6 +18,7 @@ import com.fibo.rule.core.enums.NodeTypeClazzEnum;
 import com.fibo.rule.core.exception.EngineBuildException;
 import com.fibo.rule.core.node.FiboNode;
 import com.fibo.rule.core.util.FiboBeanUtils;
+import io.netty.util.internal.StringUtil;
 
 import java.util.*;
 import java.util.function.Function;
@@ -111,11 +114,15 @@ public class EngineBuilder {
             return;
         }
 
+        //解析后续节点分支对应的值
+        Map<String, String> nextNodeValueMap = parseNextNodeValueMap(tempNodeDto);
+
+        //递归后续节点
         for (String nextNode : nextNodes) {
             EngineNodeDto temp = nodeDtoMap.get(nextNode);
             curNodeDto = temp;
             //设置if、switch、all节点的分支
-            boolean isHaveBranch = setConditionBranch(tempNodeDto, temp, runnable);
+            boolean isHaveBranch = setConditionBranch(tempNodeDto, temp, runnable, nextNodeValueMap);
             recursionEngineNode();
             //弹出
             if(isHaveBranch) {
@@ -123,6 +130,7 @@ public class EngineBuilder {
             }
         }
 
+        //并行节点后递归聚合节点
         if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
             curNodeDto = nodeDtoMap.get(aggNodeDto.getNextNodes());
             aggNodeDto = null;
@@ -165,19 +173,31 @@ public class EngineBuilder {
         }
     }
 
+    private Map<String, String> parseNextNodeValueMap(EngineNodeDto tempNodeDto) {
+        Map<String, String> nextNodeValueMap = new HashMap<>();
+        if(StrUtil.isNotEmpty(tempNodeDto.getNextNodeValue())) {
+            JSONArray jsonArray = JSONArray.parseArray(tempNodeDto.getNextNodeValue());
+            for (Object temp : jsonArray) {
+                JSONObject jsonObject = (JSONObject) temp;
+                nextNodeValueMap.put(jsonObject.getString(EngineConstant.STR_VALUE), jsonObject.getString(EngineConstant.STR_KEY));
+            }
+        }
+        return nextNodeValueMap;
+    }
+
     /**
      * 设置if、switch、all节点的分支
      * @param tempNodeDto 当前节点
      * @param temp 分支节点
      * @param fiboRunnable 当前condition
      */
-    private boolean setConditionBranch(EngineNodeDto tempNodeDto, EngineNodeDto temp, FiboRunnable fiboRunnable) {
+    private boolean setConditionBranch(EngineNodeDto tempNodeDto, EngineNodeDto temp, FiboRunnable fiboRunnable, Map<String, String> nextNodeValueMap) {
         if(ObjectUtil.isNull(fiboRunnable)) {
             return false;
         }
         //if节点分支设置
         if(NodeTypeEnum.IF.getType().equals(tempNodeDto.getNodeType())) {
-            String lineValue = JSONObject.parseObject(temp.getNodeConfig()).getString(EngineConstant.LINE_VALUE);
+            String lineValue = nextNodeValueMap.get(temp.getNodeCode());
             //Y分支
             if(EngineConstant.STR_Y.equals(lineValue)) {
                 FiboIfCondition fiboIfCondition = (FiboIfCondition) fiboRunnable;
@@ -195,7 +215,7 @@ public class EngineBuilder {
         }
         //switch节点
         if(NodeTypeEnum.SWITCH.getType().equals(tempNodeDto.getNodeType())) {
-            String lineValue = JSONObject.parseObject(temp.getNodeConfig()).getString(EngineConstant.LINE_VALUE);
+            String lineValue = nextNodeValueMap.get(temp.getNodeCode());
             FiboSwitchCondition fiboSwitchCondition = (FiboSwitchCondition) fiboRunnable;
             fiboSwitchCondition.addSwitchRunnalbe(lineValue, buildSerialCondition());
             return true;

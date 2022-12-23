@@ -98,6 +98,10 @@ public abstract class FiboNode {
         return this.getContext().getContextBean(contextBeanClazz);
     }
 
+    public <T> T getFirstContextBean(){
+        return this.getContext().getFirstContextBean();
+    }
+
     public <T> T getRequestData() {
         return this.getContext().getRequestData();
     }

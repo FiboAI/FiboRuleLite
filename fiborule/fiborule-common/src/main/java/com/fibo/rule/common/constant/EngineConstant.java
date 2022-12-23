@@ -20,4 +20,8 @@ public interface EngineConstant {
 
     String DEFAULT = "default";
 
+    String STR_KEY = "key";
+
+    String STR_VALUE = "value";
+
 }
