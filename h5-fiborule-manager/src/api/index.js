@@ -33,6 +33,8 @@ export const nodeDelete = (params) => request.post('/rule/engineNode/nodeDelete'
 export const connectLine = (params) => request.post('/rule/engineNode/connectLine',params)
 // 获取节点配置列表
 export const getNodeConfigList = (params) => request.post('/rule/engineNode/listNodesByType',params)
+// 引擎发布
+export const engineRelease = (params) => request.post('/rule/engine/engineRelease',params)
 // // 引擎场景值
 // export const getSceneList = (params) => request.post('/rule/engine/getSceneList',params)
 // // 引擎场景值

@@ -46,9 +46,9 @@ export default {
 
                             let LinkText = ''
                             // 判断开始的节点是否为多子节点 且 是否有配置好的连线模式
-                            if(begin.userData.haveMoreChildren&&begin.userData.nextConfig){
-                                let nextConfig= begin.userData.nextConfig.find(x=>x.value==nodeCode)
-                                LinkText = nextConfig&&nextConfig.label
+                            if (begin.userData.haveMoreChildren && begin.userData.nextConfig) {
+                                let nextConfig = begin.userData.nextConfig.find(x => x.value == nodeCode)
+                                LinkText = nextConfig && nextConfig.label
                             }
                             let link = this.newLink(LinkText, begin, end)
                             link.userData = { lastEnd: end }
@@ -68,11 +68,11 @@ export default {
 
             console.log(this.currNode)
             let userData = this.currNode.userData
-            if(userData.nextNodeType&&userData.nextNodeType.length==0&&userData.nodeClazz){
-                let NodeConfigItem = this.NodeConfig[userData.nodeType].find(x=>x.nodeClazz == userData.nodeClazz)
-                NodeConfigItem&&(userData.nextNodeType = this.$getArrayByMap(NodeConfigItem.branchMap))
+            if (userData.nextNodeType && userData.nextNodeType.length == 0 && userData.nodeClazz) {
+                let NodeConfigItem = this.NodeConfig[userData.nodeType].find(x => x.nodeClazz == userData.nodeClazz)
+                NodeConfigItem && (userData.nextNodeType = this.$getArrayByMap(NodeConfigItem.branchMap))
             }
-        
+
 
 
 
@@ -102,9 +102,9 @@ export default {
                     lastEnd.inLinks.splice(lastEnd.inLinks.findIndex(x => x === link), 1)
 
                     // 如果开始节点是多子节点 那么需要处理一下开始节点的nextConfig
-                    if(link.begin.object.userData.nextConfig){
-                        let nextConfig = link.begin.object.userData.nextConfig.find(x=>x.key == link.text)
-                        nextConfig&&(nextConfig.value = endNode.userData.nodeCode)
+                    if (link.begin.object.userData.nextConfig) {
+                        let nextConfig = link.begin.object.userData.nextConfig.find(x => x.key == link.text)
+                        nextConfig && (nextConfig.value = endNode.userData.nodeCode)
                         this.requestSetNode(link.begin.object)
                     }
 
@@ -114,11 +114,11 @@ export default {
                 this.linkAddevent(link)
 
 
-                
+
 
                 // 如果连线的开始节点是 if 或者 switch 则需要选择连线的模式 （Yes 或者 No） 并且 不是移动过来的线
                 // 如果不需要选择连线模式 就直接发送给后端存储
-                if (link.begin.object.userData.nextNodeType&&(!link.userData||!link.userData.lastEnd)) {
+                if (link.begin.object.userData.nextNodeType && (!link.userData || !link.userData.lastEnd)) {
                     this.selectLinkType(link)
                 } else {
                     this.addAndDeleteLinkRequest(link)
@@ -153,18 +153,18 @@ export default {
         // 选择连线的模式
         setLinkType(LinkType) {
 
-           
+
             let userData = this.theSelectedModeLink.begin.object.userData
             if (userData.nextConfig) {
                 userData.nextConfig.push({
                     key: LinkType.key,
-                    label:LinkType.label,
+                    label: LinkType.label,
                     value: this.theSelectedModeLink.end.object.userData.nodeCode
                 })
             } else {
                 userData.nextConfig = [{
                     key: LinkType.key,
-                    label:LinkType.label,
+                    label: LinkType.label,
                     value: this.theSelectedModeLink.end.object.userData.nodeCode
                 }]
             }
@@ -183,10 +183,10 @@ export default {
         selectLinkType(link) {
             this.LinkTypeSelectDialog = true
             let userData = link.begin.object.userData
-            this.LinkTypeList = userData.nextNodeType.map(value=>({
-                key:value.key,
-                label:value.label,
-                disabled:userData.nextConfig&&userData.nextConfig.find(x=>x.key==value.key)?true:false
+            this.LinkTypeList = userData.nextNodeType.map(value => ({
+                key: value.key,
+                label: value.label,
+                disabled: userData.nextConfig && userData.nextConfig.find(x => x.key == value.key) ? true : false
             }))
             this.theSelectedModeLink = link
         },
@@ -211,11 +211,18 @@ export default {
                 return true
             }
             // 连线是否达上限
-            if (userData.haveMoreChildren && userData.nextNodeType &&userData.nextConfig&&userData.nextNodeType.length<=userData.nextConfig.length) {
+            if (userData.haveMoreChildren && userData.nextNodeType && userData.nextConfig && userData.nextNodeType.length <= userData.nextConfig.length) {
                 this.$message.error('此节点连线以达上限')
                 return true
             }
 
+            // 不能以 《结束节点》开始
+            if (userData.nodeType == 2) {
+
+                    this.$message.error('不能以结束节点开始连线')
+                    return true
+                
+            }
         },
         // 结束连线前的验证 通过验证才能成功结束连线
         linkEndVerdict(endNode) {
@@ -238,25 +245,20 @@ export default {
                 this.$message.error('禁止循环连接')
                 return true
             }
-            // ================================  判断 并行 和 聚合 的嵌套关系是否正确
 
+            // =================================不能以《开始节点》结束  
 
-            // console.log(endNode)
-            let nestRelation = false
-            let aaaarr = []
-            const nestRelationfn = (node, arr) => {
-
-                // 聚合节点
-                if (node.userData.nodeType == 7) {
-                    // arr.push()
-
-                    // 并行
-                } else if (node.userData.nodeType == 6) {
-
-                }
-
-
+            if (endNode.userData.nodeType == 1) {
+                this.$message.error('不能以开始节点结束连线')
+                return true
             }
+
+
+
+
+
+
+          
 
 
 
@@ -268,6 +270,7 @@ export default {
 
 
         },
+        // 连线添加事件
         linkAddevent(link) {
             let that = this
             link.on('mouseenter', function (e) {
@@ -304,6 +307,7 @@ export default {
                 return false
             }
         },
+        // 鼠标经过线时显示的虚线框 初始化
         LinkHoverNodeInit() {
 
             this.LinkhoverNode = this.newHoverNode();
@@ -333,19 +337,22 @@ export default {
 
             hoverNode.addChild(tipNode)
             hoverNode.addChild(deleteTipNode)
-            hoverNode.userData = {}
+            hoverNode.userData = {
+                isHoverNode: true
+            }
             this.Layer.addChild(hoverNode)
         },
+        // 删除线
         deleteLink(link) {
             console.log(link)
             link = link || this.currHoverLink
             this.Layer.removeChild(link)
 
             let userData = link.begin.object.userData
-            if(userData.nextNodeType&&userData.nextConfig){
-                let index = userData.nextConfig.findIndex(x=>x.key == link.text)
+            if (userData.nextNodeType && userData.nextConfig) {
+                let index = userData.nextConfig.findIndex(x => x.key == link.text)
 
-                index != -1 && userData.nextConfig.splice(index,1)
+                index != -1 && userData.nextConfig.splice(index, 1)
             }
 
 
@@ -353,6 +360,7 @@ export default {
             this.addAndDeleteLinkRequest(link)
             this.LinkhoverNode.hide()
         },
+        // 计算线的连接模式
         getLinkModel(startLocation, endLocation) {
             let x = Math.abs(startLocation.x - endLocation.x)
             let y = Math.abs(startLocation.y - endLocation.y)
@@ -387,6 +395,7 @@ export default {
 
 
         },
+        // 初始化一条线
         newLink(name, start, end) {
             let link = new jtopo.FlexionalLink(name, start, end, 'edge');
 
@@ -394,7 +403,7 @@ export default {
             link.direction = 'vertical'
 
             link.setStyles({
-                'lineDash':[6, 2],
+                'lineDash': [6, 2],
                 'lineWidth': 1,
                 'strokeStyle': '#000',
                 'fontColor': '#000',
@@ -410,6 +419,22 @@ export default {
 
 
             return link
+        },
+        // 打开线的鼠标禁用
+        openLinkMouseEnabled() {
+            this.Layer.children.forEach(item => {
+                if (item.isLink) {
+                    item.mouseEnabled = true
+                }
+            });
+        },
+         // 关闭线的鼠标禁用
+        closeLinkMouseEnabled() {
+            this.Layer.children.forEach(item => {
+                if (item.isLink) {
+                    item.mouseEnabled = false
+                }
+            });
         },
 
     },

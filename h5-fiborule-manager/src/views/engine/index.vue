@@ -1,5 +1,5 @@
 <template>
-    <div style="position: relative;">
+    <div style="position: relative;overflow: hidden;">
 
         <div class="nodeList" :style="{ height: contentHeight }">
             <!-- 节点列表 -->
@@ -15,22 +15,31 @@
         <div id="canvas" :style="{ height: contentHeight, width: contentWidth }" />
         <div v-if="addNodeStatus" :class="'tempNodeShow'" :style="{ top: addNodeY, left: addNodeX }">
             <img :src="'./img/nodeimg/nodeType' + addNodeTempShow.nodeType + '.png'" alt=""
-                style="height: 80px;margin-top: 20px;">
+                style="height: 65px;margin-top: 20px;">
         </div>
-        <!-- <div class="startLine" v-show="showStartLine" @mouseout="closeStartLine"
-            :style="{ top: startLineTop, left: startLineLeft, height: startLineHeight, width: startLineWidth }">
 
-
-        </div> -->
         <div class="nodeConfig" :style="{ height: contentHeight }" v-if="tempCurrNodeUserData">
             <!-- {{clickNode&&clickNode.nodeName}} -->
             <!-- <SwitchIfGeneral :data="tempCurrNodeUserData" :moduleList="moduleList" @setNodeConfig="setNodeConfig" @changeNodeClazz="changeNodeClazz" /> -->
-            <component :is="tempCurrNodeUserData.configVue" :data="tempCurrNodeUserData" :moduleList="moduleList" @setNodeConfig="setNodeConfig" @changeNodeClazz="changeNodeClazz" />
+            <component :is="tempCurrNodeUserData.configVue" :data="tempCurrNodeUserData" :moduleList="moduleList"
+                @setNodeConfig="setNodeConfig" @changeNodeClazz="changeNodeClazz" />
+        </div>
+
+        <div class="engineFunctionMenu" :style="{ top: engineInfo && engineInfo.bootStatus == 1 ? '5px' : '-180px' }">
+            <div :class="engineInfo && engineInfo.bootStatus == 1 ? 'releaseButton undeploy' : 'releaseButton deploy'"
+                @click="EngineRelease">
+                {{ engineInfo && engineInfo.bootStatus == 1 ? '取消部署' : '部署' }}
+            </div>
+
+        </div>
+        <div class="engineFunctionMenuModel" v-if="engineInfo && engineInfo.bootStatus == 1">
+
         </div>
 
         <el-dialog title="请选择连线的模式" :visible.sync="LinkTypeSelectDialog" width="500px" :close-on-press-escape="false"
             :show-close="false" :close-on-click-modal="false">
-            <el-button v-for="LinkType in LinkTypeList" type="primary" size="medium" @click="setLinkType(LinkType)" :disabled="LinkType.disabled">{{ LinkType.label }}</el-button>
+            <el-button v-for="LinkType in LinkTypeList" type="primary" size="medium" @click="setLinkType(LinkType)"
+                :disabled="LinkType.disabled">{{ LinkType.label }}</el-button>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="cancelSelectLinkType">取消连线</el-button>
             </span>
@@ -47,9 +56,10 @@ import request from './mixin/request'
 import nodeConfig from './mixin/nodeConfig'
 import SwitchIfGeneral from './nodeConfig/SwitchIfGeneral.vue'
 import NoConfig from './nodeConfig/NoConfig.vue'
+import { engineRelease } from '@/api'
 export default {
     mixins: [link, node, request, nodeConfig],
-    components: { SwitchIfGeneral ,NoConfig},
+    components: { SwitchIfGeneral, NoConfig },
     data() {
         return {
             contentWidth: '100vw',
@@ -62,7 +72,8 @@ export default {
             nodeList,
             mycanvas: null,
             scale: 1,
-            engineId: 0
+            engineId: 0,
+            engineInfo: null
         }
     },
     created() {
@@ -105,34 +116,96 @@ export default {
             // evt.preventDefault();
             if (evt.deltaY > 0) {
                 // console.log("向下滚动");
-                this.scale -= 0.1
+                // this.scale -= 0.1
+                this.Stage.zoomOut()
+
             } else {
                 // console.log("向上滚动");
-                this.scale += 0.1
+                // this.scale += 0.1
+                this.Stage.zoomIn()
             }
-            this.Layer.scaleX = this.scale
-            this.Layer.scaleY = this.scale
+            // console.log(this.Stage.getMousePoint())
+            // console.log(this.Stage.getMousePoint().x,this.Stage.getMousePoint().y,this.scale,this.scale)
+            // this.Stage.zoom(this.Stage.getMousePoint().x,this.Stage.getMousePoint().y,1,1)
+            // this.Layer.scaleX = this.scale
+            // this.Layer.scaleY = this.scale
             // console.log(this.Layer.getCenter())
             // this.eventLayer.scaleX = this.scale
             // this.eventLayer.scaleY = this.scale
         }
     },
     methods: {
-        openLinkMouseEnabled() {
-            this.Layer.children.forEach(item => {
-                if (item.isLink) {
-                    item.mouseEnabled = true
+        EngineReleaseVerify() {
+            //============ 查找是否有应该要配置的节点 未配置
+            if (this.Layer.children.filter(x => !x.isLink && !x.userData.isHoverNode).find(node => {
+                return node.userData.haveConfig && !node.userData.nodeClazz
+            })) {
+                this.$message.error('有节点未配置完毕')
+                return true
+            }
+
+            // ================================  判断 并行 和 聚合 的嵌套关系是否正确
+            const nestRelationfn = (node, arr) => {
+
+                // 聚合节点
+                if (node.userData.nodeType == 7) {
+                    let str = arr.pop()
+                    console.log(2222, str, arr)
+                    if (str !== node.userData.pairRandom) {
+                        nestRelation = true
+                    }
+                    // 并行节点
+                } else if (node.userData.nodeType == 6) {
+                    arr.push(node.userData.pairRandom)
                 }
-            });
-        },
-        closeLinkMouseEnabled() {
-            this.Layer.children.forEach(item => {
-                if (item.isLink) {
-                    item.mouseEnabled = false
+                // console.log(arr)
+
+                let NextArr = this.getNextNode(node, 'array')
+
+                if (NextArr.length) {
+                    NextArr.forEach(value => {
+                        nestRelationfn(value, JSON.parse(JSON.stringify(arr)))
+                    })
+                } else {
+                    if (arr.length) {
+                        nestRelation = true
+                    }
                 }
-            });
+
+
+
+            }
+
+            // console.log(endNode)
+            let nestRelation = false
+            // let aaaarr = []
+            let startNode = this.Layer.children.find(x => x.userData.nodeType == 1)
+            nestRelationfn(startNode, [])
+            if (nestRelation) {
+                this.$message.error('并行聚合的嵌套关系不正确')
+                return true
+            }
+
+
         },
-        initTopo() { //jtopo初始化
+        // 部署
+        EngineRelease() {
+            // 部署前先验证
+            if (this.EngineReleaseVerify()) {
+                return
+            }
+
+            console.log('部署')
+            engineRelease({
+                engineId: this.engineId,
+                bootStatus: this.engineInfo && this.engineInfo.bootStatus == 1 ? 2 : 1
+            }).then(res => {
+                this.engineInfo.bootStatus = this.engineInfo && this.engineInfo.bootStatus == 1 ? 2 : 1
+                this.$message.success('发布成功')
+            })
+        },
+        //jtopo初始化
+        initTopo() {
 
             this.Stage = new jtopo.Stage('canvas');
             this.Layer = new jtopo.Layer('def');
@@ -225,7 +298,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style scoped lang="less">
 .nodeList {
     position: absolute;
     left: 0;
@@ -287,5 +360,72 @@ img {
     top: 0;
     z-index: 1200;
     border-left: 1px solid #666;
+}
+
+@engineFunctionMenuWidth: 300px;
+
+.engineFunctionMenu {
+    width: @engineFunctionMenuWidth;
+    height: 200px;
+    background-color: #fff;
+    position: absolute;
+
+    border-radius: 10px;
+    transition: all .2s;
+    /* right: 0; */
+    left: calc(50vw - @engineFunctionMenuWidth/2);
+    /* margin: 0 auto; */
+    z-index: 2000;
+    border: #666 1px solid;
+    @releaseButtonSize: 100px;
+
+    &>.releaseButton {
+        width: @releaseButtonSize;
+        height: @releaseButtonSize;
+        margin: calc((200px - @releaseButtonSize) /2) auto;
+
+        border-radius: 50%;
+        text-align: center;
+        line-height: @releaseButtonSize;
+        font-size: 22px;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    &>.releaseButton:hover {
+
+        cursor: pointer;
+    }
+
+    &>.deploy {
+        background-color: #078607;
+    }
+
+    &>.deploy:hover {
+        background-color: #045304;
+    }
+
+    &>.undeploy {
+        background-color: #860707;
+
+    }
+
+    &>.undeploy:hover {
+        background-color: #530404;
+    }
+}
+
+.engineFunctionMenu:hover {
+    top: 5px !important;
+}
+
+.engineFunctionMenuModel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #00000066;
+    z-index: 1201;
 }
 </style>

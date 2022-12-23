@@ -10,10 +10,10 @@
                 <p>{{ value.appName }}</p>
                 <div>{{ value.descriptions }}</div>
 
-                <div class="appDelete" @click="deleteApp(value.id)">
+                <div class="appDelete" @click.stop="deleteApp(value.id)">
                     删&nbsp;除
                 </div>
-                <div class="appEdit" @click="appEdit(value)">
+                <div class="appEdit" @click.stop="appEdit(value)">
                     编&nbsp;辑
                 </div>
             </div>

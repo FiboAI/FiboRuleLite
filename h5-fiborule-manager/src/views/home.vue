@@ -1,7 +1,10 @@
 <template>
 
    <el-container>
-      <el-header class="header">FiboRule</el-header>
+      <el-header class="header" >
+      <div @click="$router.push('/app')" style="cursor:pointer ;">
+         FiboRule
+      </div></el-header>
       <el-main class="main" v-if="$route.meta.title">
          <div class="title" >
             {{$route.meta.title}}

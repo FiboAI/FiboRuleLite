@@ -7,6 +7,11 @@ export default {
             getEngineDetail({
                 engineId: this.engineId
             }).then(res => {
+
+
+                // 引擎信息
+                this.engineInfo = res.data.engine
+                // 节点信息
                 let nodeCodeMax = 0
                 // 渲染节点
                 res.data.nodesDetail.forEach(nodes => {
@@ -36,9 +41,13 @@ export default {
 
                 // nodeCode迭代从当前节点中最大的数字开始
                 this.nodeCodeNumber = nodeCodeMax
-                // this.Stage.zoomFullStage()
-                // this.Layer.zoomIn()
-                // this.mycanvas.onwheel()
+                
+                
+                let startNode = this.Layer.children.find(x=>x.userData.nodeType==1)
+                this.Layer.centerBy(startNode)
+
+               
+                this.Layer.translateCenterTo(this.Layer.getCenter().x-500,this.Layer.getCenter().y)
 
                 // 渲染连线
                 this.initAddLink(res.data.nodesDetail)

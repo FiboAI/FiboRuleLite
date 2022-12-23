@@ -35,7 +35,7 @@ export default [
     },
     {
         nodeType: 3,
-        nodeName: '普通节点',
+        nodeName: '计算节点',
         shape: 'circle',
         size: 50,
         fillStyle:'#fff',
