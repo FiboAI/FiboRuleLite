@@ -1,5 +1,6 @@
 package com.fibo.rule.test.mall.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.fibo.rule.common.dto.EngineDto;
 import com.fibo.rule.common.dto.EngineNodeDto;
@@ -41,11 +42,11 @@ public class MallExampleController {
                 "    {\"id\":7,\"nodeName\":\"MemberDisCountNode\",\"beanName\":\"会员折扣计算\",\"nodeCode\":\"MemberDisCountNode\",\"engineId\":1,\"nodeType\":3,\"preNodes\":\"all\",\"nextNodes\":\"poly\",\"nodeConfig\":\"{\\\"discountValue\\\":\\\"0.9\\\"}\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.MemberDisCountNode\"},\n" +
                 "    {\"id\":8,\"nodeName\":\"poly\",\"beanName\":\"\",\"nodeCode\":\"poly\",\"engineId\":1,\"nodeType\":7,\"preNodes\":\"CouponDiscountNode,FullDecrementNode,FullDisCountNode,MemberDisCountNode\",\"nextNodes\":\"DisCountCollectNode\",\"nodeConfig\":\"\",\"nodeClazz\":\"\"},\n" +
                 "    {\"id\":9,\"nodeName\":\"DisCountCollectNode\",\"beanName\":\"最大折扣金额计算\",\"nodeCode\":\"DisCountCollectNode\",\"engineId\":1,\"nodeType\":3,\"preNodes\":\"poly\",\"nextNodes\":\"MemberJudgeNode\",\"nodeConfig\":\"\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.DisCountCollectNode\"},\n" +
-                "    {\"id\":10,\"nodeName\":\"MemberJudgeNode\",\"beanName\":\"是否会员\",\"nodeCode\":\"MemberJudgeNode\",\"engineId\":1,\"nodeType\":4,\"preNodes\":\"DisCountCollectNode\",\"nextNodes\":\"AddressJudgeNode,FinalAmountNode\",\"nodeConfig\":\"\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.MemberJudgeNode\"},\n" +
-                "    {\"id\":11,\"nodeName\":\"AddressJudgeNode\",\"beanName\":\"是否海外地址\",\"nodeCode\":\"AddressJudgeNode\",\"engineId\":1,\"nodeType\":4,\"preNodes\":\"MemberJudgeNode\",\"nextNodes\":\"HomeFreightNode,AbroadFreightNode\",\"nodeConfig\":\"{\\\"lineValue\\\":\\\"N\\\"}\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.AddressJudgeNode\"},\n" +
-                "    {\"id\":12,\"nodeName\":\"HomeFreightNode\",\"beanName\":\"国内运费计算\",\"nodeCode\":\"HomeFreightNode\",\"engineId\":1,\"nodeType\":3,\"preNodes\":\"AddressJudgeNode\",\"nextNodes\":\"FinalAmountNode\",\"nodeConfig\":\"{\\\"lineValue\\\":\\\"N\\\",\\\"fullValue\\\":\\\"99\\\",\\\"freightValue\\\":\\\"10\\\"}\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.HomeFreightNode\"},\n" +
-                "    {\"id\":13,\"nodeName\":\"AbroadFreightNode\",\"beanName\":\"海外运费计算\",\"nodeCode\":\"AbroadFreightNode\",\"engineId\":1,\"nodeType\":3,\"preNodes\":\"AddressJudgeNode\",\"nextNodes\":\"FinalAmountNode\",\"nodeConfig\":\"{\\\"lineValue\\\":\\\"Y\\\",\\\"freightValue\\\":\\\"15\\\"}\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.AbroadFreightNode\"},\n" +
-                "    {\"id\":14,\"nodeName\":\"FinalAmountNode\",\"beanName\":\"最终金额计算\",\"nodeCode\":\"FinalAmountNode\",\"engineId\":1,\"nodeType\":3,\"preNodes\":\"HomeFreightNode,AbroadFreightNode,MemberJudgeNode\",\"nextNodes\":\"AmountStepPrintNode\",\"nodeConfig\":\"{\\\"lineValue\\\":\\\"Y\\\"}\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.FinalAmountNode\"},\n" +
+                "    {\"id\":10,\"nodeName\":\"MemberJudgeNode\",\"beanName\":\"是否会员\",\"nodeCode\":\"MemberJudgeNode\",\"engineId\":1,\"nodeType\":4,\"preNodes\":\"DisCountCollectNode\",\"nextNodes\":\"AddressJudgeNode,FinalAmountNode\",\"nextNodeValue\":\"[{\\\"key\\\":\\\"Y\\\",\\\"value\\\":\\\"FinalAmountNode\\\"},{\\\"key\\\":\\\"N\\\",\\\"value\\\":\\\"AddressJudgeNode\\\"}]\",\"nodeConfig\":\"\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.MemberJudgeNode\"},\n" +
+                "    {\"id\":11,\"nodeName\":\"AddressJudgeNode\",\"beanName\":\"是否海外地址\",\"nodeCode\":\"AddressJudgeNode\",\"engineId\":1,\"nodeType\":4,\"preNodes\":\"MemberJudgeNode\",\"nextNodes\":\"HomeFreightNode,AbroadFreightNode\",\"nextNodeValue\":\"[{\\\"key\\\":\\\"Y\\\",\\\"value\\\":\\\"AbroadFreightNode\\\"},{\\\"key\\\":\\\"N\\\",\\\"value\\\":\\\"HomeFreightNode\\\"}]\",\"nodeConfig\":\"\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.AddressJudgeNode\"},\n" +
+                "    {\"id\":12,\"nodeName\":\"HomeFreightNode\",\"beanName\":\"国内运费计算\",\"nodeCode\":\"HomeFreightNode\",\"engineId\":1,\"nodeType\":3,\"preNodes\":\"AddressJudgeNode\",\"nextNodes\":\"FinalAmountNode\",\"nodeConfig\":\"{\\\"fullValue\\\":\\\"99\\\",\\\"freightValue\\\":\\\"10\\\"}\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.HomeFreightNode\"},\n" +
+                "    {\"id\":13,\"nodeName\":\"AbroadFreightNode\",\"beanName\":\"海外运费计算\",\"nodeCode\":\"AbroadFreightNode\",\"engineId\":1,\"nodeType\":3,\"preNodes\":\"AddressJudgeNode\",\"nextNodes\":\"FinalAmountNode\",\"nodeConfig\":\"{\\\"freightValue\\\":\\\"15\\\"}\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.AbroadFreightNode\"},\n" +
+                "    {\"id\":14,\"nodeName\":\"FinalAmountNode\",\"beanName\":\"最终金额计算\",\"nodeCode\":\"FinalAmountNode\",\"engineId\":1,\"nodeType\":3,\"preNodes\":\"HomeFreightNode,AbroadFreightNode,MemberJudgeNode\",\"nextNodes\":\"AmountStepPrintNode\",\"nodeConfig\":\"\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.FinalAmountNode\"},\n" +
                 "    {\"id\":15,\"nodeName\":\"AmountStepPrintNode\",\"beanName\":\"计算步骤日志生成\",\"nodeCode\":\"AmountStepPrintNode\",\"engineId\":1,\"nodeType\":3,\"preNodes\":\"FinalAmountNode\",\"nextNodes\":\"end\",\"nodeConfig\":\"\",\"nodeClazz\":\"com.fibo.rule.test.mall.node.AmountStepPrintNode\"},\n" +
                 "    {\"id\":16,\"nodeName\":\"end\",\"nodeCode\":\"end\",\"engineId\":1,\"nodeType\":2,\"preNodes\":\"AmountStepPrintNode\",\"nextNodes\":\"\",\"nodeConfig\":\"\",\"nodeClazz\":\"\"}\n" +
                 "  ]";
@@ -59,7 +60,7 @@ public class MallExampleController {
     @ResponseBody
     public String submit(){
         EngineResponse engineResponse = fiboApplication.runner(1l, mockReq(), PriceContext.class);
-        return engineResponse.getContextBean(PriceContext.class).getPrintLog();
+        return JSON.toJSONString(engineResponse.getContextBean(PriceContext.class));
     }
 
     private OrderVo mockReq(){
