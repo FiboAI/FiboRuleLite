@@ -131,7 +131,8 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
         } else {
             nioClientManager.release(param.getAppId(), null, param.getEngineId());
         }
-
+        engine.setBootStatus(param.getBootStatus());
+        engineMapper.updateById(engine);
     }
 
     @Override
