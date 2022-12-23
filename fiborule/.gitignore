@@ -1,0 +1,16 @@
+.DS_Store
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.idea
+.Archive/
+.vscode/
+dist
+*.log
+target/
+*.iml
+apidoc/
+logs/
+/*/target
+LOG_PATH_IS_UNDEFINED/
