@@ -14,7 +14,7 @@ public EngineResponse runner(Long engineId, Object param, Class<?>... paramBeanC
 * engineId：后台配置的引擎id
 * param：引擎执行所需参数，节点执行时可以通过getRequestData方法直接获取
 ```Java
-@FiboBean(name = "普通节点", desc = "普通节点")
+@FiboBean(name = "计算节点", desc = "计算节点")
 public class CommonNode extends FiboNode {
     @Override
     public void runnerStep() {

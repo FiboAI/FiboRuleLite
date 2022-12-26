@@ -44,10 +44,10 @@ fiboNioClient.start();
 fiboNioClient.destroy();
 ```
 ##节点开发
-###普通节点
+###计算节点
 继承FiboNode类，实现runnerStep方法
 ```Java
-@FiboBean(name = "普通节点", desc = "普通节点")
+@FiboBean(name = "计算节点", desc = "计算节点")
 public class CommonNode extends FiboNode {
     @Override
     public void runnerStep() {
@@ -144,7 +144,7 @@ EngineResponse engineResponse = fiboApplication.runner(1L, 引擎参数, CustomB
 ```
 传入之后，会在调用时进行初始化，给上下文分配唯一的实例。在组件之中可以去获得这个上下文实例：
 ```Java
-@FiboBean(name = "普通节点", desc = "普通节点")
+@FiboBean(name = "计算节点", desc = "计算节点")
 public class CommonNode extends FiboNode {
     @Override
     public void runnerStep() {
@@ -170,7 +170,7 @@ public EngineResponse runner(Long engineId, Object param, Class<?>... paramBeanC
 * engineId：后台配置的引擎id
 * param：引擎执行所需参数，节点执行时可以通过getRequestData方法直接获取
 ```Java
-@FiboBean(name = "普通节点", desc = "普通节点")
+@FiboBean(name = "计算节点", desc = "计算节点")
 public class CommonNode extends FiboNode {
     @Override
     public void runnerStep() {

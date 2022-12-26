@@ -16,7 +16,7 @@ EngineResponse engineResponse = fiboApplication.runner(1L, 引擎参数, CustomB
 ```
 传入之后，会在调用时进行初始化，给上下文分配唯一的实例。在组件之中可以去获得这个上下文实例：
 ```Java
-@FiboBean(name = "普通节点", desc = "普通节点")
+@FiboBean(name = "计算节点", desc = "计算节点")
 public class CommonNode extends FiboNode {
     @Override
     public void runnerStep() {
