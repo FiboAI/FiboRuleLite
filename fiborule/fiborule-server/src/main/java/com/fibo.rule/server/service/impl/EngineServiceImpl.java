@@ -72,7 +72,7 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
             engineMapper.insert(engine);
             EngineNode engineNode = new EngineNode();
             engineNode.setEngineId(engine.getId());
-            engineNode.setNodeName("startNode");
+            engineNode.setNodeName("开始");
             engineNode.setNodeCode("start_1");
             engineNode.setNodeType(NodeTypeEnum.START.getType());
             engineNode.setNodeX("0");
@@ -123,13 +123,16 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
 
     @Override
     public void engineRelease(EngineReleaseParam param) {
+        Engine engine = engineMapper.selectById(param.getEngineId());
+        param.setAppId(engine.getAppId());
         if (param.getBootStatus().equals(BootStatusEnum.BOOT.status)) {
             List<EngineDto> engineDtoList = this.getEngineDtoList(param.getAppId(), param.getEngineId());
             nioClientManager.release(param.getAppId(), engineDtoList, null);
         } else {
             nioClientManager.release(param.getAppId(), null, param.getEngineId());
         }
-
+        engine.setBootStatus(param.getBootStatus());
+        engineMapper.updateById(engine);
     }
 
     @Override

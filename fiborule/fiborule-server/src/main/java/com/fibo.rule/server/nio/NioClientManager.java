@@ -10,6 +10,7 @@ import com.fibo.rule.common.enums.NioOperationTypeEnum;
 import com.fibo.rule.common.enums.NioTypeEnum;
 import com.fibo.rule.common.enums.NodeTypeEnum;
 import com.fibo.rule.common.model.ChannelInfo;
+import com.fibo.rule.common.utils.FiboNioUtils;
 import com.fibo.rule.server.config.ServerProperties;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
@@ -254,9 +255,9 @@ public final class NioClientManager {
             } else {
                 updateModel.setOperationType(NioOperationTypeEnum.UNRELEASE_ENGINE);
             }
-            byte[] updateModelBytes = JSON.toJSONBytes(updateModel);
+//            byte[] updateModelBytes = JSON.toJSONBytes(updateModel);
             for (Map.Entry<String, Channel> entry : clientMap.entrySet()) {
-                submitRelease(entry.getValue(), updateModelBytes);
+                submitRelease(entry.getValue(), updateModel);
             }
         }
     }
@@ -265,20 +266,18 @@ public final class NioClientManager {
      * submit release to update client config
      *
      * @param channel    client socket channel
-     * @param modelBytes update data
+     * @param updateModel update data
      */
-    private void submitRelease(Channel channel, byte[] modelBytes) {
-        /*executor.submit(() -> {
+    private void submitRelease(Channel channel, FiboNioDto updateModel) {
             try {
                 //synchronized with NioServerHandler client init
                 synchronized (channel) {
-                    NioUtils.writeModel(channel, modelBytes);
+                    FiboNioUtils.writeNioModel(channel, updateModel);
                 }
             } catch (Throwable t) {
                 //write failed closed client, client will get update from reconnect
                 channel.close();
             }
-        });*/
     }
 
     public synchronized List<String> getSceneList(Long appId) {
