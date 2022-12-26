@@ -56,7 +56,7 @@ export default [
         codePrefix:'if',
         haveConfig:true,
         haveMoreChildren:true,
-        nextNodeType:[{value:'Y',label:'Yes'},{value:'N',label:'No'},],
+        nextNodeType:[{key:'Y',label:'Yes'},{key:'N',label:'No'},],
         configVue:'SwitchIfGeneral'
     },
     {

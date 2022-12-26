@@ -350,7 +350,7 @@ export default {
 
             let userData = link.begin.object.userData
             if (userData.nextNodeType && userData.nextConfig) {
-                let index = userData.nextConfig.findIndex(x => x.key == link.text)
+                let index = userData.nextConfig.findIndex(x => x.label == link.text)
 
                 index != -1 && userData.nextConfig.splice(index, 1)
             }
