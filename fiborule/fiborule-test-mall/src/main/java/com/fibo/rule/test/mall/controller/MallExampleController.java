@@ -1,5 +1,7 @@
 package com.fibo.rule.test.mall.controller;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.fibo.rule.common.dto.EngineDto;
@@ -10,16 +12,16 @@ import com.fibo.rule.core.runner.FiboApplication;
 import com.fibo.rule.test.mall.context.PriceContext;
 import com.fibo.rule.test.mall.vo.GoodsVo;
 import com.fibo.rule.test.mall.vo.OrderVo;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @RestController
 public class MallExampleController {
 
@@ -58,9 +60,17 @@ public class MallExampleController {
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     @ResponseBody
-    public String submit(){
-        EngineResponse engineResponse = fiboApplication.runner(1l, mockReq(), PriceContext.class);
-        return JSON.toJSONString(engineResponse.getContextBean(PriceContext.class));
+    public String submit(@RequestBody Map<String, Object> requestBody){
+        log.info(String.valueOf(Convert.toLong(requestBody.get("engineId"))));
+        log.info(Convert.toStr(requestBody.get("requestBody")));
+        EngineResponse engineResponse = fiboApplication.runner(Convert.toLong(requestBody.get("engineId")), JSON.parseObject(Convert.toStr(requestBody.get("requestBody")), OrderVo.class), PriceContext.class);
+        return JSON.toJSONString(engineResponse);
+    }
+
+    @RequestMapping(value = "/getMockReq", method = RequestMethod.POST)
+    @ResponseBody
+    public String getMockReq() {
+        return JSON.toJSONString(mockReq());
     }
 
     private OrderVo mockReq(){
