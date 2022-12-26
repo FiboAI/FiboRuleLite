@@ -1,0 +1,16 @@
+.fromList{
+    &>div{
+        display: flex;
+        margin-top: 10px;
+        &>p{
+            width: 100px;
+            flex-grow: 0;
+            text-align: right;
+            margin-right: 10px;
+            &+div{
+                flex-grow: 1;
+            }
+        }
+        
+    }
+}
