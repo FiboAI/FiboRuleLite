@@ -1,0 +1,423 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>组件开发 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="runnerContext.html" />
+    
+    
+    <link rel="prev" href="clientNoSpring.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    前言
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1" >
+            
+                <span>
+            
+                    
+                    开发指南
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1.1" data-path="clientSpring.html">
+            
+                <a href="clientSpring.html">
+            
+                    
+                    Client接入(Spring)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.1.2" data-path="clientNoSpring.html">
+            
+                <a href="clientNoSpring.html">
+            
+                    
+                    Client接入(非Spring)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.1.1.3" data-path="nodeDevelop.html">
+            
+                <a href="nodeDevelop.html">
+            
+                    
+                    组件开发
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.1.4" data-path="runnerContext.html">
+            
+                <a href="runnerContext.html">
+            
+                    
+                    执行上下文
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.1.5" data-path="runnerEngine.html">
+            
+                <a href="runnerEngine.html">
+            
+                    
+                    执行引擎
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.2" data-path="../demo/mall/mallDemo.html">
+            
+                <a href="../demo/mall/mallDemo.html">
+            
+                    
+                    电商案例
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >组件开发</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="&#x7EC4;&#x4EF6;&#x5F00;&#x53D1;">&#x7EC4;&#x4EF6;&#x5F00;&#x53D1;</h2>
+<h3 id="&#x666E;&#x901A;&#x8282;&#x70B9;">&#x666E;&#x901A;&#x8282;&#x70B9;</h3>
+<hr>
+<p>&#x7EE7;&#x627F;FiboNode&#x7C7B;&#xFF0C;&#x5B9E;&#x73B0;runnerStep&#x65B9;&#x6CD5;</p>
+<pre><code class="lang-Java"><span class="hljs-meta">@FiboBean</span>(name = <span class="hljs-string">&quot;&#x666E;&#x901A;&#x8282;&#x70B9;&quot;</span>, desc = <span class="hljs-string">&quot;&#x666E;&#x901A;&#x8282;&#x70B9;&quot;</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CommonNode</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">FiboNode</span> </span>{
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">runnerStep</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-comment">//&#x8BA1;&#x7B97;&#x903B;&#x8F91;</span>
+    }
+}
+</code></pre>
+<h3 id="if&#x8282;&#x70B9;">If&#x8282;&#x70B9;</h3>
+<hr>
+<p>&#x7EE7;&#x627F;FiboIfNode&#x7C7B;&#xFF0C;&#x5B9E;&#x73B0;runnerStepIf&#x65B9;&#x6CD5;&#xFF0C;&#x8FD4;&#x56DE;true/false</p>
+<pre><code class="lang-Java"><span class="hljs-meta">@FiboBean</span>(name = <span class="hljs-string">&quot;If&#x8282;&#x70B9;&quot;</span>, desc = <span class="hljs-string">&quot;If&#x8282;&#x70B9;&quot;</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">JudgeNode</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">FiboIfNode</span> </span>{
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">runnerStepIf</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-comment">//&#x5224;&#x65AD;&#x903B;&#x8F91;&#x8FD4;&#x56DE;true/false</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+</code></pre>
+<h3 id="switch&#x8282;&#x70B9;">Switch&#x8282;&#x70B9;</h3>
+<hr>
+<p>&#x7EE7;&#x627F;FiboSwitchNode&#x7C7B;&#xFF1B;&#x5B9E;&#x73B0;runnerStepSwitch&#x65B9;&#x6CD5;&#xFF0C;&#x8FD4;&#x56DE;&#x5206;&#x652F;&#x7684;&#x503C;&#xFF1B;&#x5B9E;&#x73B0;switchBranchs&#x65B9;&#x6CD5;&#xFF0C;&#x8FD4;&#x56DE;&#x6240;&#x6709;&#x5206;&#x652F;&#x7684;&#x503C;&#x548C;&#x5BF9;&#x5E94;&#x540D;&#x79F0;</p>
+<pre><code class="lang-Java"><span class="hljs-meta">@FiboBean</span>(name = <span class="hljs-string">&quot;Switch&#x8282;&#x70B9;&quot;</span>, desc = <span class="hljs-string">&quot;Switch&#x8282;&#x70B9;&quot;</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SwitchNode</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">FiboSwitchNode</span> </span>{
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">runnerStepSwitch</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-comment">//&#x5224;&#x65AD;&#x903B;&#x8F91;&#xFF0C;&#x8FD4;&#x56DE;&#x5206;&#x652F;&#x7ED3;&#x679C;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;A&quot;</span>;
+    }
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Map&lt;String, String&gt; <span class="hljs-title">switchBranchs</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-comment">//key&#xFF1A;&#x5206;&#x652F;&#x7684;&#x503C;&#xFF0C;&#x4E0E;runnerStepSwitch&#x65B9;&#x6CD5;&#x7684;&#x8FD4;&#x56DE;&#x503C;&#x5BF9;&#x5E94;&#xFF1B;</span>
+        <span class="hljs-comment">//value&#xFF1A;&#x5206;&#x652F;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x7528;&#x4E8E;&#x540E;&#x53F0;&#x5F15;&#x64CE;&#x914D;&#x7F6E;&#x65F6;switch&#x5206;&#x652F;&#x540D;&#x79F0;&#x663E;&#x793A;&#xFF1B;</span>
+        Map&lt;String, String&gt; qmap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        qmap.put(<span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-string">&quot;A&quot;</span>);
+        qmap.put(<span class="hljs-string">&quot;B&quot;</span>, <span class="hljs-string">&quot;B&quot;</span>);
+        qmap.put(<span class="hljs-string">&quot;C&quot;</span>, <span class="hljs-string">&quot;C&quot;</span>);
+        <span class="hljs-keyword">return</span> qmap;
+    }
+}
+</code></pre>
+<h3 id="&#x6CE8;&#x89E3;">&#x6CE8;&#x89E3;</h3>
+<hr>
+<h4 id="&#x8282;&#x70B9;&#x6CE8;&#x89E3;">&#x8282;&#x70B9;&#x6CE8;&#x89E3;</h4>
+<p>&#x4F7F;&#x7528;@FiboBean&#x6CE8;&#x89E3;&#xFF0C;&#x8BBE;&#x7F6E;&#x8282;&#x70B9;&#x7684;&#x540D;&#x79F0;&#xFF08;name&#xFF09;&#x548C;&#x63CF;&#x8FF0;&#xFF08;desc&#xFF09;&#xFF0C;&#x7528;&#x4E8E;&#x540E;&#x53F0;&#x5F15;&#x64CE;&#x914D;&#x7F6E;&#x65F6;&#x9009;&#x62E9;&#x8282;&#x70B9;&#x3002;</p>
+<h4 id="&#x8282;&#x70B9;&#x5C5E;&#x6027;&#x6CE8;&#x89E3;">&#x8282;&#x70B9;&#x5C5E;&#x6027;&#x6CE8;&#x89E3;</h4>
+<p>&#x4F7F;&#x7528;@FiboField&#x6CE8;&#x89E3;&#xFF0C;&#x8BBE;&#x7F6E;&#x8282;&#x70B9;&#x5C5E;&#x6027;&#x7684;&#x540D;&#x79F0;&#xFF08;name&#xFF09;&#x3001;&#x63CF;&#x8FF0;&#xFF08;desc&#xFF09;&#x3001;&#x7C7B;&#x578B;&#xFF08;type&#xFF09;&#xFF0C;&#x7528;&#x4E8E;&#x540E;&#x53F0;&#x914D;&#x7F6E;&#x65F6;&#x663E;&#x793A;&#x3002;<br>
+&#x7C7B;&#x578B;&#x652F;&#x6301;&#x6570;&#x503C;&#x578B;&#x3001;&#x5B57;&#x7B26;&#x578B;&#x3001;&#x65F6;&#x95F4;&#x578B;&#xFF0C;&#x672A;&#x8BBE;&#x7F6E;&#x65F6;&#x9ED8;&#x8BA4;&#x6309;&#x7C7B;&#x578B;&#x8FDB;&#x884C;&#x9ED8;&#x8BA4;&#x3002;<br>
+&#x9ED8;&#x8BA4;&#x652F;&#x6301;&#x7C7B;&#x578B;&#x6709;&#xFF1A;<br></p>
+<ul>
+<li>&#x5B57;&#x7B26;&#x578B;:String</li>
+<li>&#x65F6;&#x95F4;&#x578B;:java.util.Date</li>
+<li>&#x6570;&#x503C;&#x578B;:BigDecimal, Integer, int, Long, long,
+Double, double, Float, float</li>
+</ul>
+<pre><code class="lang-Java"><span class="hljs-meta">@Data</span>
+<span class="hljs-meta">@FiboBean</span>(name = <span class="hljs-string">&quot;&#x6253;&#x6298;&#x5238;&#x8BA1;&#x7B97;&quot;</span>, desc = <span class="hljs-string">&quot;&#x6253;&#x6298;&#x5238;&#x8BA1;&#x7B97;&quot;</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FullDisCountNode</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">FiboNode</span> </span>{
+
+    <span class="hljs-meta">@FiboField</span>(name = <span class="hljs-string">&quot;&#x6EE1;&#x8DB3;&#x91D1;&#x989D;&quot;</span>, desc = <span class="hljs-string">&quot;&#x6EE1;&#x8DB3;&#x91D1;&#x989D;&quot;</span>, type = FieldTypeEnum.NUMBER)
+    <span class="hljs-keyword">private</span> BigDecimal fullValue;
+    <span class="hljs-meta">@FiboField</span>(name = <span class="hljs-string">&quot;&#x6298;&#x6263;&quot;</span>, desc = <span class="hljs-string">&quot;&#x6298;&#x6263;&quot;</span>, type = FieldTypeEnum.NUMBER)
+    <span class="hljs-keyword">private</span> BigDecimal discountValue;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">runnerStep</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-comment">//&#x83B7;&#x53D6;context</span>
+        PriceContext priceContext = <span class="hljs-keyword">this</span>.getContextBean(PriceContext.class);
+        BigDecimal originalPrice = priceContext.getOriginalPrice();
+        <span class="hljs-comment">//&#x4E0D;&#x6EE1;&#x8DB3;&#x6761;&#x4EF6;</span>
+        <span class="hljs-keyword">if</span>(originalPrice.compareTo(fullValue) &lt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span>;
+        }
+        BigDecimal subtractValue = originalPrice.subtract(originalPrice.multiply(discountValue));
+        List&lt;DiscountVo&gt; discountList = priceContext.getDiscountList();
+        <span class="hljs-comment">//&#x6DFB;&#x52A0;&#x6253;&#x6298;&#x8BB0;&#x5F55;</span>
+        discountList.add(<span class="hljs-keyword">new</span> DiscountVo(AmountTypeEnum.FULL_DISCOUNT,
+                BigDecimal.ZERO.subtract(subtractValue),
+                StrUtil.format( <span class="hljs-string">&quot;{}(&#x6EE1;{}&#x6253;{}&#x6298;)&quot;</span>, AmountTypeEnum.FULL_DISCOUNT.getName(), fullValue, discountValue.multiply(<span class="hljs-keyword">new</span> BigDecimal(<span class="hljs-number">10</span>)))));
+    }
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="clientNoSpring.html" class="navigation navigation-prev " aria-label="Previous page: Client接入(非Spring)">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="runnerContext.html" class="navigation navigation-next " aria-label="Next page: 执行上下文">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"组件开发","level":"1.1.1.3","depth":3,"next":{"title":"执行上下文","level":"1.1.1.4","depth":3,"path":"client/runnerContext.md","ref":"client/runnerContext.md","articles":[]},"previous":{"title":"Client接入(非Spring)","level":"1.1.1.2","depth":3,"path":"client/clientNoSpring.md","ref":"client/clientNoSpring.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"client/nodeDevelop.md","mtime":"2022-12-19T10:22:36.904Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-12-20T08:03:13.582Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

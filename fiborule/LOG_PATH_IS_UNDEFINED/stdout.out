@@ -1,0 +1,36 @@
+[loveday-gather] 2022-12-12 18:15:28.329 [background-preinit] INFO  [] org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.3.Final 
+[loveday-gather] 2022-12-12 18:15:28.337 [main] INFO  [] com.fibo.rule.server.FiboruleServerApplication - Starting FiboruleServerApplication using Java 1.8.0_181 on DESKTOP-8S3E5D9 with PID 20380 (D:\project\fiborule\fiborule\fiborule\fiborule-server\target\classes started by YN in D:\project\fiborule\fiborule\fiborule) 
+[loveday-gather] 2022-12-12 18:15:28.337 [main] INFO  [] com.fibo.rule.server.FiboruleServerApplication - The following 1 profile is active: "yu" 
+[loveday-gather] 2022-12-12 18:15:29.873 [main] INFO  [] o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8182 (http) 
+[loveday-gather] 2022-12-12 18:15:29.882 [main] INFO  [] org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8182"] 
+[loveday-gather] 2022-12-12 18:15:29.883 [main] INFO  [] org.apache.catalina.core.StandardService - Starting service [Tomcat] 
+[loveday-gather] 2022-12-12 18:15:29.883 [main] INFO  [] org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.64] 
+[loveday-gather] 2022-12-12 18:15:30.053 [main] INFO  [] o.a.c.c.ContainerBase.[Tomcat].[localhost].[/rule] - Initializing Spring embedded WebApplicationContext 
+[loveday-gather] 2022-12-12 18:15:30.054 [main] INFO  [] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1649 ms 
+[loveday-gather] 2022-12-12 18:15:30.483 [main] WARN  [] c.b.mybatisplus.core.injector.AbstractMethod - [com.fibo.rule.server.dao.mapper.AppMapper.selectList] Has been loaded by XML or SqlProvider or Mybatis's Annotation, so ignoring this injection for [class com.baomidou.mybatisplus.core.injector.methods.SelectList] 
+[loveday-gather] 2022-12-12 18:15:31.457 [main] INFO  [] s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)] 
+[loveday-gather] 2022-12-12 18:15:31.791 [main] INFO  [] org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8182"] 
+[loveday-gather] 2022-12-12 18:15:31.811 [main] INFO  [] o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8182 (http) with context path '/rule' 
+[loveday-gather] 2022-12-12 18:15:31.812 [main] INFO  [] s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed 
+[loveday-gather] 2022-12-12 18:15:31.827 [main] INFO  [] s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s) 
+[loveday-gather] 2022-12-12 18:15:31.862 [main] INFO  [] s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references 
+[loveday-gather] 2022-12-12 18:15:32.122 [main] INFO  [] com.fibo.rule.server.FiboruleServerApplication - Started FiboruleServerApplication in 4.558 seconds (JVM running for 5.842) 
+[loveday-gather] 2022-12-12 18:15:32.745 [main] INFO  [] com.fibo.rule.server.nio.NioServer - nio server start success 
+[loveday-gather] 2022-12-12 18:16:04.530 [background-preinit] INFO  [] org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.3.Final 
+[loveday-gather] 2022-12-12 18:16:04.539 [main] INFO  [] com.fibo.rule.server.FiboruleServerApplication - Starting FiboruleServerApplication using Java 1.8.0_181 on DESKTOP-8S3E5D9 with PID 21512 (D:\project\fiborule\fiborule\fiborule\fiborule-server\target\classes started by YN in D:\project\fiborule\fiborule\fiborule) 
+[loveday-gather] 2022-12-12 18:16:04.540 [main] INFO  [] com.fibo.rule.server.FiboruleServerApplication - The following 1 profile is active: "yu" 
+[loveday-gather] 2022-12-12 18:16:06.333 [main] INFO  [] o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8182 (http) 
+[loveday-gather] 2022-12-12 18:16:06.346 [main] INFO  [] org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8182"] 
+[loveday-gather] 2022-12-12 18:16:06.346 [main] INFO  [] org.apache.catalina.core.StandardService - Starting service [Tomcat] 
+[loveday-gather] 2022-12-12 18:16:06.347 [main] INFO  [] org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.64] 
+[loveday-gather] 2022-12-12 18:16:06.548 [main] INFO  [] o.a.c.c.ContainerBase.[Tomcat].[localhost].[/rule] - Initializing Spring embedded WebApplicationContext 
+[loveday-gather] 2022-12-12 18:16:06.548 [main] INFO  [] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1942 ms 
+[loveday-gather] 2022-12-12 18:16:06.972 [main] WARN  [] c.b.mybatisplus.core.injector.AbstractMethod - [com.fibo.rule.server.dao.mapper.AppMapper.selectList] Has been loaded by XML or SqlProvider or Mybatis's Annotation, so ignoring this injection for [class com.baomidou.mybatisplus.core.injector.methods.SelectList] 
+[loveday-gather] 2022-12-12 18:16:07.965 [main] INFO  [] s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)] 
+[loveday-gather] 2022-12-12 18:16:08.307 [main] INFO  [] org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8182"] 
+[loveday-gather] 2022-12-12 18:16:08.326 [main] INFO  [] o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8182 (http) with context path '/rule' 
+[loveday-gather] 2022-12-12 18:16:08.327 [main] INFO  [] s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed 
+[loveday-gather] 2022-12-12 18:16:08.345 [main] INFO  [] s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s) 
+[loveday-gather] 2022-12-12 18:16:08.382 [main] INFO  [] s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references 
+[loveday-gather] 2022-12-12 18:16:08.644 [main] INFO  [] com.fibo.rule.server.FiboruleServerApplication - Started FiboruleServerApplication in 5.026 seconds (JVM running for 6.196) 
+[loveday-gather] 2022-12-12 18:16:09.265 [main] INFO  [] com.fibo.rule.server.nio.NioServer - nio server start success 
