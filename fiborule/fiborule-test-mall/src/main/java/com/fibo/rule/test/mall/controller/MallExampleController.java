@@ -61,8 +61,6 @@ public class MallExampleController {
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     @ResponseBody
     public String submit(@RequestBody Map<String, Object> requestBody){
-        log.info(String.valueOf(Convert.toLong(requestBody.get("engineId"))));
-        log.info(Convert.toStr(requestBody.get("requestBody")));
         EngineResponse engineResponse = fiboApplication.runner(Convert.toLong(requestBody.get("engineId")), JSON.parseObject(Convert.toStr(requestBody.get("requestBody")), OrderVo.class), PriceContext.class);
         return JSON.toJSONString(engineResponse);
     }
