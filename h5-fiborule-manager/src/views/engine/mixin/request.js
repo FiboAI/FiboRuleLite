@@ -31,10 +31,13 @@ export default {
                         disabledRequest: true,
                         id: nodes.id,
                         nodeCode: nodes.nodeCode,
+                        
+                
                     })
                     nodes.nodeClazz&&(newNodeConfig.nodeClazz =  nodes.nodeClazz)
                     nodes.nodeConfig&&(newNodeConfig.nodeConfig =  JSON.parse(nodes.nodeConfig))
                     nodes.nextNodeValue&&(newNodeConfig.nextConfig =  JSON.parse(nodes.nextNodeValue))
+                    nodes.beanName&&(newNodeConfig.beanName =  nodes.beanName)
                     // console.log(newNodeConfig)
                     this.addNode(newNodeConfig, 0, nodes.nodeGroup)
                 });
@@ -80,6 +83,8 @@ export default {
                 "nodeName": node.userData.nodeName,
                 "nodeConfig":JSON.stringify(node.userData.nodeConfig),
                 "nodeClazz":node.userData.nodeClazz,
+                
+                "beanName":node.userData.beanName,
                 // 
                 "engineId": this.engineId,
                 "nodeType": node.userData.nodeType,
@@ -89,7 +94,7 @@ export default {
                 "nodeCode": node.userData.nodeCode
             }
             node.userData.nextConfig&&(params.nextNodeValue = JSON.stringify(node.userData.nextConfig))
-
+            node.userData.nodeClazz&&( params.clazzName = node.userData.nodeClazz.split('.')[node.userData.nodeClazz.split('.').length - 1])
             nodeEdit(params).then(res=>{
                 callBack&&callBack()
             })

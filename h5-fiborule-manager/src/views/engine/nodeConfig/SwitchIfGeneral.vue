@@ -69,6 +69,7 @@ export default {
                 nodeConfig: this.data.nodeConfig,
                 nodeClazz: this.data.nodeClazz,
                 nodeName: this.$refs.nodeHome.Name,
+                beanName: this.moduleList.find(x=>x.nodeClazz==this.data.nodeClazz).name
             })
 
         }

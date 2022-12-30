@@ -31,7 +31,8 @@ export default {
         this.Name = this.data.nodeName
     },
     watch: {
-        data() {
+        'data.nodeName'() {
+            console.log(1)
             this.Name = this.data.nodeName
         }
     }

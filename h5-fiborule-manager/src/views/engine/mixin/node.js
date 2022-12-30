@@ -18,6 +18,26 @@ export default {
         }
     },
     methods: {
+        nodeTextFormet(str){
+
+            let newStr = ''
+            let index = 0
+            for(let i of str){
+                index++
+                newStr += i
+                if(index>=18){
+                    newStr+='..'
+                    return newStr
+                }
+                if(index%6 == 0){
+                    newStr += '\n'
+                }
+                
+            }
+
+            return newStr
+
+        },
         nodeMouesDown(e, node) {
             this.addNodeX = e.clientX - 30 + 'px'
             this.addNodeY = e.clientY - 45 + 'px'
@@ -59,21 +79,22 @@ export default {
             // console.log(addNodeTempShow,addNodeTempShow.nodeX,Number(addNodeTempShow.nodeX))
 
             if (addNodeTempShow.shape == 'polyNode') {
-                node = new jtopo.PolygonNode(addNodeTempShow.nodeName, x, y, addNodeTempShow.width, addNodeTempShow.height);
+                node = new jtopo.PolygonNode( this.nodeTextFormet(addNodeTempShow.nodeName) , x, y, addNodeTempShow.width, addNodeTempShow.height);
                 node.setStyles(nodeStyle);
-                node.textOffsetY = -3;
+               
                 node.edges = addNodeTempShow.edges;
                 node.roundRadius = 6;
 
             } else if (addNodeTempShow.shape == 'rectangle') {
-                node = new jtopo.Node(addNodeTempShow.nodeName, x, y, addNodeTempShow.width, addNodeTempShow.height);
+                node = new jtopo.Node(this.nodeTextFormet(addNodeTempShow.nodeName), x, y, addNodeTempShow.width, addNodeTempShow.height);
                 // 线型
                 node.setStyles(nodeStyle)
-                node.textOffsetY = -4;
+               
                 node.roundRadius = 6;
             } else if (addNodeTempShow.shape == 'circle') {
-                node = new jtopo.CircleNode(addNodeTempShow.nodeName, x, y, addNodeTempShow.size);
+                node = new jtopo.CircleNode(this.nodeTextFormet(addNodeTempShow.nodeName), x, y, addNodeTempShow.size);
                 node.setStyles({ ...nodeStyle, textBaseline: 'middle' });
+             
             }
 
             node.userData = JSON.parse(JSON.stringify(addNodeTempShow))
@@ -91,6 +112,11 @@ export default {
                 'shadowBlur': 1,
                 'fontColor': 'red',
             })
+            if(addNodeTempShow.nodeName.length>12){
+                node.textOffsetY =node.userData.__textOffsetY -6
+            }else{
+                node.textOffsetY =node.userData.__textOffsetY
+            }
 
             node.removeOutLink = function (link) {
                 let index = this.outLinks.findIndex(x => x == link)
@@ -127,6 +153,7 @@ export default {
         },
         // 节点添加事件
         nodeAddEvent(node) {
+          
 
             node.on('mouseup', (e) => {
                 if (node.userData.drag) {
@@ -228,6 +255,12 @@ export default {
             hoverNode.addChild(deleteTipNode);
         },
         deleteNode(node = this.currNode) {
+
+            if(node.userData.nodeType==1){
+                this.$message.error('开始节点不能删除')
+                return
+            }
+
             const deleteNodeLink = (node) => {
             
 

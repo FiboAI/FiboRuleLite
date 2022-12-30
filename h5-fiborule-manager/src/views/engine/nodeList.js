@@ -20,7 +20,8 @@ export default [
         codePrefix:'start',
         // 节点 是否需要配置才能连线
         haveConfig:false,
-        configVue:'NoConfig'
+        configVue:'NoConfig',
+        __textOffsetY : -3
     },
     {
         nodeType: 2,
@@ -31,7 +32,8 @@ export default [
         listShow:true,
         codePrefix:'end',
         haveConfig:false,
-        configVue:'NoConfig'
+        configVue:'NoConfig',
+        __textOffsetY : 0
     },
     {
         nodeType: 3,
@@ -42,7 +44,8 @@ export default [
         listShow:true,
         codePrefix:'general',
         haveConfig:true,
-        configVue:'SwitchIfGeneral'
+        configVue:'SwitchIfGeneral',
+        __textOffsetY : 0
     },
     {
         nodeType: 4,
@@ -57,7 +60,8 @@ export default [
         haveConfig:true,
         haveMoreChildren:true,
         nextNodeType:[{key:'Y',label:'Yes'},{key:'N',label:'No'},],
-        configVue:'SwitchIfGeneral'
+        configVue:'SwitchIfGeneral',
+        __textOffsetY : -3
     },
     {
         nodeType: 5,
@@ -72,7 +76,8 @@ export default [
         codePrefix:'switch',
         haveConfig:true,
         nextNodeType:[],
-        configVue:'SwitchIfGeneral'
+        configVue:'SwitchIfGeneral',
+        __textOffsetY : -3
     },
     {
         nodeType: 6,
@@ -87,7 +92,8 @@ export default [
         deriveNode:7,
         codePrefix:'parallel',
         haveConfig:false,
-        configVue:'NoConfig'
+        configVue:'NoConfig',
+        __textOffsetY : 0
     },
     {
         nodeType: 7,
@@ -98,7 +104,8 @@ export default [
         listShow:false,
         codePrefix:'aggregation',
         haveConfig:false,
-        configVue:'NoConfig'
+        configVue:'NoConfig',
+        __textOffsetY : 0
     },
     
 ]

@@ -55,7 +55,12 @@ export default{
                 // console.log()
                 this.clickNode.userData.nextNodeType = this.$getArrayByMap(module.branchMap)
             }
-            this.clickNode.text = e.nodeName
+            this.clickNode.text = this.nodeTextFormet(e.nodeName)
+            if(e.nodeName.length>12){
+                this.clickNode.textOffsetY =this.clickNode.userData.__textOffsetY -6
+            }else{
+                this.clickNode.textOffsetY =this.clickNode.userData.__textOffsetY
+            }
             this.requestSetNode(this.clickNode,()=>{
                 this.$message.success('提交成功')
                 this.tempCurrNodeUserData = this.clickNode.userData
