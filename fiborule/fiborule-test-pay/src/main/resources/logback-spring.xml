@@ -6,7 +6,7 @@
     <!-- 日志格式 -->
     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"/>
     <!-- 日志路径 -->
-    <property name="LOG_PATH" value="logs/fiborule-test-mall"/>
+    <property name="LOG_PATH" value="logs/fiborule-test-pay"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
