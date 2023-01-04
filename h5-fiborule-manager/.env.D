@@ -1,3 +1,0 @@
-NODE_ENV = 'D'
-VUE_CURRENTMODE = 'D'
-VUE_PROXY = true

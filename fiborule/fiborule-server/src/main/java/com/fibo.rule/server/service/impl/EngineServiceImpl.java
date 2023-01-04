@@ -190,5 +190,23 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
         }
     }
 
+    @Override
+    public EngineDetailVO engineExport(EngineDetailParam param) {
+        return this.getEngineDetail(param);
+    }
+
+    @Override
+    public void engineImport(EngineDetailVO param) {
+        Engine engine = param.getEngine();
+        List<EngineNodeDetailVO> detailVOS = param.getNodesDetail();
+        for (EngineNodeDetailVO detailVO : detailVOS) {
+            EngineNode engineNode = new EngineNode();
+            BeanUtils.copyProperties(detailVO, engineNode);
+            engineNode.setId(null);
+            engineNode.setEngineId(engine.getId());
+            engineNodeMapper.insert(engineNode);
+        }
+    }
+
 
 }

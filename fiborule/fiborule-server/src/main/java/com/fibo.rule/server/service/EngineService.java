@@ -28,6 +28,7 @@ public interface EngineService extends IService<Engine> {
     
     void engineDelete(SimpleCommonPrimaryKeyParam param);
 
+    EngineDetailVO engineExport(EngineDetailParam param);
 
-    
+    void engineImport(EngineDetailVO param);
 }
