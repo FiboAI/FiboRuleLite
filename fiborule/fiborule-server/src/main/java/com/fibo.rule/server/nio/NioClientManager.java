@@ -1,6 +1,5 @@
 package com.fibo.rule.server.nio;
 
-import com.alibaba.fastjson.JSON;
 import com.fibo.rule.common.dto.EngineDto;
 import com.fibo.rule.common.dto.FiboBeanDto;
 import com.fibo.rule.common.dto.FiboFieldDto;
@@ -265,19 +264,19 @@ public final class NioClientManager {
     /**
      * submit release to update client config
      *
-     * @param channel    client socket channel
+     * @param channel     client socket channel
      * @param updateModel update data
      */
     private void submitRelease(Channel channel, FiboNioDto updateModel) {
-            try {
-                //synchronized with NioServerHandler client init
-                synchronized (channel) {
-                    FiboNioUtils.writeNioModel(channel, updateModel);
-                }
-            } catch (Throwable t) {
-                //write failed closed client, client will get update from reconnect
-                channel.close();
+        try {
+            //synchronized with NioServerHandler client init
+            synchronized (channel) {
+                FiboNioUtils.writeNioModel(channel, updateModel);
             }
+        } catch (Throwable t) {
+            //write failed closed client, client will get update from reconnect
+            channel.close();
+        }
     }
 
     public synchronized List<String> getSceneList(Long appId) {
@@ -286,6 +285,9 @@ public final class NioClientManager {
 
     public synchronized List<FiboBeanDto> getNodesList(Long appId, String scene, Integer nodeType) {
         List<FiboBeanDto> fiboBeanDtoList = appSceneNodesMap.get(appId).get(scene);
+        if (fiboBeanDtoList.isEmpty()) {
+            return new ArrayList<>();
+        }
         return fiboBeanDtoList.stream().filter(fiboBeanDto -> fiboBeanDto.getType().getType().equals(nodeType)).collect(Collectors.toList());
     }
 
