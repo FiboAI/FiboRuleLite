@@ -1,0 +1,3 @@
+NODE_ENV = 'C'
+VUE_CURRENTMODE = 'C'
+VUE_PROXY = true
