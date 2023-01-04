@@ -68,5 +68,16 @@ public class EngineController {
         return ResponseEntityBuilder.buildNormalResponse();
     }
 
+    @RequestMapping(value = "/导出", method = RequestMethod.POST)
+    public ResponseEntityDto engineExport(@RequestBody EngineDetailParam param) {
+        return ResponseEntityBuilder.buildNormalResponse(engineService.engineExport(param));
+    }
+
+    @RequestMapping(value = "/导入", method = RequestMethod.POST)
+    public ResponseEntityDto engineImport(@RequestBody EngineDetailVO param) {
+        engineService.engineImport(param);
+        return ResponseEntityBuilder.buildNormalResponse();
+    }
+
 
 }
