@@ -1,6 +1,7 @@
 package com.fibo.rule.test.pay.node;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.fibo.rule.common.enums.FieldTypeEnum;
 import com.fibo.rule.core.annotation.FiboBean;
 import com.fibo.rule.core.annotation.FiboField;
 import com.fibo.rule.core.node.FiboIfNode;
@@ -9,16 +10,17 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @FiboBean(name = "是否满足条件", desc = "是否满足条件")
 public class PayIfNode extends FiboIfNode {
 
-    @FiboField(name = "充值金额", desc = "充值金额")
+    @FiboField(name = "充值金额", desc = "充值金额", type = FieldTypeEnum.NUMBER)
     private BigDecimal payAmount;
-    @FiboField(name = "活动开始时间", desc = "活动开始时间")
+    @FiboField(name = "活动开始时间", desc = "活动开始时间", type = FieldTypeEnum.DATE)
     private LocalDate beginTime;
-    @FiboField(name = "活动结束时间", desc = "活动结束时间")
+    @FiboField(name = "活动结束时间", desc = "活动结束时间", type = FieldTypeEnum.DATE)
     private LocalDate endTime;
 
     @Override
@@ -34,4 +36,5 @@ public class PayIfNode extends FiboIfNode {
         }
         return false;
     }
+    
 }

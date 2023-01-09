@@ -280,12 +280,20 @@ public final class NioClientManager {
     }
 
     public synchronized List<String> getSceneList(Long appId) {
-        return new ArrayList<>(appScenesMap.get(appId));
+        Set<String> SceneSet = appScenesMap.get(appId);
+        if (!CollectionUtils.isEmpty(SceneSet)) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(SceneSet);
     }
 
     public synchronized List<FiboBeanDto> getNodesList(Long appId, String scene, Integer nodeType) {
-        List<FiboBeanDto> fiboBeanDtoList = appSceneNodesMap.get(appId).get(scene);
-        if (fiboBeanDtoList.isEmpty()) {
+        Map<String, List<FiboBeanDto>> map = appSceneNodesMap.get(appId);
+        if (CollectionUtils.isEmpty(map)) {
+            return new ArrayList<>();
+        }
+        List<FiboBeanDto> fiboBeanDtoList = map.get(scene);
+        if (CollectionUtils.isEmpty(fiboBeanDtoList)) {
             return new ArrayList<>();
         }
         return fiboBeanDtoList.stream().filter(fiboBeanDto -> fiboBeanDto.getType().getType().equals(nodeType)).collect(Collectors.toList());
