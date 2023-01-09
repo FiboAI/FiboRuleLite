@@ -27,7 +27,7 @@ fiborule-test-mall模块
 ##后台配置
 - - -
 ```Java
-fiborule.app=2
+fiborule.app=36
 fiborule.server=localhost:18121
 fiborule.scene-list[0].name=mall-price
 fiborule.scene-list[0].path=com.fibo.rule.test.mall
