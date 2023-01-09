@@ -19,6 +19,7 @@ import com.fibo.rule.core.exception.EngineBuildException;
 import com.fibo.rule.core.node.FiboNode;
 import com.fibo.rule.core.util.FiboBeanUtils;
 import io.netty.util.internal.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.function.Function;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
  * @author JPX
  * @since 2022-11-20 14:42
  */
+@Slf4j
 public class EngineBuilder {
 
     /**引擎*/
@@ -48,6 +50,8 @@ public class EngineBuilder {
     private Stack<FiboSerialCondition> serialStack;
     /**已递归完成节点*/
     private Set<String> finishNodeSet;
+    /**并行节点对应的聚合节点*/
+    private Map<String, EngineNodeDto> polyMap;
 
     public static EngineBuilder createEngine(EngineDto engineDto) {
         return new EngineBuilder(engineDto);
@@ -67,6 +71,7 @@ public class EngineBuilder {
         this.runnableMap = new HashMap<>();
         this.serialStack = new Stack<>();
         this.finishNodeSet = new HashSet<>();
+        this.polyMap = new HashMap<>();
     }
 
     public void build() {
@@ -104,9 +109,23 @@ public class EngineBuilder {
             FiboSerialCondition serialCondition = serialStack.peek();
             serialCondition.addRunnable(runnable);
         }
-        if(finishNodeSet.contains(curNodeDto.getNodeCode())) {
+
+        //并行节点已遍历完成，则获取对应的聚合节点，进行递归
+        if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType()) && finishNodeSet.contains(tempNodeDto.getNodeCode())) {
+            curNodeDto = nodeDtoMap.get(polyMap.get(tempNodeDto.getNodeCode()).getNextNodes());
+            recursionEngineNode();
             return;
         }
+
+        //分支节点已遍历完成，则结束
+        if((NodeTypeEnum.IF.getType().equals(tempNodeDto.getNodeType()) || NodeTypeEnum.SWITCH.getType().equals(tempNodeDto.getNodeType()))
+            && finishNodeSet.contains(tempNodeDto.getNodeCode())) {
+            return;
+        }
+
+//        if(finishNodeSet.contains(curNodeDto.getNodeCode())) {
+//            return;
+//        }
         //后续节点
         List<String> nextNodes = splitNextCodes(tempNodeDto.getNextNodes());
         //没有后续节点则跳出
@@ -132,6 +151,7 @@ public class EngineBuilder {
 
         //并行节点后递归聚合节点
         if(NodeTypeEnum.ALL.getType().equals(tempNodeDto.getNodeType())) {
+            polyMap.put(tempNodeDto.getNodeCode(), aggNodeDto);
             curNodeDto = nodeDtoMap.get(aggNodeDto.getNextNodes());
             aggNodeDto = null;
             recursionEngineNode();

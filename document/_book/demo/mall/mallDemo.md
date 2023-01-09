@@ -34,7 +34,7 @@ fiborule.scene-list[0].path=com.fibo.rule.test.mall
 ```
 ##引擎流程图
 - - -
-
+![引擎流程图](mallDemoEngine.png)
 ##执行结果
 - - -
 参数-订单信息json

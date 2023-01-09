@@ -20,7 +20,7 @@ public class AddressJudgeNode extends FiboIfNode {
         //获取context
         PriceContext priceContext = this.getContextBean(PriceContext.class);
         if(ObjectUtil.isNotNull(priceContext.isAboard())) {
-            return priceContext.isVip();
+            return priceContext.isAboard();
         }
         return false;
     }
