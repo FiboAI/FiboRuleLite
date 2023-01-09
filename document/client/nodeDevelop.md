@@ -1,9 +1,9 @@
 ##组件开发
-###普通节点
+###计算节点
 - - -
 继承FiboNode类，实现runnerStep方法
 ```Java
-@FiboBean(name = "普通节点", desc = "普通节点")
+@FiboBean(name = "计算节点", desc = "计算节点")
 public class CommonNode extends FiboNode {
     @Override
     public void runnerStep() {

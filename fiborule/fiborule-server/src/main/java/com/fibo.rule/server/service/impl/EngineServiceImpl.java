@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,6 +190,35 @@ public class EngineServiceImpl extends ServiceImpl<EngineMapper, Engine> impleme
             engineMapper.updateById(engine);
         }
     }
+
+    @Override
+    public EngineDetailVO engineExport(EngineDetailParam param) {
+        return this.getEngineDetail(param);
+    }
+
+    @Override
+    public void engineImport(EngineDetailVO param) {
+        Engine engine = param.getEngine();
+        List<EngineNode> engineNodeList = engineNodeMapper.selectList(new QueryWrapper<EngineNode>()
+                .lambda()
+                .eq(EngineNode::getEngineId, engine.getId())
+                .eq(EngineNode::getDelFlag, DelFlagEnum.DEL_NO.status));
+        if(!engineNodeList.isEmpty()) {
+            for (EngineNode engineNode : engineNodeList) {
+                engineNode.setDelFlag(DelFlagEnum.DEL_YES.status);
+                engineNodeMapper.updateById(engineNode);
+            }
+        }
+        List<EngineNodeDetailVO> detailVOS = param.getNodesDetail();
+        for (EngineNodeDetailVO detailVO : detailVOS) {
+            EngineNode engineNode = new EngineNode();
+            BeanUtils.copyProperties(detailVO, engineNode);
+            engineNode.setId(null);
+            engineNode.setEngineId(engine.getId());
+            engineNodeMapper.insert(engineNode);
+        }
+    }
+    
 
 
 }

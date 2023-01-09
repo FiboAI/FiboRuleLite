@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public void handleException(HttpServletRequest request, HttpServletResponse response, HttpRequestMethodNotSupportedException e) {
-        log.warn("HttpRequestMethodNotSupportedException:", e);
+        log.error("HttpRequestMethodNotSupportedException:", e);
         write(response, ResponseEntityBuilder.buildErrorResponse(ErrorCodeEnum.SERVER_ERROR.getCode(), e.getMessage()));
     }
 
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = ApiException.class)
     public void handleException(HttpServletRequest request, HttpServletResponse response, ApiException e) {
-        log.warn("ApiException:", e);
+        log.error("ApiException:", e);
         write(response, ResponseEntityBuilder.buildErrorResponse(e.errCode, e.message));
     }
 
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = NullPointerException.class)
     public void handleException(HttpServletRequest request, HttpServletResponse response, NullPointerException e) {
-        log.warn("NullPointerException:", e);
+        log.error("NullPointerException:", e);
         write(response, ResponseEntityBuilder.buildErrorResponse(ErrorCodeEnum.SERVER_ERROR.getCode(), "NullPointerException"));
     }
 

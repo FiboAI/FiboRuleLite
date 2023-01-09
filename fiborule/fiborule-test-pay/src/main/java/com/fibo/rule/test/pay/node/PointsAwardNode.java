@@ -1,5 +1,6 @@
 package com.fibo.rule.test.pay.node;
 
+import com.fibo.rule.common.enums.FieldTypeEnum;
 import com.fibo.rule.core.annotation.FiboBean;
 import com.fibo.rule.core.annotation.FiboField;
 import com.fibo.rule.core.node.FiboNode;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 @FiboBean(name = "积分奖励", desc = "积分奖励")
 public class PointsAwardNode extends FiboNode {
 
-    @FiboField(name = "积分奖励", desc = "积分奖励")
+    @FiboField(name = "积分奖励", desc = "积分奖励", type = FieldTypeEnum.NUMBER)
     private BigDecimal awardPoints;
 
     @Override

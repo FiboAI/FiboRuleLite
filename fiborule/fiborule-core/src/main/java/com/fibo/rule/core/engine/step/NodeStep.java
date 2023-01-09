@@ -41,14 +41,14 @@ public class NodeStep {
     }
 
     public String buildString() {
-        return StrUtil.format("[{}]:[{}]", nodeId, nodeCode);
+        return StrUtil.format("[{}]:[{}]", nodeId, nodeName);
     }
 
     public String buildStringWithTime() {
         if (timeSpent != null){
-            return StrUtil.format("[{}]:[{}]<{}>", nodeId, nodeCode, timeSpent);
+            return StrUtil.format("[{}]:[{}]<{}>", nodeId, nodeName, timeSpent);
         }else{
-            return StrUtil.format("[{}]:[{}]", nodeId, nodeCode);
+            return StrUtil.format("[{}]:[{}]", nodeId, nodeName);
         }
     }
 
