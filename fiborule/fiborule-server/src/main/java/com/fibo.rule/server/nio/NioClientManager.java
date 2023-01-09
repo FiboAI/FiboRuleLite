@@ -281,7 +281,7 @@ public final class NioClientManager {
 
     public synchronized List<String> getSceneList(Long appId) {
         Set<String> SceneSet = appScenesMap.get(appId);
-        if (!CollectionUtils.isEmpty(SceneSet)) {
+        if (CollectionUtils.isEmpty(SceneSet)) {
             return new ArrayList<>();
         }
         return new ArrayList<>(SceneSet);
