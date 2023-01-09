@@ -35,7 +35,7 @@ export const connectLine = (params) => request.post('/rule/engineNode/connectLin
 export const getNodeConfigList = (params) => request.post('/rule/engineNode/listNodesByType',params)
 // 引擎发布
 export const engineRelease = (params) => request.post('/rule/engine/engineRelease',params)
-// // 引擎场景值
-// export const getSceneList = (params) => request.post('/rule/engine/getSceneList',params)
-// // 引擎场景值
-// export const engineDelete = (params) => request.post('/rule/engine/delete',params)
+// 引擎导出
+export const engineExport = (params) => request.post('/rule/engine/engineExport',params)
+// 引擎导入
+export const engineImport = (params) => request.post('/rule/engine/engineImport',params)

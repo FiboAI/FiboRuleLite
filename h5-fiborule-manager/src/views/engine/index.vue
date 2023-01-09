@@ -30,6 +30,14 @@
                 @click="EngineRelease">
                 {{ engineInfo && engineInfo.bootStatus == 1 ? '取消部署' : '部署' }}
             </div>
+            <div style="display: flex;justify-content: space-between;padding: 5px;margin-top: -50px;">
+                <!--  -->
+                <el-upload action="/" :auto-upload="false" :on-change="engineImport" :show-file-list="false" :disabled="engineInfo && engineInfo.bootStatus == 1">
+                    <el-button type="primary" :disabled="engineInfo && engineInfo.bootStatus == 1">导入</el-button>
+                </el-upload>
+                <el-button type="primary" @click="engineExport">导出</el-button>
+
+            </div>
 
         </div>
         <div class="engineFunctionMenuModel" v-if="engineInfo && engineInfo.bootStatus == 1">
@@ -56,7 +64,7 @@ import request from './mixin/request'
 import nodeConfig from './mixin/nodeConfig'
 import SwitchIfGeneral from './nodeConfig/SwitchIfGeneral.vue'
 import NoConfig from './nodeConfig/NoConfig.vue'
-import { engineRelease } from '@/api'
+import { engineRelease, engineImport, engineExport } from '@/api'
 export default {
     mixins: [link, node, request, nodeConfig],
     components: { SwitchIfGeneral, NoConfig },
@@ -135,6 +143,60 @@ export default {
         }
     },
     methods: {
+        engineExport() {
+            engineExport({
+                "engineId": this.engineId
+            }).then(res => {
+
+                let arr = res.data.nodesDetail.map(value => {
+                    delete value.id
+                    delete value.engineId
+                    return value
+                })
+                download(`引擎导出【${this.engineId}】.json`, JSON.stringify(arr));
+
+
+                function download(filename, text) {
+                    var element = document.createElement('a');
+                    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                    element.setAttribute('download', filename);
+
+                    element.style.display = 'none';
+                    document.body.appendChild(element);
+
+                    element.click();
+                    document.body.removeChild(element);
+                }
+
+            })
+        },
+        engineImport(e) {
+            console.log(e)
+            
+            getActionData(e.raw).then(res=>{
+                // console.log()
+                engineImport({
+                    engine:{
+                        id:this.engineId
+                    },
+                    nodesDetail:JSON.parse(res)
+                }).then(res=>{
+                    location.reload()
+                })
+            })
+
+           function getActionData(file) {
+               return new Promise(res=>{
+                var reader = new FileReader()// 新建一个FileReader
+                reader.readAsText(file, 'UTF-8')// 读取文件
+                reader.onload = function (evt) { // 读取完文件之后会回来这里
+                    var fileString = evt.target.result // 读取文件内容
+                   res(fileString)
+                }
+               })
+            }
+
+        },
         EngineReleaseVerify() {
             //============ 查找是否有应该要配置的节点 未配置
             if (this.Layer.children.filter(x => !x.isLink && !x.userData.isHoverNode).find(node => {
