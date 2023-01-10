@@ -4,7 +4,6 @@ import com.fibo.rule.core.util.FiboBeanUtils;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 /**
  *<p>spring bean 工厂</p>

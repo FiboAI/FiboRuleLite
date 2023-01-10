@@ -4,6 +4,7 @@ import com.fibo.rule.core.monitor.MonitorManager;
 import com.fibo.rule.core.property.FiboRuleConfig;
 import com.fibo.rule.core.runner.FiboApplication;
 import com.fibo.rule.spring.FiboNioClientInit;
+import com.fibo.rule.spring.FiboSpringBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @AutoConfigureAfter({FiboRulePropertyAutoConfiguration.class})
 @ConditionalOnBean(FiboRuleConfig.class)
-@Import(FiboNioClientInit.class)
+@Import(value = {FiboSpringBeanFactory.class, FiboNioClientInit.class})
 public class FiboRuleMainAutoConfiguration {
 
     @Bean
