@@ -1,6 +1,6 @@
-#开发指南
-##server开发
-###安装依赖
+# 后端开发指南
+## server开发
+### 安装依赖
 ```
 <dependency>
     <groupId>com.fibo.rule</groupId>
@@ -8,7 +8,7 @@
     <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
-###安装数据库
+### 安装数据库
 ```
 https://github.com/FiboAI/FiboRuleLite/blob/dev_20221123/fiborule/fiborule-server/src/main/resources/doc/rule.sql
 DROP TABLE IF EXISTS `t_app`;
@@ -76,7 +76,7 @@ CREATE TABLE `t_engine_node` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=325 DEFAULT CHARSET=utf8mb4 COMMENT='引擎节点表';
 ```
-###下载源代码
+### 下载源代码
 ```
 git clone https://github.com/FiboAI/FiboRuleLite.git
 cd FiboRuleLite/fiborule
@@ -85,7 +85,7 @@ java -jar fiborule-server/target/server.jar
 ```
 
 
-###编辑配置文件
+### 编辑配置文件
 ```
 application.yml
     server:
@@ -134,13 +134,33 @@ spring:
 
 
 
-###启动server
+### 启动server
 ```
 java -jar fiborule-server/target/server.jar
 
 ```
 
-###打开配置后台
+### 打开配置后台
 ```
 http://localhost:8080/rule/
 ```
+
+# 前端部署
+
+## 1.环境需求
+* 下载nodejs 版本12-14 最好为 12.22.7
+
+## 2.下载依赖
+* 进入 h5-fiborule-manager 目录下
+* 执行 
+```
+npm i
+```
+ (如果下载失败请切换为淘宝镜像)
+
+## 3.文件编译
+* 执行
+```
+npm run build
+```
+* h5-fiborule-manager/dist 下为编译后的文件

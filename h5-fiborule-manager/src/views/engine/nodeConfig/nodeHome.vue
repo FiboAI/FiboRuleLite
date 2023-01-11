@@ -6,8 +6,9 @@
             </div>
             {{ data && data.nodeName }}
         </div>
-        <div style="margin: 20px;">
-            <myInput v-model="Name" placeholder="节点名称" />
+        <div style="margin: 20px;display: flex;align-items: center;">
+            <p style="width: 60px;font-size: 12px;text-align: right;font-weight: bold;margin-right: 10px;flex-grow: 0;flex-shrink: 0;"> 节点名称: </p>
+           <myInput v-model="Name" placeholder="节点名称" style="flex-grow:1"/>
         </div>
         <slot />
     </div>
