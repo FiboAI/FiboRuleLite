@@ -1,7 +1,10 @@
 <template>
     <nodeHome v-if="data" :data="data" style="text-align: center;" ref="nodeHome">
-        <mySelete v-model="data.nodeClazz" :options="moduleList" :keys="{ value: 'nodeClazz', label: 'name' }"
-            style="margin-top: 10px;" placeholder="请选择实例" />
+        <div style="margin: 10px 0 10px 0;" class="fiboFieldDto">
+            <p style="width: 120px;font-size: 12px;text-align: right;font-weight: bold;margin-right: 10px;flex-shrink: 0;flex-grow: 0;">节点类</p>
+         <mySelete v-model="data.nodeClazz" :options="moduleList" :keys="{ value: 'nodeClazz', label: 'name' }"
+           placeholder="请选择类" style="width: 180px;" />
+        </div>
         <!-- {{data}} -->
         <!-- {{fiboFieldDtoList}} -->
         <div v-for="fiboFieldDto in fiboFieldDtoList" class="fiboFieldDto">
@@ -9,7 +12,7 @@
 
             <p style="width: 120px;font-size: 12px;text-align: right;font-weight: bold;margin-right: 10px;">{{
                     fiboFieldDto.name
-            }} :</p>
+            }}</p>
             <p style="width: 180px;flex-shrink: 0;">
                 <myInput v-if="fiboFieldDto.type == 'NUMBER' || fiboFieldDto.type == 'STRING'"
                     v-model="data.nodeConfig[fiboFieldDto.fieldName]" :number="fiboFieldDto.type == 'NUMBER'" />

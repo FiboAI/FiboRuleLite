@@ -6,7 +6,7 @@
         <myTable :data="list" :row="row" v-loading="loading">
             <template v-slot:operation="{ scope }">
                 <!-- {{scope.id}} -->
-                <el-button icon="el-icon-video-play" circle @click="goEngineDetil(scope.id)"  type="primary"/>
+                <el-button icon="el-icon-video-play" circle @click="goEngineDetil(scope.id)" type="primary" />
                 <el-button icon="el-icon-setting" circle @click="engineEdit(scope)" />
                 <el-button icon="el-icon-delete" circle @click="engineDelete(scope.id)" type="danger" />
             </template>
@@ -63,6 +63,10 @@ export default {
             appId: '',
             row: [
                 {
+                    row: 'id',
+                    label: '引擎Id'
+                },
+                {
                     row: 'engineCode',
                     label: '引擎Code'
                 },
@@ -110,8 +114,8 @@ export default {
         })
     },
     methods: {
-        goEngineDetil(id){
-            this.$router.push('/engine/'+id)
+        goEngineDetil(id) {
+            this.$router.push('/engine/' + id)
         },
         engineDelete(id) {
 
