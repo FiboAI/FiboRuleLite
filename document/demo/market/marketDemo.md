@@ -1,4 +1,4 @@
-#营销案例
+# 营销案例
 营销案例是一个根据交易信息计算返现金额的案例。<br>
 fiborule-test-market模块
 * 1、判断交易时间是否在活动时间范围内；
@@ -7,7 +7,7 @@ fiborule-test-market模块
 * 4、累计消费金额限制；
 * 5、计算返现金额，并限制最大返现金额。
 
-##组件开发
+## 组件开发
 - - -
 * ContextInitNode - 交易信息初始化节点，初始化参数
 * DateJudgeNode - 时间判断节点，判断交易时间是否在活动时间范围内
@@ -16,7 +16,7 @@ fiborule-test-market模块
 * ConsumeAmountJudgeNode - 累计消费金额判断，可以放在redis中，判断累计金额是否达标，并累加金额
 * CashBackNode - 根据返现百分比计算返现金额，并判断限额
 
-##后台配置
+## 后台配置
 - - -
 ```Java
 fiborule.app=38
@@ -24,10 +24,10 @@ fiborule.server=192.168.1.38:18121
 fiborule.scene-list[0].name=market
 fiborule.scene-list[0].path=com.fibo.rule.test.market
 ```
-##引擎流程图
+## 引擎流程图
 - - -
 ![引擎流程图](marketDemoEngine.png)
-##执行结果
+## 执行结果
 - - -
 参数-订单信息json
 ```json
@@ -75,7 +75,7 @@ fiborule.scene-list[0].path=com.fibo.rule.test.market
   }
 }
 ```
-##引擎编排案例json
+## 引擎编排案例json
 - - -
 将以下json复制到.json文件中，在服务端引擎编排界面进行导入
 ```json
