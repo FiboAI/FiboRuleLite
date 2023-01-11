@@ -1,5 +1,5 @@
-##Client接入(Spring)
-###增加pom依赖
+## Client接入(Spring)
+### 增加pom依赖
 - - -
 以1.0.0版本为例
 ```xml
@@ -9,7 +9,7 @@
     <version>1.0.0</version>
 </dependency>
 ```
-###增加配置
+### 增加配置
 - - -
 ```Java
 //后台配置的appId

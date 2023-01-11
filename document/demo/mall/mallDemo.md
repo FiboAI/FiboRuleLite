@@ -1,4 +1,4 @@
-#电商案例
+# 电商案例
 电商案例是一个订单金额计算案例，模拟了电商系统中对订单金额的计算。<br>
 fiborule-test-mall模块
 * 1、接收订单数据后，先计算出订单原始金额；
@@ -6,7 +6,7 @@ fiborule-test-mall模块
 * 3、然后按照是否会员和是否海外地址计算出运费；
 * 4、最后得出订单的最终金额。
 
-##组件开发
+## 组件开发
 - - -
 * OrderInitNode - 订单原始金额计算组件
 * CouponDiscountNode - 抵扣券计算组件（抵扣金额支持配置）
@@ -24,7 +24,7 @@ fiborule-test-mall模块
 * OrderVo - 订单类，引擎执行参数
 * SendService - 通知发送模拟类，Spring应用可以直接注入，非Spring应用请初始化FiboBeanUtils的FiboBeanFactory装配实例
 
-##后台配置
+## 后台配置
 - - -
 ```Java
 fiborule.app=36
@@ -32,10 +32,10 @@ fiborule.server=localhost:18121
 fiborule.scene-list[0].name=mall-price
 fiborule.scene-list[0].path=com.fibo.rule.test.mall
 ```
-##引擎流程图
+## 引擎流程图
 - - -
 ![引擎流程图](mallDemoEngine.png)
-##执行结果
+## 执行结果
 - - -
 参数-订单信息json
 ```json
@@ -97,7 +97,7 @@ fiborule.scene-list[0].path=com.fibo.rule.test.mall
     |   [运费减免(满99) : -10.00]
     |   [最终价 : 589.50]
     |====================================================================
-##引擎编排案例json
+## 引擎编排案例json
 - - -
 将以下json复制到.json文件中，在服务端引擎编排界面进行导入
 ```json

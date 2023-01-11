@@ -1,4 +1,4 @@
-##前言
+## 前言
 - - -
 FiboRule Lite - 轻量级规则引擎<br>
 * 轻量级 - 会编程即可轻松上手、无需复杂的系统的操作
@@ -7,7 +7,7 @@ FiboRule Lite - 轻量级规则引擎<br>
 * 配置简单化 - 业务场景中，经常变动的是逻辑编排和阈值。核心支持逻辑编排配置和阈值配置
 * 场景化 - 各个业务场景提供示例代码，方便上手
 
-###代码结构
+### 代码结构
 * fiborule 后端核心代码  
   `fiborule-common` 通用dto、枚举、model、util类等  
   `fiborule-core` SDK核心代码类  
@@ -20,18 +20,18 @@ FiboRule Lite - 轻量级规则引擎<br>
 * h5-fiborule-manager 前端核心代码
 * document 详细的使用文档
 
-###架构图
+### 架构图
 ![架构图](images/arch.jpg)
 
 高清大图地址：
 https://www.processon.com/view/link/63849862e0b34d37c4717942
 
-###Demo图
+### Demo图
 ![Demo图](images/demo.jpg)
 
-###文档链接
+### 文档链接
 https://www.fibo.cn/fiborulelite/
 
-###开源交流
+### 开源交流
 可加微信号，进开源交流群  
 ![二维码](images/code_weixin.jpg)
