@@ -159,7 +159,7 @@ npm i
  (如果下载失败请切换为淘宝镜像)
 
 
-## 3.前端启动 （开发模式，本地开发使用）
+## 3.前端启动 （开发模式，本地开发使用 ，仅在本地使用可以无视4 5 6 条）
 * 更改 h5-fiborule-manager/baseUrl.js下的个人服务器后端地址
 ```
 switch (process.env.NODE_ENV) {
