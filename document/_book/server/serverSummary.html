@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>server开发 · GitBook</title>
+        <title>服务端部署 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,8 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="../operationManual/" />
     
-    <link rel="prev" href="../demo/mall/mallDemo.html" />
+    
+    <link rel="prev" href="../arch/arch.html" />
     
 
     </head>
@@ -114,7 +116,33 @@
             
         </li>
     
-        <li class="chapter " data-level="1.1.2" >
+        <li class="chapter active" data-level="1.1.2" data-path="serverSummary.html">
+            
+                <a href="serverSummary.html">
+            
+                    
+                    服务端部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.3" data-path="../operationManual/">
+            
+                <a href="../operationManual/">
+            
+                    
+                    服务端操作手册
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.4" >
             
                 <span>
             
@@ -128,9 +156,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.1.2.1" data-path="clientSpring.html">
+        <li class="chapter " data-level="1.1.4.1" data-path="../client/clientSpring.html">
             
-                <a href="clientSpring.html">
+                <a href="../client/clientSpring.html">
             
                     
                     Client接入(Spring)
@@ -141,9 +169,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.1.2.2" data-path="clientNoSpring.html">
+        <li class="chapter " data-level="1.1.4.2" data-path="../client/clientNoSpring.html">
             
-                <a href="clientNoSpring.html">
+                <a href="../client/clientNoSpring.html">
             
                     
                     Client接入(非Spring)
@@ -154,9 +182,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.1.2.3" data-path="nodeDevelop.html">
+        <li class="chapter " data-level="1.1.4.3" data-path="../client/nodeDevelop.html">
             
-                <a href="nodeDevelop.html">
+                <a href="../client/nodeDevelop.html">
             
                     
                     组件开发
@@ -167,9 +195,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.1.2.4" data-path="runnerContext.html">
+        <li class="chapter " data-level="1.1.4.4" data-path="../client/runnerContext.html">
             
-                <a href="runnerContext.html">
+                <a href="../client/runnerContext.html">
             
                     
                     执行上下文
@@ -180,9 +208,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.1.2.5" data-path="runnerEngine.html">
+        <li class="chapter " data-level="1.1.4.5" data-path="../client/runnerEngine.html">
             
-                <a href="runnerEngine.html">
+                <a href="../client/runnerEngine.html">
             
                     
                     执行引擎
@@ -198,7 +226,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.1.3" data-path="../demo/mall/mallDemo.html">
+        <li class="chapter " data-level="1.1.5" data-path="../demo/mall/mallDemo.html">
             
                 <a href="../demo/mall/mallDemo.html">
             
@@ -211,12 +239,12 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.1.4" data-path="serverSummary.html">
+        <li class="chapter " data-level="1.1.6" data-path="../demo/market/marketDemo.html">
             
-                <a href="serverSummary.html">
+                <a href="../demo/market/marketDemo.html">
             
                     
-                    server开发
+                    营销案例
             
                 </a>
             
@@ -259,7 +287,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >server开发</a>
+        <a href=".." >服务端部署</a>
     </h1>
 </div>
 
@@ -274,17 +302,14 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="&#x5F00;&#x53D1;&#x6307;&#x5357;">&#x5F00;&#x53D1;&#x6307;&#x5357;</h1>
-<h2 id="server&#x5F00;&#x53D1;">server&#x5F00;&#x53D1;</h2>
-<h3 id="&#x5B89;&#x88C5;&#x4F9D;&#x8D56;">&#x5B89;&#x88C5;&#x4F9D;&#x8D56;</h3>
-<pre><code>&lt;dependency&gt;
-    &lt;groupId&gt;com.fibo.rule&lt;/groupId&gt;
-    &lt;artifactId&gt;fiborule-core&lt;/artifactId&gt;
-    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre><h3 id="&#x5B89;&#x88C5;&#x6570;&#x636E;&#x5E93;">&#x5B89;&#x88C5;&#x6570;&#x636E;&#x5E93;</h3>
-<pre><code>https://github.com/FiboAI/FiboRuleLite/blob/dev_20221123/fiborule/fiborule-server/src/main/resources/doc/rule.sql
-DROP TABLE IF EXISTS `t_app`;
+                                <h1 id="&#x540E;&#x7AEF;&#x90E8;&#x7F72;">&#x540E;&#x7AEF;&#x90E8;&#x7F72;</h1>
+<h2 id="server&#x5B89;&#x88C5;">server&#x5B89;&#x88C5;</h2>
+<h3 id="&#x5B89;&#x88C5;&#x6570;&#x636E;&#x5E93;">&#x5B89;&#x88C5;&#x6570;&#x636E;&#x5E93;</h3>
+<p>&#x5B89;&#x88C5;mysql&#xFF0C;&#x65B0;&#x5EFA;fibo_rule&#x6570;&#x636E;&#x5E93;&#x7528;&#x4E8E;&#x5B58;&#x50A8;&#x914D;&#x7F6E;</p>
+<pre><code>CREATE DATABASE IF NOT EXISTS fibo_rule Character Set utf8mb4;
+</code></pre><p>&#x8868;&#x7ED3;&#x6784;sql&#x5730;&#x5740;&#xFF1A;
+<a href="https://github.com/FiboAI/FiboRuleLite/blob/dev_20221123/fiborule/fiborule-server/src/main/resources/doc/rule.sql" target="_blank">https://github.com/FiboAI/FiboRuleLite/blob/dev_20221123/fiborule/fiborule-server/src/main/resources/doc/rule.sql</a></p>
+<pre><code>DROP TABLE IF EXISTS `t_app`;
 CREATE TABLE `t_app` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT &apos;&#x5220;&#x9664;&#x6807;&#x5FD7;&#xFF1A;0&#x672A;&#x5220;&#x9664;&#xFF0C;1&#x5DF2;&#x5220;&#x9664;&apos;,
   `app_name` varchar(50) DEFAULT NULL COMMENT &apos;app&#x540D;&#x79F0;&apos;,
@@ -354,8 +379,8 @@ cd FiboRuleLite/fiborule
 mvn install -DskipTests
 java -jar fiborule-server/target/server.jar
 </code></pre><h3 id="&#x7F16;&#x8F91;&#x914D;&#x7F6E;&#x6587;&#x4EF6;">&#x7F16;&#x8F91;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</h3>
-<pre><code>application.yml
-    server:
+<p>application.yml</p>
+<pre><code>server:
   port: 8080
   servlet:
     context-path: /rule
@@ -388,10 +413,8 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
-application-dev.yml
-
-spring:
+</code></pre><p>application-dev.yml</p>
+<pre><code>spring:
   datasource:
     druid:
       url: jdbc:mysql://127.0.0.1:3306/fibo_rule?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai
@@ -401,7 +424,55 @@ spring:
 <pre><code>java -jar fiborule-server/target/server.jar
 </code></pre><h3 id="&#x6253;&#x5F00;&#x914D;&#x7F6E;&#x540E;&#x53F0;">&#x6253;&#x5F00;&#x914D;&#x7F6E;&#x540E;&#x53F0;</h3>
 <pre><code>http://localhost:8080/rule/
-</code></pre>
+</code></pre><h2 id="&#x524D;&#x7AEF;&#x90E8;&#x7F72;">&#x524D;&#x7AEF;&#x90E8;&#x7F72;</h2>
+<h3 id="1&#x73AF;&#x5883;&#x9700;&#x6C42;">1.&#x73AF;&#x5883;&#x9700;&#x6C42;</h3>
+<ul>
+<li>&#x4E0B;&#x8F7D;nodejs &#x7248;&#x672C;12-14 &#x6700;&#x597D;&#x4E3A; 12.22.7</li>
+</ul>
+<h3 id="2&#x4E0B;&#x8F7D;&#x4F9D;&#x8D56;">2.&#x4E0B;&#x8F7D;&#x4F9D;&#x8D56;</h3>
+<ul>
+<li>&#x8FDB;&#x5165; h5-fiborule-manager &#x76EE;&#x5F55;&#x4E0B;</li>
+<li>cmd&#x6267;&#x884C; <pre><code>npm i
+</code></pre>(&#x5982;&#x679C;&#x4E0B;&#x8F7D;&#x5931;&#x8D25;&#x8BF7;&#x5207;&#x6362;&#x4E3A;&#x6DD8;&#x5B9D;&#x955C;&#x50CF;)</li>
+</ul>
+<h3 id="3&#x524D;&#x7AEF;&#x542F;&#x52A8;-&#xFF08;&#x5F00;&#x53D1;&#x6A21;&#x5F0F;&#xFF0C;&#x672C;&#x5730;&#x5F00;&#x53D1;&#x4F7F;&#x7528;-&#xFF0C;&#x4EC5;&#x5728;&#x672C;&#x5730;&#x4F7F;&#x7528;&#x53EF;&#x4EE5;&#x65E0;&#x89C6;4-5-6-&#x6761;&#xFF09;">3.&#x524D;&#x7AEF;&#x542F;&#x52A8; &#xFF08;&#x5F00;&#x53D1;&#x6A21;&#x5F0F;&#xFF0C;&#x672C;&#x5730;&#x5F00;&#x53D1;&#x4F7F;&#x7528; &#xFF0C;&#x4EC5;&#x5728;&#x672C;&#x5730;&#x4F7F;&#x7528;&#x53EF;&#x4EE5;&#x65E0;&#x89C6;4 5 6 &#x6761;&#xFF09;</h3>
+<ul>
+<li>&#x66F4;&#x6539; h5-fiborule-manager/baseUrl.js&#x4E0B;&#x7684;&#x4E2A;&#x4EBA;&#x670D;&#x52A1;&#x5668;&#x540E;&#x7AEF;&#x5730;&#x5740;
+```
+switch (process.env.NODE_ENV) {
+  case &apos;development&apos;: // &#x4E2A;&#x4EBA;&#x670D;&#x52A1;&#x5668;&#x540E;&#x7AEF;&#x5730;&#x5740;<pre><code>  proxyObj = {
+      &apos;/rule&apos;: {
+          target: &apos;http://localhost:8080&apos;, // &#x4E2A;&#x4EBA;&#x670D;&#x52A1;&#x5668;&#x540E;&#x7AEF;&#x5730;&#x5740; - Riskmanage
+          changeOrigin: true, // &#x662F;&#x5426;&#x8DE8;&#x57DF;
+          pathRewrite: {
+              &apos;^/rule&apos;: &apos;/rule&apos;
+          }
+      },
+  }
+  break
+</code></pre></li>
+</ul>
+<p>}</p>
+<pre><code>&#x5C06; http://localhost:8080 &#x6539;&#x4E3A; &#x540E;&#x7AEF;&#x542F;&#x52A8;&#x7684;&#x7AEF;&#x53E3;
+* cmd &#x6267;&#x884C;
+</code></pre><p>npm run serve</p>
+<pre><code>
+### 4.&#x6587;&#x4EF6;&#x7F16;&#x8BD1; (&#x5C06;&#x6E90;&#x6587;&#x4EF6;&#x90E8;&#x7F72;&#x81F3;&#x670D;&#x52A1;&#x5668;&#x4F7F;&#x7528;)
+* cmd&#x6267;&#x884C;
+</code></pre><p>npm run build
+```</p>
+<ul>
+<li>h5-fiborule-manager/dist &#x4E0B;&#x4E3A;&#x7F16;&#x8BD1;&#x540E;&#x7684;&#x6587;&#x4EF6;</li>
+</ul>
+<h3 id="5&#x5C06;&#x7F16;&#x8BD1;&#x540E;&#x7684;&#x6587;&#x4EF6;&#x653E;&#x7F6E;&#x5728;&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x7684;-&#x81EA;&#x5B9A;&#x4E49;&#x76EE;&#x5F55;&#x4E0B;-&#xFF08;&#x6B64;&#x5904;&#x4EE5;-rootwwwh5-fiborule-manager-&#x4E3E;&#x4F8B;">5.&#x5C06;&#x7F16;&#x8BD1;&#x540E;&#x7684;&#x6587;&#x4EF6;&#x653E;&#x7F6E;&#x5728;&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x7684; &#x81EA;&#x5B9A;&#x4E49;&#x76EE;&#x5F55;&#x4E0B; &#xFF08;&#x6B64;&#x5904;&#x4EE5; /root/www/h5-fiborule-manager) &#x4E3E;&#x4F8B;</h3>
+<p><img src="../images/bushu.png" alt=""></p>
+<h3 id="6&#x914D;&#x7F6E;nginx">6.&#x914D;&#x7F6E;nginx</h3>
+<p><img src="../images/nginxConfig.png" alt=""></p>
+<ul>
+<li>&#x5C06;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x53E3;&#x6307;&#x5411;&#x6307;&#x5B9A;&#x76EE;&#x5F55;</li>
+<li>&#x8BBF;&#x95EE;&#x914D;&#x7F6E;&#x597D;&#x7684;&#x7AEF;&#x53E3;&#x5373;&#x53EF;</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -428,10 +499,14 @@ spring:
 
             
                 
-                <a href="../demo/mall/mallDemo.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 电商案例">
+                <a href="../arch/arch.html" class="navigation navigation-prev " aria-label="Previous page: 技术架构">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="../operationManual/" class="navigation navigation-next " aria-label="Next page: 服务端操作手册">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -440,7 +515,7 @@ spring:
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"server开发","level":"1.1.4","depth":2,"previous":{"title":"电商案例","level":"1.1.3","depth":2,"path":"demo/mall/mallDemo.md","ref":"demo/mall/mallDemo.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"client/serverSummary.md","mtime":"2023-01-04T02:23:29.086Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2023-01-04T02:27:41.501Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"服务端部署","level":"1.1.2","depth":2,"next":{"title":"服务端操作手册","level":"1.1.3","depth":2,"path":"operationManual/index.md","ref":"operationManual/index.md","articles":[]},"previous":{"title":"技术架构","level":"1.1.1","depth":2,"path":"arch/arch.md","ref":"arch/arch.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"server/serverSummary.md","mtime":"2023-01-11T07:56:14.536Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2023-01-11T08:07:06.951Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
