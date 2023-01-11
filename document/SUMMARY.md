@@ -1,7 +1,8 @@
 #目录
 * [前言](README.md)
   * [技术架构](arch/arch.md)
-  * [server开发](client/serverSummary.md)
+  * [服务端部署](server/serverSummary.md)
+  * [服务端操作手册](operationManual/index.md)
   * 开发指南
     * [Client接入(Spring)](client/clientSpring.md)
     * [Client接入(非Spring)](client/clientNoSpring.md)
