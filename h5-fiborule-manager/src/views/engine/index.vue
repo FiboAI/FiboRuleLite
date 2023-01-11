@@ -175,6 +175,13 @@ export default {
             
             getActionData(e.raw).then(res=>{
                 // console.log()
+
+                try{
+                    JSON.parse(res)
+                }catch(err){
+                    this.$message.error('引擎文件出错')
+                }
+
                 engineImport({
                     engine:{
                         id:this.engineId
