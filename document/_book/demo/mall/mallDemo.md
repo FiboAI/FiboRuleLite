@@ -27,7 +27,7 @@ fiborule-test-mall模块
 ##后台配置
 - - -
 ```Java
-fiborule.app=2
+fiborule.app=36
 fiborule.server=localhost:18121
 fiborule.scene-list[0].name=mall-price
 fiborule.scene-list[0].path=com.fibo.rule.test.mall
@@ -97,3 +97,26 @@ fiborule.scene-list[0].path=com.fibo.rule.test.mall
     |   [运费减免(满99) : -10.00]
     |   [最终价 : 589.50]
     |====================================================================
+##引擎编排案例json
+- - -
+将以下json复制到.json文件中，在服务端引擎编排界面进行导入
+```json
+[
+  {"nodeName":"开始","nodeCode":"start_1","nodeType":1,"preNodes":"","nextNodes":"general_2","nodeX":"-29","nodeY":"-80"},
+  {"nodeName":"订单原始金额计算节点","beanName":"订单原始金额计算","nodeCode":"general_2","nodeType":3,"preNodes":"start_1","nextNodes":"parallel_3","nodeConfig":"{}","nodeX":"86","nodeY":"-80","nodeClazz":"com.fibo.rule.test.mall.node.OrderInitNode","clazzName":"OrderInitNode"},
+  {"nodeName":"聚合","nodeCode":"aggregation_4","nodeType":7,"preNodes":"general_5,general_6,general_7,general_8","nextNodes":"general_9","nodeX":"464","nodeY":"-88","nodeGroup":"518a8a/1672912234107"},
+  {"nodeName":"并行","nodeCode":"parallel_3","nodeType":6,"preNodes":"general_2","nextNodes":"general_5,general_7,general_8","nodeX":"205","nodeY":"-80","nodeGroup":"518a8a/1672912234107"},
+  {"nodeName":"抵扣劵计算","beanName":"抵扣券计算","nodeCode":"general_5","nodeType":3,"preNodes":"parallel_3","nextNodes":"aggregation_4","nodeConfig":"{\"couponValue\":15}","nodeX":"347","nodeY":"-194","nodeClazz":"com.fibo.rule.test.mall.node.CouponDiscountNode","clazzName":"CouponDiscountNode"},
+  {"nodeName":"满减卷计算","beanName":"满减券计算","nodeCode":"general_6","nodeType":3,"preNodes":"parallel_3","nextNodes":"aggregation_4","nodeConfig":"{\"fullValue\":100,\"decrementValue\":5}","nodeX":"346","nodeY":"-126","nodeClazz":"com.fibo.rule.test.mall.node.FullDecrementNode","clazzName":"FullDecrementNode"},
+  {"nodeName":"打折券计算","beanName":"打折券计算","nodeCode":"general_7","nodeType":3,"preNodes":"parallel_3","nextNodes":"aggregation_4","nodeConfig":"{\"fullValue\":200,\"discountValue\":0.9}","nodeX":"346","nodeY":"-57","nodeClazz":"com.fibo.rule.test.mall.node.FullDisCountNode","clazzName":"FullDisCountNode"},
+  {"nodeName":"会员折扣计算","beanName":"会员折扣计算","nodeCode":"general_8","nodeType":3,"preNodes":"parallel_3","nextNodes":"aggregation_4","nodeConfig":"{\"discountValue\":0.9}","nodeX":"346","nodeY":"12","nodeClazz":"com.fibo.rule.test.mall.node.MemberDisCountNode","clazzName":"MemberDisCountNode"},
+  {"nodeName":"最大折扣金额计算","beanName":"最大折扣金额计算","nodeCode":"general_9","nodeType":3,"preNodes":"aggregation_4","nextNodes":"if_10","nodeConfig":"{}","nodeX":"575","nodeY":"-88","nodeClazz":"com.fibo.rule.test.mall.node.DisCountCollectNode","clazzName":"DisCountCollectNode"},
+  {"nodeName":"是否会员","beanName":"是否会员","nodeCode":"if_10","nodeType":4,"preNodes":"general_9","nextNodes":"if_11,general_14","nodeConfig":"{}","nodeX":"676","nodeY":"-88","nodeClazz":"com.fibo.rule.test.mall.node.MemberJudgeNode","clazzName":"MemberJudgeNode","nextNodeValue":"[{\"key\":\"N\",\"label\":\"No\",\"value\":\"if_11\"},{\"key\":\"Y\",\"label\":\"Yes\",\"value\":\"general_14\"}]"},
+  {"nodeName":"是否海外地址","beanName":"是否海外地址","nodeCode":"if_11","nodeType":4,"preNodes":"if_10","nextNodes":"general_12,general_13","nodeConfig":"{}","nodeX":"865","nodeY":"-173","nodeClazz":"com.fibo.rule.test.mall.node.AddressJudgeNode","clazzName":"AddressJudgeNode","nextNodeValue":"[{\"key\":\"N\",\"label\":\"No\",\"value\":\"general_12\"},{\"key\":\"Y\",\"label\":\"Yes\",\"value\":\"general_13\"}]"},
+  {"nodeName":"国内运费计算","beanName":"国内运费计算","nodeCode":"general_12","nodeType":3,"preNodes":"if_11","nextNodes":"","nodeConfig":"{\"fullValue\":99,\"freightValue\":10}","nodeX":"811","nodeY":"-24","nodeClazz":"com.fibo.rule.test.mall.node.HomeFreightNode","clazzName":"HomeFreightNode"},
+  {"nodeName":"海外运费计算","beanName":"海外运费计算","nodeCode":"general_13","nodeType":3,"preNodes":"if_11","nextNodes":"general_14","nodeConfig":"{\"freightValue\":15}","nodeX":"875","nodeY":"59","nodeClazz":"com.fibo.rule.test.mall.node.AbroadFreightNode","clazzName":"AbroadFreightNode"},
+  {"nodeName":"最终金额计算","beanName":"最终金额计算","nodeCode":"general_14","nodeType":3,"preNodes":"if_10,general_13","nextNodes":"general_15","nodeConfig":"{}","nodeX":"686","nodeY":"59","nodeClazz":"com.fibo.rule.test.mall.node.FinalAmountNode","clazzName":"FinalAmountNode"},
+  {"nodeName":"计算步骤日志生成","beanName":"计算步骤日志生成","nodeCode":"general_15","nodeType":3,"preNodes":"general_14","nextNodes":"end_16","nodeConfig":"{}","nodeX":"686","nodeY":"162","nodeClazz":"com.fibo.rule.test.mall.node.AmountStepPrintNode","clazzName":"AmountStepPrintNode"},
+  {"nodeName":"结束","nodeCode":"end_16","nodeType":2,"preNodes":"general_15","nextNodes":"","nodeX":"686","nodeY":"255"}
+]
+```

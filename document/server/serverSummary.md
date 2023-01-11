@@ -1,16 +1,13 @@
-# 后端开发指南
-## server开发
-### 安装依赖
+# 后端部署
+##server安装
+###安装数据库
+安装mysql，新建fibo_rule数据库用于存储配置
 ```
-<dependency>
-    <groupId>com.fibo.rule</groupId>
-    <artifactId>fiborule-core</artifactId>
-    <version>1.0-SNAPSHOT</version>
-</dependency>
+CREATE DATABASE IF NOT EXISTS fibo_rule Character Set utf8mb4;
 ```
-### 安装数据库
-```
+表结构sql地址：
 https://github.com/FiboAI/FiboRuleLite/blob/dev_20221123/fiborule/fiborule-server/src/main/resources/doc/rule.sql
+```
 DROP TABLE IF EXISTS `t_app`;
 CREATE TABLE `t_app` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '删除标志：0未删除，1已删除',
@@ -83,12 +80,10 @@ cd FiboRuleLite/fiborule
 mvn install -DskipTests
 java -jar fiborule-server/target/server.jar
 ```
-
-
 ### 编辑配置文件
-```
 application.yml
-    server:
+```
+server:
   port: 8080
   servlet:
     context-path: /rule
@@ -121,9 +116,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
+```
 application-dev.yml
-
+```
 spring:
   datasource:
     druid:
@@ -145,12 +140,12 @@ java -jar fiborule-server/target/server.jar
 http://localhost:8080/rule/
 ```
 
-# 前端部署
+## 前端部署
 
-## 1.环境需求
+### 1.环境需求
 * 下载nodejs 版本12-14 最好为 12.22.7
 
-## 2.下载依赖
+### 2.下载依赖
 * 进入 h5-fiborule-manager 目录下
 * cmd执行 
 ```
@@ -159,7 +154,7 @@ npm i
  (如果下载失败请切换为淘宝镜像)
 
 
-## 3.前端启动 （开发模式，本地开发使用 ，仅在本地使用可以无视4 5 6 条）
+### 3.前端启动 （开发模式，本地开发使用 ，仅在本地使用可以无视4 5 6 条）
 * 更改 h5-fiborule-manager/baseUrl.js下的个人服务器后端地址
 ```
 switch (process.env.NODE_ENV) {
@@ -183,17 +178,17 @@ switch (process.env.NODE_ENV) {
 npm run serve
 ```
 
-## 4.文件编译 (将源文件部署至服务器使用)
+### 4.文件编译 (将源文件部署至服务器使用)
 * cmd执行
 ```
 npm run build
 ```
 * h5-fiborule-manager/dist 下为编译后的文件
 
-## 5.将编译后的文件放置在服务器上的 自定义目录下 （此处以 /root/www/h5-fiborule-manager) 举例
+### 5.将编译后的文件放置在服务器上的 自定义目录下 （此处以 /root/www/h5-fiborule-manager) 举例
 ![](../images/bushu.png)
 
-## 6.配置nginx
+### 6.配置nginx
 ![](../images/nginxConfig.png)
 * 将服务器端口指向指定目录
 * 访问配置好的端口即可

@@ -1,5 +1,8 @@
 package com.fibo.rule.server.nio;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.ConcurrentHashSet;
+import cn.hutool.core.util.ObjectUtil;
 import com.fibo.rule.common.dto.EngineDto;
 import com.fibo.rule.common.dto.FiboBeanDto;
 import com.fibo.rule.common.dto.FiboFieldDto;
@@ -33,19 +36,10 @@ public final class NioClientManager {
     private static Map<Channel, ChannelInfo> channelInfoMap = new ConcurrentHashMap<>();
     //app lastUpdateTime set<Channel>
     private static Map<Long, TreeMap<Long, Set<Channel>>> appChannelTimeTreeMap = new TreeMap<>();
-
-
-    //app scenes
-    private static Map<Long, Set<String>> appScenesMap = new ConcurrentHashMap<>();
-
-    //app scene nodes
-    private static Map<Long, Map<String, List<FiboBeanDto>>> appSceneNodesMap = new ConcurrentHashMap<>();
-
-    //app scene clazzName fiboBeanDto
-    private static Map<Long, Map<String, Map<String, FiboBeanDto>>> appSceneClazzNodeMap = new ConcurrentHashMap<>();
-
-    //remain app`s last client leaf info
-//    private static Map<Integer, Map<Byte, Map<String, NodeInfo>>> appNodeLeafClazzMap = new ConcurrentHashMap<>();
+    //app address scene nodeClazz
+    private static Map<Long, Map<String, Map<String, Map<String, FiboBeanDto>>>> appAddressLeafClazzMap = new ConcurrentHashMap<>();
+    //app scene type nodeClazz
+    private static Map<Long, Map<String, Map<Integer, Map<String, FiboBeanDto>>>> appNodeLeafClazzMap = new ConcurrentHashMap<>();
 
     @Resource
     private ServerProperties properties;
@@ -128,10 +122,17 @@ public final class NioClientManager {
 
         Set<String> sceneList = new HashSet<>();
         sceneList.add("mock场景");
-        appScenesMap.put(1L, sceneList);
-        appSceneNodesMap.put(1L, sceneBeansMap);
+//        appScenesMap.put(1L, sceneList);
+//        appSceneNodesMap.put(1L, sceneBeansMap);
 
-
+        if (CollectionUtil.isNotEmpty(sceneBeansMap)) {
+            for (String scene : sceneBeansMap.keySet()) {
+                List<FiboBeanDto> fiboBeanList = sceneBeansMap.get(scene);
+                for (FiboBeanDto fiboBean : fiboBeanList) {
+                    appNodeLeafClazzMap.computeIfAbsent(1L, k -> new ConcurrentHashMap<>()).computeIfAbsent(scene, k -> new ConcurrentHashMap<>()).computeIfAbsent(fiboBean.getType().getType(), k -> new ConcurrentHashMap<>()).put(fiboBean.getNodeClazz(), fiboBean);
+                }
+            }
+        }
     }
 
 
@@ -162,27 +163,28 @@ public final class NioClientManager {
                     appChannelTimeTreeMap.remove(app);
                 }
             }
-
             //remove client fobiBean class
-            Set<String> scenes = appScenesMap.get(app);
-            Map<String, List<FiboBeanDto>> sceneNodesMap = appSceneNodesMap.get(app);
-            Map<String, Map<String, FiboBeanDto>> sceneClazzNodeMap = appSceneClazzNodeMap.get(app);
-            if (!CollectionUtils.isEmpty(scenes) && !CollectionUtils.isEmpty(sceneNodesMap)) {
-                appScenesMap.remove(app);
-                for (String scene : scenes) {
-                    List<FiboBeanDto> fiboBeanDtos = sceneNodesMap.get(scene);
-                    if (!CollectionUtils.isEmpty(fiboBeanDtos)) {
-                        sceneNodesMap.remove(scene);
-                    }
-                    if (!CollectionUtils.isEmpty(sceneClazzNodeMap)) {
-                        Map<String, FiboBeanDto> clazzNodeMap = sceneClazzNodeMap.get(scene);
-                        if (!CollectionUtils.isEmpty(clazzNodeMap)) {
-//                            FiboBeanDto fiboBeanDto = clazzNodeMap.get()
+            Map<String, Map<String, Map<String, FiboBeanDto>>> addressNodesMap = appAddressLeafClazzMap.get(app);
+            if (!CollectionUtils.isEmpty(addressNodesMap)) {
+                addressNodesMap.remove(address);
+                if (CollectionUtils.isEmpty(addressNodesMap)) {
+                    //not have any available client
+                    appAddressLeafClazzMap.remove(app);
+                    appNodeLeafClazzMap = new ConcurrentHashMap<>();
+                } else {
+                    //reorganize app leaf class map
+                    Map<Long, Map<String, Map<Integer, Map<String, FiboBeanDto>>>> appNodeLeafClazzMapTemp = new ConcurrentHashMap<>();
+                    for (Map<String, Map<String, FiboBeanDto>> leafTypeClassMap : addressNodesMap.values()) {
+                        for (String scene : leafTypeClassMap.keySet()) {
+                            Map<String, FiboBeanDto> fiboBeanMap = leafTypeClassMap.get(scene);
+                            for (FiboBeanDto fiboBeanDto : fiboBeanMap.values()) {
+                                fiboBeanDto.getType();
+                                appNodeLeafClazzMapTemp.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(scene, k -> new ConcurrentHashMap<>()).computeIfAbsent(fiboBeanDto.getType().getType(), k -> new ConcurrentHashMap<>()).put(fiboBeanDto.getNodeClazz(), fiboBeanDto);
+                            }
                         }
                     }
-                    sceneClazzNodeMap.get(scene);
+                    appNodeLeafClazzMap = appNodeLeafClazzMapTemp;
                 }
-                appSceneNodesMap.remove(app);
             }
             log.info("client app:{} client:{} offline", app, address);
         }
@@ -215,16 +217,13 @@ public final class NioClientManager {
             log.info("client app:{} client:{} online", app, address);
         }
         appChannelTimeTreeMap.computeIfAbsent(app, k -> new TreeMap<>()).computeIfAbsent(now, k -> new HashSet<>()).add(channel);
-        if (null != sceneBeansMap) {
-            appScenesMap.put(app, sceneBeansMap.keySet());
+        if (CollectionUtil.isNotEmpty(sceneBeansMap)) {
             for (String scene : sceneBeansMap.keySet()) {
                 List<FiboBeanDto> fiboBeanDtoList = sceneBeansMap.get(scene);
-                appSceneNodesMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).put(scene, fiboBeanDtoList);
                 for (FiboBeanDto fiboBeanDto : fiboBeanDtoList) {
-                    appSceneClazzNodeMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(scene, k -> new ConcurrentHashMap<>()).put(fiboBeanDto.getClazzName(), fiboBeanDto);
+                    appAddressLeafClazzMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(address, k -> new ConcurrentHashMap<>()).computeIfAbsent(scene, k -> new ConcurrentHashMap<>()).put(fiboBeanDto.getNodeClazz(), fiboBeanDto);
+                    appNodeLeafClazzMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(scene, k -> new ConcurrentHashMap<>()).computeIfAbsent(fiboBeanDto.getType().getType(), k -> new ConcurrentHashMap<>()).put(fiboBeanDto.getNodeClazz(), fiboBeanDto);
                 }
-
-                //appNodeLeafClazzMap.computeIfAbsent(app, k -> new ConcurrentHashMap<>()).computeIfAbsent(leafNodeInfo.getType(), k -> new ConcurrentHashMap<>()).put(leafNodeInfo.getClazz(), leafNodeInfo);
             }
         }
     }
@@ -280,27 +279,49 @@ public final class NioClientManager {
     }
 
     public synchronized List<String> getSceneList(Long appId) {
-        Set<String> SceneSet = appScenesMap.get(appId);
-        if (CollectionUtils.isEmpty(SceneSet)) {
+        Map<String, Map<Integer, Map<String, FiboBeanDto>>> sceneMap = appNodeLeafClazzMap.get(appId);
+        if(CollectionUtil.isEmpty(sceneMap)) {
             return new ArrayList<>();
         }
-        return new ArrayList<>(SceneSet);
+        Set<String> sceneSet = sceneMap.keySet();
+        return new ArrayList<>(sceneSet);
     }
 
     public synchronized List<FiboBeanDto> getNodesList(Long appId, String scene, Integer nodeType) {
-        Map<String, List<FiboBeanDto>> map = appSceneNodesMap.get(appId);
-        if (CollectionUtils.isEmpty(map)) {
+        Map<String, Map<Integer, Map<String, FiboBeanDto>>> sceneMap = appNodeLeafClazzMap.get(appId);
+        if (CollectionUtils.isEmpty(sceneMap)) {
             return new ArrayList<>();
         }
-        List<FiboBeanDto> fiboBeanDtoList = map.get(scene);
-        if (CollectionUtils.isEmpty(fiboBeanDtoList)) {
+        Map<Integer, Map<String, FiboBeanDto>> beanTypeMap = sceneMap.get(scene);
+        if (CollectionUtils.isEmpty(beanTypeMap)) {
             return new ArrayList<>();
         }
-        return fiboBeanDtoList.stream().filter(fiboBeanDto -> fiboBeanDto.getType().getType().equals(nodeType)).collect(Collectors.toList());
+        Map<String, FiboBeanDto> fiboBeanMap = beanTypeMap.get(nodeType);
+        if (CollectionUtils.isEmpty(fiboBeanMap)) {
+            return new ArrayList<>();
+        }
+        List<FiboBeanDto> fiboBeanList = new ArrayList<>();
+        for (FiboBeanDto fiboBean : fiboBeanMap.values()) {
+            fiboBeanList.add(fiboBean);
+        }
+        return fiboBeanList;
     }
 
     public synchronized FiboBeanDto getNodeByClazz(Long appId, String scene, String clazzName) {
-        return appSceneClazzNodeMap.get(appId).get(scene).get(clazzName);
+        Map<String, Map<Integer, Map<String, FiboBeanDto>>> sceneMap = appNodeLeafClazzMap.get(appId);
+        if (CollectionUtils.isEmpty(sceneMap)) {
+            return null;
+        }
+        Map<Integer, Map<String, FiboBeanDto>> beanTypeMap = sceneMap.get(scene);
+        if (CollectionUtils.isEmpty(beanTypeMap)) {
+            return null;
+        }
+        for (Map<String, FiboBeanDto> fiboBeanMap : beanTypeMap.values()) {
+            if(ObjectUtil.isNotNull(fiboBeanMap.get(clazzName))) {
+                return fiboBeanMap.get(clazzName);
+            }
+        }
+        return null;
     }
 
 
