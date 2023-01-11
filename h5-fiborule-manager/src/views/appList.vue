@@ -7,6 +7,9 @@
 
         <div style="display: flex;flex-wrap: wrap;" v-loading="loading">
             <div v-for="value in list" class="appItem" @click="goEngineList(value.id)">
+                <div style="position: absolute;top: 5px;left: 5px;font-size: 12px;color: #aaa;">
+                    id : {{ value.id }}
+                </div>
                 <p>{{ value.appName }}</p>
                 <div>{{ value.descriptions }}</div>
 
