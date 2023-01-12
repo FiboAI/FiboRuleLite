@@ -1,6 +1,6 @@
 # 后端部署
-##server安装
-###安装数据库
+## server安装
+### 安装数据库
 安装mysql，新建fibo_rule数据库用于存储配置
 ```
 CREATE DATABASE IF NOT EXISTS fibo_rule Character Set utf8mb4;
