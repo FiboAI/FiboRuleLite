@@ -15,8 +15,9 @@ FiboRule Lite - 轻量级规则引擎<br>
   `fiborule-spring` 客户端初始化  
   `fiborule-spring-boot-starter` 全景配置参数  
   `fiborule-test` 测试用例  
-  `fiborule-test-mall` 场景测试-商城用例  
-  `fiborule-test-pay` 场景测试-商城用例
+  `fiborule-test-mall` 场景测试-电商用例  
+  `fiborule-test-market` 场景测试-营销用例  
+  `fiborule-test-pay` 场景测试-充值用例
 * h5-fiborule-manager 前端核心代码
 * document 详细的使用文档
 
@@ -28,6 +29,9 @@ https://www.processon.com/view/link/63849862e0b34d37c4717942
 
 ### Demo图
 ![Demo图](images/demo.jpg)
+
+### Demo路径
+http://101.132.68.84
 
 ### 开源交流
 可加微信号，进开源交流群  
